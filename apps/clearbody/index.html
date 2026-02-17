@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0608">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Clear Body">
+<meta name="description" content="Track your body's recovery from fast food and added sugar with clinically sourced milestones and real-time progress.">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<title>Clear Body - Fast Food & Sugar Recovery Tracker</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+:root{
+  --bg-deep:#0a0608;--bg-surface:#110d0f;--bg-card:#171114;--bg-card-hover:#1e161a;
+  --border-subtle:rgba(236,72,153,0.06);--border-medium:rgba(236,72,153,0.12);--border-accent:rgba(236,72,153,0.25);
+  --rose-primary:#ec4899;--rose-bright:#f472b6;--rose-muted:#db2777;--rose-dark:#831843;
+  --purple:#a78bfa;--blue:#60a5fa;--amber:#fbbf24;--green:#a3e635;--rose:#fb7185;--orange:#fb923c;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
+  --font-body:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type="number"]{-moz-appearance:textfield}
+::-webkit-scrollbar{width:0}
+button{font-family:var(--font-body)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 16px rgba(236,72,153,0.2)}50%{box-shadow:0 0 32px rgba(236,72,153,0.5),0 0 48px rgba(236,72,153,0.15)}}
+@keyframes breatheRing{0%{r:42;opacity:0.3}50%{r:56;opacity:0.8}100%{r:42;opacity:0.3}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg) scale(1);opacity:1}80%{opacity:1}100%{transform:translateY(130px) rotate(720deg) scale(0.5);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes ringDraw{from{stroke-dashoffset:var(--circ)}to{stroke-dashoffset:var(--offset)}}
+.milestone-new{animation:pulseGlow 2s ease-in-out 3}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel" data-type="module">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+const Store = {
+  _key: 'clearbody_data',
+  get() { try { const d = localStorage.getItem(this._key); return d ? JSON.parse(d) : null } catch { return null } },
+  save(data) { try { localStorage.setItem(this._key, JSON.stringify({ ...data, updatedAt: Date.now() })) } catch {} },
+  clear() { localStorage.removeItem(this._key) },
+  getSeen() { try { const d = localStorage.getItem('clearbody_seen'); return d ? JSON.parse(d) : [] } catch { return [] } },
+  markSeen(label) { try { const s = this.getSeen(); if (!s.includes(label)) { s.push(label); localStorage.setItem('clearbody_seen', JSON.stringify(s)) } } catch {} },
+  hasOnboarded() { return localStorage.getItem('clearbody_onboarded') === 'true' },
+  setOnboarded() { localStorage.setItem('clearbody_onboarded', 'true') }
+};
+
+const CravingStore = {
+  _key: 'clearbody_cravings',
+  getAll() { try { const d = localStorage.getItem(this._key); return d ? JSON.parse(d) : []; } catch { return []; } },
+  add(entry) { try { const all = this.getAll(); all.unshift({ ...entry, id: Date.now(), timestamp: Date.now() }); localStorage.setItem(this._key, JSON.stringify(all)); } catch {} },
+  clear() { localStorage.removeItem(this._key); }
+};
+function getCravingStats() {
+  const all = CravingStore.getAll();
+  if (all.length === 0) return null;
+  const now = Date.now();
+  const week = all.filter(c => now - c.timestamp < 7 * 86400000);
+  const surfed = all.filter(c => c.outcome === 'surfed');
+  const triggers = {};
+  all.forEach(c => { (c.triggers || []).forEach(t => { triggers[t] = (triggers[t] || 0) + 1; }); });
+  const topTriggers = Object.entries(triggers).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const weekAvg = week.length > 0 ? Math.round((week.reduce((s, c) => s + (c.intensity || 5), 0) / week.length) * 10) / 10 : 0;
+  return { total: all.length, thisWeek: week.length, surfedCount: surfed.length, surfedRate: all.length > 0 ? Math.round((surfed.length / all.length) * 100) : 0, topTriggers, weekAvgIntensity: weekAvg };
+}
+
+const H = 3600000, D = 86400000, Y = 365 * D;
+
+const CRAVING_TRIGGERS = [
+  { id:'drivethrough', label:'Drive-Through', icon:"\uD83D\uDE97" },
+  { id:'stress', label:'Stress Eating', icon:"\uD83D\uDE24" },
+  { id:'social', label:'Social Eating', icon:"\uD83D\uDC65" },
+  { id:'boredom', label:'Boredom', icon:"\uD83D\uDE11" },
+  { id:'latenight', label:'Late Night', icon:"\uD83C\uDF19" },
+  { id:'convenience', label:'Convenience', icon:"\uD83C\uDFEA" },
+  { id:'emotional', label:'Emotional', icon:"\uD83D\uDE22" },
+  { id:'advertising', label:'Saw an Ad', icon:"\uD83D\uDCFA" },
+  { id:'smell', label:'Smelled Food', icon:"\uD83D\uDC43" },
+  { id:'coworkers', label:'Coworkers', icon:"\uD83C\uDFE2" }
+];
+
+const CRAVING_ACHIEVEMENTS = [
+  { count: 1, label: "First Impulse", desc: "You logged your first craving. Awareness changes everything." },
+  { count: 5, label: "Pattern Spotter", desc: "5 cravings logged. You are seeing your triggers clearly now." },
+  { count: 10, label: "Self-Aware", desc: "10 cravings tracked. You know yourself better than most." },
+  { count: 25, label: "Craving Surfer", desc: "25 cravings surfed and documented." },
+  { count: 50, label: "Unshakable", desc: "50 logged. Your willpower has become a habit." }
+];
+
+/*
+ * CLEAR BODY v1.0 -- Fast Food & Added Sugar Cessation Recovery
+ * Sources:
+ *  Journal of Clinical Investigation: Insulin sensitivity recovery
+ *  PMC/Nutrients: Gut microbiome response to diet changes
+ *  American Heart Association: Inflammation and cardiovascular markers
+ *  Neuroscience & Biobehavioral Reviews: Sugar/dopamine receptor normalization
+ *  The Lancet: Ultra-processed food and metabolic syndrome
+ *  British Journal of Dermatology: Sugar, AGEs, and skin health
+ *  Sleep Foundation: Blood sugar and sleep quality
+ * Last audited: February 2026
+ */
+
+const HEALTH_CATEGORIES = [
+  { id:"bloodsugar", label:"Blood Sugar", icon:"\uD83E\uDE78", color:"#ec4899", weight:0.25, milestones:[
+    {time:4*H,label:"Blood sugar stabilizing from last meal",pct:5,tip:"Your body is processing and clearing the last sugar spike. Stay hydrated."},
+    {time:12*H,label:"Fasting glucose beginning to normalize",pct:12,tip:"Without new sugar input, insulin levels are dropping toward baseline."},
+    {time:24*H,label:"Insulin sensitivity beginning to improve",pct:18,tip:"Your cells are already responding better to insulin without constant sugar bombardment."},
+    {time:72*H,label:"Blood sugar crashes stopping",pct:28,tip:"The rollercoaster of spikes and crashes is smoothing out. Energy becoming more stable."},
+    {time:7*D,label:"Fasting insulin levels dropping",pct:40,tip:"One week in. Your pancreas is getting a real break. Hunger hormones recalibrating."},
+    {time:14*D,label:"Insulin resistance measurably improving",pct:55,tip:"Two weeks. Clinical studies show measurable insulin sensitivity improvement by now."},
+    {time:30*D,label:"HbA1c trending downward",pct:70,tip:"One month. Long-term blood sugar markers are shifting in a healthier direction."},
+    {time:60*D,label:"Metabolic markers significantly improved",pct:82,tip:"Fasting glucose, insulin, and triglycerides all trending toward optimal."},
+    {time:90*D,label:"Insulin sensitivity approaching healthy baseline",pct:92,tip:"Three months. Your metabolic health has fundamentally shifted."},
+    {time:Y,label:"Metabolic function largely restored",pct:98,tip:"Type 2 diabetes risk substantially reduced. Metabolic resilience rebuilt."}
+  ]},
+  { id:"inflammation", label:"Inflammation", icon:"\uD83D\uDD25", color:"#f97316", weight:0.20, milestones:[
+    {time:24*H,label:"Inflammatory load from last meal clearing",pct:5,tip:"Ultra-processed foods trigger acute inflammation. That response is already fading."},
+    {time:72*H,label:"C-reactive protein beginning to drop",pct:15,tip:"Systemic inflammation markers are starting to decrease without daily processed food intake."},
+    {time:7*D,label:"Joint stiffness and bloating reducing",pct:28,tip:"Many people notice less puffiness and joint discomfort within the first week."},
+    {time:14*D,label:"Inflammatory markers measurably lower",pct:42,tip:"Two weeks without ultra-processed food. Your body is calming down at a cellular level."},
+    {time:30*D,label:"Chronic inflammation significantly reduced",pct:60,tip:"One month. Inflammatory cytokines dropping. Aches, swelling, and brain fog clearing."},
+    {time:60*D,label:"Vascular inflammation improving",pct:75,tip:"Blood vessel function improving. Blood pressure may be noticeably lower."},
+    {time:90*D,label:"Systemic inflammation approaching normal",pct:88,tip:"Three months. Cardiovascular and metabolic inflammation markers near healthy levels."},
+    {time:Y,label:"Chronic inflammation largely resolved",pct:97,tip:"Heart disease and cancer risk reduced. Your body is no longer in a constant fight response."}
+  ]},
+  { id:"gut", label:"Gut Health", icon:"\uD83E\uDDA0", color:"#a78bfa", weight:0.20, milestones:[
+    {time:24*H,label:"Gut lining beginning to rest",pct:4,tip:"Without emulsifiers and processed additives, your gut lining can start healing."},
+    {time:72*H,label:"Beneficial bacteria beginning to recover",pct:12,tip:"Gut microbiome shifts begin within 3 days of dietary change. New flora taking root."},
+    {time:7*D,label:"Bloating and gas noticeably reduced",pct:25,tip:"Your digestive system is adjusting. Many people feel lighter and less bloated."},
+    {time:14*D,label:"Microbial diversity increasing",pct:40,tip:"Beneficial species like Akkermansia and Faecalibacterium are repopulating."},
+    {time:21*D,label:"Gut barrier integrity improving",pct:52,tip:"Intestinal permeability (leaky gut) from processed food is beginning to heal."},
+    {time:30*D,label:"Short-chain fatty acid production rising",pct:62,tip:"Your gut bacteria are producing more butyrate, fueling colon health and reducing inflammation."},
+    {time:60*D,label:"Microbiome composition significantly shifted",pct:78,tip:"Two months. Your gut ecosystem now resembles a whole-food diet profile."},
+    {time:90*D,label:"Gut-brain axis communication improving",pct:88,tip:"Better mood, clearer thinking, stronger immune signaling from a healthier gut."},
+    {time:Y,label:"Gut microbiome largely restored",pct:97,tip:"Microbial diversity and function at a healthy baseline. Digestion running smoothly."}
+  ]},
+  { id:"dopamine", label:"Cravings", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.15, milestones:[
+    {time:12*H,label:"First sugar cravings hitting",pct:3,tip:"Sugar activates the same dopamine pathways as other addictive substances. Cravings are real and chemical."},
+    {time:24*H,label:"Dopamine dip in progress",pct:8,tip:"Your brain is missing its sugar-driven dopamine hits. This discomfort is temporary."},
+    {time:72*H,label:"Peak craving intensity",pct:18,tip:"Days 2-3 are typically the hardest. Cravings peak here then begin to fade. You are almost through."},
+    {time:7*D,label:"Cravings beginning to lessen",pct:32,tip:"The worst is behind you. Dopamine receptors are starting to upregulate and rebalance."},
+    {time:14*D,label:"Taste receptors recalibrating",pct:48,tip:"Whole foods are starting to taste better. Your palate is recovering from sugar saturation."},
+    {time:21*D,label:"Reward system resetting",pct:60,tip:"Three weeks. Natural pleasures like conversation, movement, and rest feel more rewarding."},
+    {time:30*D,label:"Dopamine receptor density normalizing",pct:72,tip:"One month. The neurological pull toward sugar is significantly weaker."},
+    {time:60*D,label:"Cravings rare and manageable",pct:86,tip:"Two months. Occasional cravings happen but pass quickly. You are rewired."},
+    {time:90*D,label:"Reward pathways largely restored",pct:95,tip:"Natural dopamine response fully functional. Sugar has lost its grip."}
+  ]},
+  { id:"energy", label:"Energy & Sleep", icon:"\u26A1", color:"#a3e635", weight:0.10, milestones:[
+    {time:24*H,label:"Energy dip as blood sugar stabilizes",pct:3,tip:"You may feel sluggish today. Your body is adjusting from sugar-fueled energy spikes."},
+    {time:72*H,label:"Energy crashes stopping",pct:15,tip:"Without sugar spikes, the afternoon crash cycle is breaking."},
+    {time:7*D,label:"Sustained energy beginning to emerge",pct:30,tip:"Steady energy from stable blood sugar. Less need for caffeine and sugar to power through."},
+    {time:14*D,label:"Sleep quality improving",pct:48,tip:"Stable blood sugar means fewer nighttime wake-ups. Deeper, more restorative sleep."},
+    {time:30*D,label:"Morning energy noticeably better",pct:65,tip:"Waking up easier. Energy consistent through the day without crashes."},
+    {time:60*D,label:"Energy and sleep patterns stabilized",pct:82,tip:"Two months. Your circadian rhythm and energy levels have found a new, healthier baseline."},
+    {time:90*D,label:"Optimal energy and sleep restored",pct:95,tip:"Three months. Consistent energy, deep sleep, and sharp mornings. This is how your body is meant to feel."}
+  ]},
+  { id:"skin", label:"Skin & Appearance", icon:"\u2728", color:"#fbbf24", weight:0.10, milestones:[
+    {time:72*H,label:"Facial puffiness beginning to decrease",pct:10,tip:"Less sodium and sugar means less water retention. Face and hands may already look less puffy."},
+    {time:7*D,label:"Skin hydration improving",pct:22,tip:"Better hydration status without processed food. Skin texture and tone starting to shift."},
+    {time:14*D,label:"Complexion starting to clear",pct:38,tip:"Reduced inflammation showing in your skin. Fewer breakouts and less redness."},
+    {time:21*D,label:"Skin cell turnover accelerating",pct:50,tip:"New skin cells are being built with better nutrients. The glow is real."},
+    {time:30*D,label:"Visible improvement in skin clarity",pct:62,tip:"One month. Many people get comments about their skin looking better at this stage."},
+    {time:60*D,label:"AGE (glycation) damage slowing",pct:78,tip:"Advanced glycation end-products from sugar accelerate aging. That process is slowing down."},
+    {time:90*D,label:"Collagen production improving",pct:90,tip:"With less sugar-driven glycation, collagen integrity is rebuilding. Firmer, healthier skin."},
+    {time:Y,label:"Skin health largely restored",pct:98,tip:"A year of clean eating. Your skin reflects the transformation happening inside."}
+  ]}
+];
+
+const ACHIEVEMENTS = [
+  {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"Blood sugar from your last processed meal is clearing."},
+  {time:4*H,label:"Four Hours Clean",icon:"\u2728",desc:"Insulin levels dropping. Your pancreas is getting relief."},
+  {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Blood sugar stable. No more spike-and-crash cycles today."},
+  {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Your body is beginning to shift from sugar-burning to fat-burning."},
+  {time:18*H,label:"Holding Strong",icon:"\uD83D\uDD25",desc:"First real cravings may be building. They peak and pass in 15-20 minutes."},
+  {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without fast food or added sugar. Your gut microbiome noticed."},
+  {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You made it through the evening routine without old habits."},
+  {time:48*H,label:"Two Days Strong",icon:"\uD83E\uDDE0",desc:"Dopamine receptors are beginning to upregulate. Cravings starting to shift."},
+  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"Peak craving window passing. Inflammation markers already dropping."},
+  {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Bloating reducing. Energy stabilizing. Your body is responding fast."},
+  {time:5*D,label:"Five Days Clean",icon:"\uD83C\uDF3F",desc:"Gut bacteria are shifting. Beneficial species are repopulating."},
+  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"Insulin sensitivity improving. Taste buds recalibrating. You look less puffy."},
+  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Sustained energy without sugar crashes. Your new normal is emerging."},
+  {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"Measurable metabolic improvement. Skin clearing. Sleep deepening."},
+  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Dopamine pathways resetting. Natural foods taste richer and more satisfying."},
+  {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Gut microbiome significantly shifted. Cravings much weaker."},
+  {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"Deep metabolic changes consolidating. New habits solidifying."},
+  {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"The Lenten milestone. Body, mind, and spirit transformed through discipline."},
+  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Inflammation markers near normal. Immune function stronger."},
+  {time:60*D,label:"Two Months",icon:"\uD83E\uDD89",desc:"Cravings rare. Energy consistent. Your relationship with food has changed."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. Clinical milestone. Metabolic health fundamentally improved."},
+  {time:180*D,label:"Six Months",icon:"\uD83D\uDC51",desc:"Heart disease risk dropping. Gut fully recolonized. You are a different person."},
+  {time:Y,label:"One Year Clean",icon:"\uD83C\uDF1F",desc:"Metabolic resilience rebuilt. Diabetes risk reduced. A full transformation."}
+];
+
+const MOTIVATIONAL = {
+  acute:[
+    "Your insulin levels are dropping right now. Not in a week. Not tomorrow. Right now. Every hour without sugar counts.",
+    "The craving is a chemical signal, not a need. It will peak in about 15 minutes and pass whether you eat or not.",
+    "Your gut bacteria are already responding to the absence of processed food. New colonies are forming.",
+    "Blood sugar is stabilizing. The spike-and-crash cycle is breaking. Steady energy is coming."
+  ],
+  peak:[
+    "Days 2-3 are the hardest. Sugar withdrawal is real and documented. The headaches, the irritability. They pass.",
+    "Every craving you sit through without giving in physically weakens the neural pathway that drives the next one.",
+    "Your gut lining is beginning to heal from the emulsifiers and additives in processed food. You cannot see it, but it is happening.",
+    "The fatigue is your body switching fuel sources. From sugar spikes to stable, sustained energy. The transition is temporary."
+  ],
+  recovery:[
+    "Your taste buds are recalibrating. Whole foods are starting to taste richer, sweeter, more complex. This is recovery.",
+    "Inflammation markers are dropping. Joint stiffness easing. Bloating gone. Your body is calming down at a cellular level.",
+    "Each week that passes, the dopamine pathways in your brain get a little quieter. You are literally rewiring your reward system.",
+    "Skin clearing. Energy stable. Sleep deeper. These are not coincidences. This is what happens when you stop poisoning yourself with processed food."
+  ],
+  healing:[
+    "Your gut microbiome now resembles someone who eats whole foods. Trillions of beneficial organisms working for you.",
+    "The hardest part is behind you. What you are doing now is consolidating. Making these choices automatic. Permanent.",
+    "Blood pressure, triglycerides, fasting glucose. All trending healthier. Time and clean eating are doing their work.",
+    "You chose discomfort over convenience. Real food over engineered cravings. That takes more strength than most realize."
+  ],
+  healed:[
+    "Your metabolic health has fundamentally transformed. Insulin sensitivity, inflammation, gut function. All restored.",
+    "A year clean. Your risk of type 2 diabetes, heart disease, and metabolic syndrome has dropped significantly.",
+    "You did not just change your diet. You broke free from a food system designed to keep you addicted and buying.",
+    "Remember what the first three days felt like. That was the price of freedom. Look at what you built with it."
+  ]
+};
+
+function getElapsed(qd) { return Date.now() - new Date(qd).getTime() }
+function formatDuration(ms) {
+  if (ms < 0) return "0s";
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24),y=Math.floor(d/365);
+  if(y>0)return`${y}y ${d%365}d`;if(d>0)return`${d}d ${h%24}h`;
+  if(h>0)return`${h}h ${m%60}m`;if(m>0)return`${m}m ${s%60}s`;return`${s}s`;
+}
+function formatTime(ms) {
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24);
+  if(d>365){const y=Math.floor(d/365);return`${y} year${y>1?'s':''}`;}
+  if(d>0)return`${d} day${d>1?'s':''}`;if(h>0)return`${h} hour${h>1?'s':''}`;return`${m} min`;
+}
+function formatRelativeTime(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+  if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+  if (diff < 7*86400000) return `${Math.floor(diff/86400000)}d ago`;
+  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+function getPhase(elapsed) {
+  if(elapsed<24*H)return'acute';if(elapsed<72*H)return'peak';
+  if(elapsed<30*D)return'recovery';if(elapsed<180*D)return'healing';return'healed';
+}
+function getDailyMotivation(elapsed) {
+  const phase=getPhase(elapsed),msgs=MOTIVATIONAL[phase];
+  return msgs[Math.floor(elapsed/D)%msgs.length];
+}
+function getContextualTip(elapsed) {
+  if(elapsed<H)return"Your body is clearing the last processed meal. Blood sugar beginning to stabilize. Drink water.";
+  if(elapsed<8*H)return"Insulin levels dropping. First cravings may appear soon. They peak in 15-20 minutes then pass.";
+  if(elapsed<24*H)return"Blood sugar stabilizing without sugar spikes. Your pancreas is getting its first real break.";
+  if(elapsed<48*H)return"Sugar withdrawal may be hitting. Headaches, irritability, fatigue are all normal. Stay hydrated and eat protein.";
+  if(elapsed<72*H)return"Peak craving window. Days 2-3 are typically the hardest. You are almost through it.";
+  if(elapsed<7*D)return"Cravings beginning to fade. Gut bacteria are shifting. Bloating and puffiness decreasing.";
+  if(elapsed<14*D)return"Taste buds recalibrating. Insulin sensitivity improving. Inflammation markers dropping.";
+  if(elapsed<30*D)return"Energy stabilizing. Skin clearing. Sleep improving. Gut microbiome actively recolonizing.";
+  if(elapsed<90*D)return"Deep metabolic changes in progress. Dopamine receptors normalizing. New food habits becoming automatic.";
+  if(elapsed<180*D)return"Inflammation near baseline. Metabolic markers significantly improved. Cravings rare and weak.";
+  if(elapsed<Y)return"Approaching the one-year mark. Diabetes risk dropping. Gut health fully restored.";
+  return"Full metabolic transformation. Every system in your body has benefited from this decision.";
+}
+function getCategoryProgress(cat, elapsed) {
+  let progress=0,currentLabel="Not started",currentTip="",nextLabel=cat.milestones[0]?.label||"",nextTime=cat.milestones[0]?.time||0;
+  for(let i=0;i<cat.milestones.length;i++){
+    const m=cat.milestones[i];
+    if(elapsed>=m.time){
+      progress=m.pct;currentLabel=m.label;currentTip=m.tip||"";
+      if(i+1<cat.milestones.length){
+        const next=cat.milestones[i+1];const segE=elapsed-m.time;const segT=next.time-m.time;
+        const eased=1-Math.pow(1-Math.min(segE/segT,1),2);
+        progress=m.pct+eased*(next.pct-m.pct);nextLabel=next.label;nextTime=next.time;
+      }else{nextLabel="";nextTime=0;}
+    }
+  }
+  if(elapsed<(cat.milestones[0]?.time||0)){
+    const f=cat.milestones[0];progress=(elapsed/f.time)*f.pct;
+    currentLabel="Recovery beginning";currentTip=f.tip||"";
+  }
+  return{progress:Math.min(progress,100),currentLabel,currentTip,nextLabel,nextTime};
+}
+function getWeightedHealth(elapsed) {
+  return HEALTH_CATEGORIES.reduce((t,c)=>t+getCategoryProgress(c,elapsed).progress*c.weight,0);
+}
+
+// COMPONENTS
+function Confetti({active}) {
+  if(!active)return null;
+  const colors=['#ec4899','#f472b6','#60a5fa','#fbbf24','#a78bfa','#fb7185','#a3e635','#fb923c'];
+  const p=Array.from({length:40},(_,i)=>({id:i,left:Math.random()*100,delay:Math.random()*2,color:colors[i%colors.length],size:3+Math.random()*7,duration:1.8+Math.random()*1.5,shape:Math.random()>0.5?'50%':'2px'}));
+  return <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:200,overflow:'hidden'}}>
+    {p.map(x=><div key={x.id} style={{position:'absolute',left:`${x.left}%`,top:0,width:x.size,height:x.size,background:x.color,borderRadius:x.shape,animation:`confettiFall ${x.duration}s ease-out ${x.delay}s forwards`}}/>)}
+  </div>;
+}
+
+function ProgressRing({progress,color,size=100,strokeWidth=8,animated=true,children}) {
+  const r=(size-strokeWidth)/2,circ=2*Math.PI*r,offset=circ-(progress/100)*circ;
+  return <div style={{position:'relative',width:size,height:size}}>
+    <svg width={size} height={size} style={{transform:'rotate(-90deg)'}}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth={strokeWidth}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={strokeWidth} strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" style={animated?{'--circ':circ,'--offset':offset,animation:'ringDraw 1.2s var(--ease-out) forwards',transition:'stroke-dashoffset 1s var(--ease-out)'}:{transition:'stroke-dashoffset 1s var(--ease-out)'}}/>
+    </svg>
+    <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>{children}</div>
+  </div>;
+}
+
+function BreathingExercise({onClose, onLogCraving}) {
+  const[phase,setPhase]=useState('idle');
+  const[cycle,setCycle]=useState(0);
+  const[seconds,setSeconds]=useState(0);
+  const totalCycles=4;const timerRef=useRef(null);
+  const phases={inhale:4,hold:4,exhale:6};
+  useEffect(()=>{
+    if(phase==='idle'||phase==='done')return;
+    const dur=phases[phase];setSeconds(dur);
+    timerRef.current=setInterval(()=>{
+      setSeconds(prev=>{
+        if(prev<=1){clearInterval(timerRef.current);
+          if(phase==='inhale')setPhase('hold');
+          else if(phase==='hold')setPhase('exhale');
+          else if(phase==='exhale'){if(cycle+1>=totalCycles)setPhase('done');else{setCycle(c=>c+1);setPhase('inhale');}}
+          return 0;}
+        return prev-1;
+      });
+    },1000);
+    return()=>clearInterval(timerRef.current);
+  },[phase,cycle]);
+  const ringP=phase==='idle'?0:phase==='done'?100:((phases[phase]-seconds)/phases[phase])*100;
+  const pc=phase==='inhale'?'#ec4899':phase==='hold'?'#f472b6':phase==='exhale'?'#a78bfa':'#ec4899';
+  const pl=phase==='idle'?'Ready':phase==='done'?'Complete':phase==='inhale'?'Breathe In':phase==='hold'?'Hold':'Breathe Out';
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.92)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',backdropFilter:'blur(20px)',animation:'fadeIn 0.3s ease-out'}}>
+    <div onClick={e=>e.stopPropagation()} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:32,padding:40,animation:'scaleIn 0.4s var(--ease-spring)'}}>
+      <div style={{textAlign:'center'}}>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:24,color:'var(--text-primary)',marginBottom:4}}>{phase==='done'?'You made it.':'Ride the Craving'}</h2>
+        <p style={{fontSize:13,color:'var(--text-secondary)'}}>{phase==='done'?'The craving has passed. You chose yourself.':'4-4-6 breathing to calm your nervous system'}</p>
+      </div>
+      <div style={{position:'relative'}}>
+        <ProgressRing progress={ringP} color={pc} size={180} strokeWidth={6} animated={false}>
+          <span style={{fontSize:48,fontWeight:300,color:pc,fontFamily:'var(--font-display)',animation:seconds>0?'countPulse 1s ease-in-out infinite':'none'}}>{phase==='idle'?'':phase==='done'?'\u2713':seconds}</span>
+          <span style={{fontSize:14,fontWeight:600,color:'var(--text-secondary)',marginTop:4,letterSpacing:1,textTransform:'uppercase'}}>{pl}</span>
+        </ProgressRing>
+        {phase!=='idle'&&phase!=='done'&&<svg width={180} height={180} style={{position:'absolute',top:0,left:0,transform:'rotate(-90deg)'}}><circle cx={90} cy={90} r={87} fill="none" stroke={pc} strokeWidth={1} opacity={0.15} style={{animation:'breatheRing 4s ease-in-out infinite'}}/></svg>}
+      </div>
+      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#ec4899':i===cycle&&phase!=='idle'?pc:'rgba(255,255,255,0.1)',transition:'all 0.3s'}}/>)}</div>}
+      {phase==='idle'&&<button onClick={()=>setPhase('inhale')} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #ec4899, #db2777)',color:'#fff'}}>Begin</button>}
+      {phase==='done'&&<div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
+        <button onClick={() => { onLogCraving && onLogCraving(true); onClose(); }} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #ec4899, #db2777)',color:'#fff'}}>Log This Craving</button>
+        <button onClick={onClose} style={{padding:'10px 32px',borderRadius:40,border:'1px solid var(--border-medium)',cursor:'pointer',fontSize:13,fontWeight:600,fontFamily:'var(--font-body)',background:'transparent',color:'var(--text-secondary)'}}>I'm Good</button>
+      </div>}
+      <button onClick={onClose} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',padding:8}}>close</button>
+    </div>
+  </div>;
+}
+
+function CravingLogModal({ onClose, onSave, prefillBreathing }) {
+  const [intensity, setIntensity] = useState(5);
+  const [triggers, setTriggers] = useState([]);
+  const [note, setNote] = useState('');
+  const [usedBreathing, setUsedBreathing] = useState(prefillBreathing || false);
+  const [outcome, setOutcome] = useState('surfed');
+  const [saved, setSaved] = useState(false);
+  const toggleTrigger = (id) => setTriggers(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]);
+  const handleSave = () => {
+    onSave({ intensity, triggers, note, usedBreathing, outcome });
+    setSaved(true);
+    setTimeout(onClose, 1200);
+  };
+  if (saved) return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.92)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(20px)', animation:'fadeIn 0.2s ease-out' }}>
+      <div style={{ textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
+        <div style={{ fontSize:64, marginBottom:16 }}>{"\uD83C\uDF3F"}</div>
+        <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'#ec4899' }}>
+          {outcome === 'surfed' ? 'Craving surfed.' : 'Logged.'}
+        </h2>
+        <p style={{ fontSize:13, color:'var(--text-secondary)', marginTop:8 }}>
+          {outcome === 'surfed' ? 'Every one you ride makes the next one smaller.' : 'Honesty is the foundation of change. Keep going.'}
+        </p>
+      </div>
+    </div>
+  );
+  return (
+    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:100, display:'flex', alignItems:'flex-end', justifyContent:'center', backdropFilter:'blur(12px)', animation:'fadeIn 0.2s ease-out' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background:'var(--bg-card)', borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
+          <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, color:'var(--text-primary)' }}>Log Craving</h3>
+          <button onClick={onClose} style={{ background:'rgba(255,255,255,0.06)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>{"\u00D7"}</button>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:10 }}>
+            <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase' }}>Intensity</label>
+            <span style={{ fontSize:28, fontWeight:300, color: intensity <= 3 ? '#a3e635' : intensity <= 6 ? '#fbbf24' : '#fb7185', fontFamily:'var(--font-display)' }}>{intensity}</span>
+          </div>
+          <div style={{ display:'flex', gap:4 }}>
+            {[1,2,3,4,5,6,7,8,9,10].map(n => (
+              <button key={n} onClick={() => setIntensity(n)} style={{
+                flex:1, height:36, borderRadius:'var(--radius-sm)', border:'none', cursor:'pointer',
+                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'rgba(255,255,255,0.04)',
+                color: n <= intensity ? 'var(--text-primary)' : 'var(--text-muted)',
+                fontSize:11, fontWeight:700, fontFamily:'var(--font-body)', transition:'all 0.15s'
+              }}>{n}</button>
+            ))}
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between', marginTop:4 }}>
+            <span style={{ fontSize:9, color:'var(--text-muted)' }}>Mild</span>
+            <span style={{ fontSize:9, color:'var(--text-muted)' }}>Intense</span>
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>What triggered it?</label>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+            {CRAVING_TRIGGERS.map(t => {
+              const active = triggers.includes(t.id);
+              return (
+                <button key={t.id} onClick={() => toggleTrigger(t.id)} style={{
+                  padding:'8px 14px', borderRadius:20,
+                  border: active ? '1px solid #ec4899' : '1px solid var(--border-subtle)',
+                  background: active ? 'rgba(236,72,153,0.1)' : 'transparent',
+                  color: active ? '#ec4899' : 'var(--text-muted)',
+                  fontSize:12, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)',
+                  transition:'all 0.15s', display:'flex', alignItems:'center', gap:5
+                }}>
+                  <span style={{ fontSize:14 }}>{t.icon}</span> {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Used breathing exercise?</label>
+          <div style={{ display:'flex', gap:8 }}>
+            {[{ val: true, label: 'Yes' }, { val: false, label: 'No' }].map(opt => (
+              <button key={String(opt.val)} onClick={() => setUsedBreathing(opt.val)} style={{
+                flex:1, padding:'12px', borderRadius:'var(--radius-md)',
+                border: usedBreathing === opt.val ? '1px solid #ec4899' : '1px solid var(--border-subtle)',
+                background: usedBreathing === opt.val ? 'rgba(236,72,153,0.08)' : 'transparent',
+                color: usedBreathing === opt.val ? '#ec4899' : 'var(--text-muted)',
+                fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s'
+              }}>{opt.label}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Outcome</label>
+          <div style={{ display:'flex', gap:8 }}>
+            <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid #ec4899' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'rgba(236,72,153,0.08)' : 'transparent', color: outcome === 'surfed' ? '#ec4899' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
+              <div style={{ fontSize:20, marginBottom:4 }}>{"\uD83C\uDF3F"}</div>Stayed clean
+            </button>
+            <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'rgba(251,113,133,0.08)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
+              <div style={{ fontSize:20, marginBottom:4 }}>{"\uD83D\uDCDD"}</div>Slipped
+            </button>
+          </div>
+        </div>
+        <div style={{ marginBottom:24 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:8 }}>Note (optional)</label>
+          <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What were you feeling? Where were you?" rows={2}
+            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'rgba(255,255,255,0.04)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
+        </div>
+        <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #ec4899, #db2777)', color:'#fff' }}>Save</button>
+      </div>
+    </div>
+  );
+}
+
+function CravingsTab({ onOpenLog }) {
+  const stats = getCravingStats();
+  const all = CravingStore.getAll();
+  const triggerMap = {};
+  CRAVING_TRIGGERS.forEach(t => { triggerMap[t.id] = t; });
+  return <div style={{ animation:'fadeIn 0.3s ease-out' }}>
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+      <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)' }}>Craving Journal</h3>
+      <button onClick={onOpenLog} style={{ padding:'8px 16px', borderRadius:20, border:'1px solid var(--border-medium)', background:'rgba(236,72,153,0.06)', color:'#ec4899', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-body)' }}>+ Log</button>
+    </div>
+    {stats && <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:16 }}>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#ec4899' }}>{stats.total}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Total</div>
+      </div>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#a3e635' }}>{stats.surfedRate}%</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Surfed</div>
+      </div>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#fbbf24' }}>{stats.weekAvgIntensity}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Avg This Wk</div>
+      </div>
+    </div>}
+    {stats && stats.topTriggers.length > 0 && <div style={{ marginBottom:16, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>Top Triggers</div>
+      <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+        {stats.topTriggers.map(([id, count]) => {
+          const t = triggerMap[id];
+          return t ? <span key={id} style={{ fontSize:12, color:'var(--text-secondary)', display:'flex', alignItems:'center', gap:4 }}>{t.icon} {t.label} <span style={{ color:'#ec4899', fontWeight:700 }}>({count})</span></span> : null;
+        })}
+      </div>
+    </div>}
+    {CRAVING_ACHIEVEMENTS.map((ach, i) => {
+      const unlocked = stats && stats.total >= ach.count;
+      return <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 0', opacity: unlocked ? 1 : 0.3 }}>
+        <div style={{ width:32, height:32, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, background: unlocked ? 'rgba(236,72,153,0.1)' : 'rgba(255,255,255,0.02)', border: unlocked ? '1px solid rgba(236,72,153,0.2)' : '1px solid rgba(255,255,255,0.03)' }}>{unlocked ? "\u2713" : "\uD83D\uDD12"}</div>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:13, fontWeight:600, color: unlocked ? 'var(--text-primary)' : 'var(--text-muted)' }}>{ach.label}</div>
+          <div style={{ fontSize:11, color:'var(--text-muted)' }}>{ach.desc}</div>
+        </div>
+        <span style={{ fontSize:10, color:'var(--text-muted)' }}>{ach.count}x</span>
+      </div>;
+    })}
+    {all.length > 0 && <div style={{ marginTop:16, borderTop:'1px solid var(--border-subtle)', paddingTop:16 }}>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:0.5, marginBottom:12 }}>Recent Entries</div>
+      {all.slice(0, 10).map(c => (
+        <div key={c.id} style={{ padding:'10px 0', borderBottom:'1px solid var(--border-subtle)', display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ width:28, height:28, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, background: c.outcome === 'surfed' ? 'rgba(163,230,53,0.1)' : 'rgba(251,113,133,0.1)' }}>{c.outcome === 'surfed' ? "\uD83C\uDF3F" : "\uD83D\uDCDD"}</div>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:12, color:'var(--text-primary)', display:'flex', gap:6 }}>
+              <span style={{ color: c.intensity <= 3 ? '#a3e635' : c.intensity <= 6 ? '#fbbf24' : '#fb7185', fontWeight:700 }}>{c.intensity}/10</span>
+              {(c.triggers || []).slice(0, 2).map(tid => { const t = triggerMap[tid]; return t ? <span key={tid} style={{ color:'var(--text-muted)' }}>{t.icon}</span> : null; })}
+            </div>
+            {c.note && <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>{c.note}</div>}
+          </div>
+          <span style={{ fontSize:10, color:'var(--text-muted)' }}>{formatRelativeTime(c.timestamp)}</span>
+        </div>
+      ))}
+    </div>}
+    {all.length === 0 && <div style={{ textAlign:'center', padding:'40px 20px' }}>
+      <div style={{ fontSize:40, marginBottom:12 }}>{"\uD83C\uDF3F"}</div>
+      <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6 }}>No cravings logged yet.</p>
+      <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>When a craving hits, log it here or use the breathing button.</p>
+    </div>}
+  </div>;
+}
+
+function Onboarding({onComplete}) {
+  const[step,setStep]=useState(0);
+  const slides=[
+    {icon:"\uD83C\uDF31",title:"Your body starts healing immediately",body:"Within hours of cutting fast food and added sugar, your blood sugar stabilizes, insulin drops, and your gut begins to recover. The changes are real and measurable.",source:"Journal of Clinical Investigation, The Lancet, PMC"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track blood sugar and insulin, inflammation, gut microbiome, dopamine and cravings, energy and sleep, and skin and appearance. All grounded in clinical research.",source:"Neuroscience & Biobehavioral Reviews, AHA"},
+    {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
+  ];
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
+    <div style={{maxWidth:360,width:'100%',textAlign:'center',animation:'fadeIn 0.6s ease-out'}}>
+      <div key={step} style={{animation:'scaleIn 0.4s var(--ease-spring)'}}>
+        <div style={{fontSize:56,marginBottom:24,animation:'float 3s ease-in-out infinite'}}>{slides[step].icon}</div>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:26,color:'var(--text-primary)',marginBottom:12,lineHeight:1.2}}>{slides[step].title}</h2>
+        <p style={{fontSize:15,color:'var(--text-secondary)',lineHeight:1.6,marginBottom:8}}>{slides[step].body}</p>
+        {slides[step].source&&<p style={{fontSize:11,color:'var(--text-muted)',fontStyle:'italic'}}>{slides[step].source}</p>}
+      </div>
+      <div style={{display:'flex',gap:6,justifyContent:'center',margin:'32px 0'}}>
+        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--rose-primary)':'rgba(255,255,255,0.1)',transition:'all 0.3s var(--ease-out)'}}/>)}
+      </div>
+      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#ec4899,#db2777)':'rgba(255,255,255,0.06)',color:step===slides.length-1?'#fff':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
+      {step<slides.length-1&&<button onClick={()=>{Store.setOnboarded();onComplete();}} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',marginTop:16,padding:8}}>Skip</button>}
+    </div>
+  </div>;
+}
+
+function SetupScreen({onSave}) {
+  const[quitDate,setQuitDate]=useState('');const[quitTime,setQuitTime]=useState('');
+  const[dailySpend,setDailySpend]=useState('');const[fastFoodMeals,setFastFoodMeals]=useState('');
+  const[sugaryItems,setSugaryItems]=useState('');const[motivation,setMotivation]=useState('');
+  const ready=quitDate&&quitTime;
+  const handleSave=()=>{if(!ready)return;const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,fastFoodMeals:parseInt(fastFoodMeals)||0,sugaryItems:parseInt(sugaryItems)||0,motivation:motivation||''};Store.save(c);onSave(c);};
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
+    <div style={{maxWidth:380,width:'100%'}}>
+      <div style={{textAlign:'center',marginBottom:40}}>
+        <div style={{fontSize:48,marginBottom:16,animation:'float 3s ease-in-out infinite'}}>{"\uD83C\uDF31"}</div>
+        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,background:'linear-gradient(135deg,#ec4899,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:8}}>Clear Body</h1>
+        <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from fast food and added sugar</p>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:20}}>
+        <div>
+          <label style={ls}>When did you quit?</label>
+          <div style={{display:'flex',gap:8}}>
+            <input type="date" value={quitDate} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
+            <input type="time" value={quitTime} onChange={e=>setQuitTime(e.target.value)} style={{...is,flex:0.8}}/>
+          </div>
+        </div>
+        <div><label style={ls}>Daily spend on fast food / junk ($)</label><input type="number" placeholder="e.g. 15" value={dailySpend} onChange={e=>setDailySpend(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Fast food meals per week</label><input type="number" placeholder="e.g. 5" value={fastFoodMeals} onChange={e=>setFastFoodMeals(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Sugary items per day (sodas, candy, desserts)</label><input type="number" placeholder="e.g. 3" value={sugaryItems} onChange={e=>setSugaryItems(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Why are you doing this? (optional)</label><input type="text" placeholder="e.g. Lent, health, energy, clarity" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/></div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
+        </div>
+        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'rgba(255,255,255,0.04)':'linear-gradient(135deg,#ec4899,#db2777)',color:!ready?'rgba(255,255,255,0.15)':'#fff',transition:'all 0.3s'}}>Begin Tracking</button>
+      </div>
+    </div>
+  </div>;
+}
+
+function DetailModal({category,elapsed,onClose}) {
+  if(!category)return null;
+  const{progress}=getCategoryProgress(category,elapsed);
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)',animation:'fadeIn 0.2s ease-out'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:category.color}}>{category.icon} {category.label}</h3>
+        <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+      </div>
+      <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
+        <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
+          <span style={{fontSize:26,fontWeight:800,color:category.color}}>{Math.round(progress)}%</span>
+        </ProgressRing>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:8}}>
+        {category.milestones.map((m,i)=>{
+          const unlocked=elapsed>=m.time;const isCurrent=unlocked&&(i===category.milestones.length-1||elapsed<category.milestones[i+1]?.time);
+          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'rgba(255,255,255,0.04)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
+            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'rgba(255,255,255,0.08)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'rgba(255,255,255,0.2)'}}>{m.label}</div>
+              <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
+              {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
+            </div>
+            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'rgba(255,255,255,0.1)',flexShrink:0}}>{unlocked?'\u2713':formatTime(Math.max(0,m.time-elapsed))}</span>
+          </div>;
+        })}
+      </div>
+    </div>
+  </div>;
+}
+
+function SettingsModal({config,onSave,onReset,onClose}) {
+  const[qd,setQd]=useState(config.quitDate?new Date(config.quitDate).toISOString().slice(0,10):'');
+  const[qt,setQt]=useState(config.quitDate?new Date(config.quitDate).toTimeString().slice(0,5):'');
+  const[ds,setDs]=useState(String(config.dailySpend||''));
+  const[fm,setFm]=useState(String(config.fastFoodMeals||''));
+  const[si,setSi]=useState(String(config.sugaryItems||''));
+  const[mot,setMot]=useState(config.motivation||'');
+  const[confirmReset,setConfirmReset]=useState(false);
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  const handleSave=()=>{if(!qd||!qt)return;onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,fastFoodMeals:parseInt(fm)||0,sugaryItems:parseInt(si)||0,motivation:mot});onClose();};
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-primary)'}}>Settings</h3>
+        <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:20}}>
+        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
+        <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Fast Food Meals Per Week</label><input type="number" value={fm} onChange={e=>setFm(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Sugary Items Per Day</label><input type="number" value={si} onChange={e=>setSi(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Motivation</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Your data stays on this device only.</p>
+        </div>
+        <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#ec4899,#db2777)',color:'#fff'}}>Save Changes</button>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid rgba(244,63,94,0.2)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--rose)',fontSize:13,marginBottom:10}}>This will erase everything. Are you sure?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmReset(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Cancel</button>
+              <button onClick={onReset} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'var(--rose)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Erase Everything</button>
+            </div>
+          </div>}
+        </div>
+      </div>
+    </div>
+  </div>;
+}
+
+function HealthRingCard({category,elapsed,onClick,delay=0}) {
+  const{progress,currentLabel}=getCategoryProgress(category,elapsed);
+  return <div onClick={onClick} style={{background:'var(--bg-card)',borderRadius:'var(--radius-lg)',padding:'18px 12px',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer',border:'1px solid var(--border-subtle)',transition:'all 0.25s var(--ease-out)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
+    <ProgressRing progress={progress} color={category.color} size={80} strokeWidth={6}>
+      <span style={{fontSize:22}}>{category.icon}</span>
+      <span style={{fontSize:10,fontWeight:700,color:category.color}}>{Math.round(progress)}%</span>
+    </ProgressRing>
+    <span style={{fontSize:12,fontWeight:600,marginTop:10,color:'var(--text-primary)',textAlign:'center'}}>{category.label}</span>
+    <span style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:3,lineHeight:1.3,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{currentLabel}</span>
+  </div>;
+}
+
+function AchievementBadge({ach,unlocked,isNew}) {
+  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.2,transition:'opacity 0.5s',position:'relative'}}>
+    {isNew&&unlocked&&<div style={{position:'absolute',top:-2,right:-2,background:'var(--rose-primary)',color:'#fff',fontSize:7,fontWeight:800,padding:'2px 5px',borderRadius:6,zIndex:2,letterSpacing:0.5}}>NEW</div>}
+    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:unlocked?'var(--bg-card)':'rgba(255,255,255,0.02)',border:unlocked?'2px solid rgba(255,255,255,0.1)':'2px solid rgba(255,255,255,0.03)',boxShadow:unlocked&&isNew?'0 0 16px rgba(236,72,153,0.25)':'none'}}>{unlocked?ach.icon:"\uD83D\uDD12"}</div>
+    <span style={{fontSize:9,color:unlocked?'var(--text-secondary)':'rgba(255,255,255,0.15)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
+    <span style={{fontSize:8,color:'var(--text-muted)'}}>{formatTime(ach.time)}</span>
+  </div>;
+}
+
+function Dashboard({config,onUpdateConfig,onReset}) {
+  const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
+  const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
+  const[showBreathing,setShowBreathing]=useState(false);const[showConfetti,setShowConfetti]=useState(false);
+  const [showCravingLog, setShowCravingLog] = useState(false);
+  const [prefillBreathing, setPrefillBreathing] = useState(false);
+  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(0);
+  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+  const elapsed=getElapsed(config.quitDate);
+  const moneySaved=((elapsed/D)*config.dailySpend).toFixed(2);
+  const daysClean=Math.floor(elapsed/D);
+  const mealsAvoided=Math.round(daysClean*(config.fastFoodMeals||0)/7);
+  const sugarsAvoided=daysClean*(config.sugaryItems||0);
+  const overallHealth=getWeightedHealth(elapsed);
+  const unlockedAchs=ACHIEVEMENTS.filter(a=>elapsed>=a.time);
+  const unlockedCount=unlockedAchs.length;
+  const latestUnlocked=[...ACHIEVEMENTS].reverse().find(a=>elapsed>=a.time);
+  const nextAch=ACHIEVEMENTS.find(a=>elapsed<a.time);
+  const motivation=getDailyMotivation(elapsed);
+  const tip=getContextualTip(elapsed);
+  const seenAchs=Store.getSeen();
+
+  useEffect(()=>{
+    if(unlockedCount>prevRef.current&&prevRef.current>0){
+      const newest=unlockedAchs[unlockedAchs.length-1];
+      if(!seenAchs.includes(newest.label)){
+        setNewAchievement(newest);setShowConfetti(true);Store.markSeen(newest.label);
+        setTimeout(()=>{setShowConfetti(false);setNewAchievement(null);},4500);
+      }
+    }
+    prevRef.current=unlockedCount;
+  },[unlockedCount]);
+
+  const ts=(a)=>({flex:1,padding:'12px 0',textAlign:'center',fontSize:11,fontWeight:700,color:a?'var(--rose-primary)':'var(--text-muted)',cursor:'pointer',transition:'all 0.2s',letterSpacing:0.8,textTransform:'uppercase',background:'none',border:'none',borderBottom:a?'2px solid var(--rose-primary)':'2px solid transparent',fontFamily:'var(--font-body)'});
+
+  const thirdStat = mealsAvoided > 0 ? {label:'Meals Skipped',value:mealsAvoided.toLocaleString(),color:'var(--rose-bright)'} : sugarsAvoided > 0 ? {label:'Sugars Skipped',value:sugarsAvoided.toLocaleString(),color:'var(--rose-bright)'} : {label:'Milestones',value:`${unlockedCount}/${ACHIEVEMENTS.length}`,color:'var(--rose-bright)'};
+
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',maxWidth:440,margin:'0 auto',position:'relative'}}>
+    <Confetti active={showConfetti}/>
+    {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(236,72,153,0.12),rgba(167,139,250,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
+      <span style={{fontSize:36}}>{newAchievement.icon}</span>
+      <div>
+        <div style={{fontSize:10,color:'var(--rose-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Achievement Unlocked</div>
+        <div style={{fontSize:15,fontWeight:700,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
+      </div>
+    </div>}
+
+    <div style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,background:'linear-gradient(135deg,#ec4899,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Clear Body</h1>
+      <div style={{display:'flex',gap:8}}>
+        <button onClick={()=>setShowBreathing(true)} style={{background:'rgba(236,72,153,0.08)',border:'1px solid rgba(236,72,153,0.15)',color:'var(--rose-primary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}} title="Craving? Breathe.">{"\uD83C\uDF2C\uFE0F"}</button>
+        <button onClick={()=>setShowSettings(true)} style={{background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
+      </div>
+    </div>
+
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
+      <ProgressRing progress={overallHealth} color="var(--rose-primary)" size={160} strokeWidth={10}>
+        <span style={{fontSize:38,fontWeight:300,color:'var(--rose-primary)',fontFamily:'var(--font-display)'}}>{overallHealth.toFixed(1)}</span>
+        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Recovery</span>
+      </ProgressRing>
+      <div style={{marginTop:14,fontSize:24,fontWeight:300,color:'var(--text-primary)',fontFamily:'var(--font-display)',letterSpacing:-0.5}}>{formatDuration(elapsed)}</div>
+      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>clean eating</div>
+      {config.motivation && <div style={{fontSize:11,color:'var(--rose-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
+    </div>
+
+    <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
+      {[
+        {label:'Saved',value:`$${moneySaved}`,color:'var(--rose-primary)'},
+        {label:'Days',value:daysClean.toLocaleString(),color:'var(--rose-bright)'},
+        thirdStat
+      ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
+        <div style={{fontSize:18,fontWeight:700,color:s.color,letterSpacing:-0.5}}>{s.value}</div>
+        <div style={{fontSize:9,color:'var(--text-muted)',fontWeight:600,marginTop:3,textTransform:'uppercase',letterSpacing:0.5}}>{s.label}</div>
+      </div>)}
+    </div>
+
+    <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'linear-gradient(135deg,rgba(236,72,153,0.04),rgba(167,139,250,0.02))',borderLeft:'3px solid var(--rose-primary)'}}>
+      <p style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6,fontStyle:'italic',fontFamily:'var(--font-display)'}}>&ldquo;{motivation}&rdquo;</p>
+    </div>
+
+    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+      <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{tip}</p>
+    </div>
+
+    {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-medium)',display:'flex',alignItems:'center',gap:14}}>
+      <span style={{fontSize:28,animation:'float 3s ease-in-out infinite'}}>{nextAch.icon}</span>
+      <div style={{flex:1}}>
+        <div style={{fontSize:10,color:'var(--rose-primary)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
+        <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
+        <div style={{fontSize:11,color:'var(--text-muted)'}}>{nextAch.time-elapsed>0?`in ${formatDuration(nextAch.time-elapsed)}`:'Almost there...'}</div>
+      </div>
+      <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(236,72,153,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--rose-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
+    </div>}
+
+    <div style={{display:'flex',margin:'20px 20px 0',gap:0}}>
+      <button style={ts(activeTab==='health')} onClick={()=>setActiveTab('health')}>Recovery</button>
+      <button style={ts(activeTab==='badges')} onClick={()=>setActiveTab('badges')}>Milestones</button>
+      <button style={ts(activeTab === 'cravings')} onClick={() => setActiveTab('cravings')}>Cravings</button>
+    </div>
+
+    <div style={{padding:'16px 20px 120px'}}>
+      {activeTab==='health'&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+        {HEALTH_CATEGORIES.map((cat,i)=><HealthRingCard key={cat.id} category={cat} elapsed={elapsed} onClick={()=>setDetailCat(cat)} delay={i*60}/>)}
+      </div>}
+      {activeTab==='badges'&&<>
+        {latestUnlocked&&<div style={{padding:24,borderRadius:'var(--radius-lg)',marginBottom:16,textAlign:'center',background:'linear-gradient(135deg,rgba(236,72,153,0.06),rgba(236,72,153,0.02))',border:'1px solid var(--border-medium)',animation:'scaleIn 0.4s var(--ease-spring)'}}>
+          <span style={{fontSize:44}}>{latestUnlocked.icon}</span>
+          <div style={{fontFamily:'var(--font-display)',fontSize:18,color:'var(--rose-primary)',marginTop:10}}>{latestUnlocked.label}</div>
+          <div style={{fontSize:13,color:'var(--text-secondary)',marginTop:6,lineHeight:1.5}}>{latestUnlocked.desc}</div>
+        </div>}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4, 1fr)',gap:14}}>
+          {ACHIEVEMENTS.map((ach,i)=>{const unlocked=elapsed>=ach.time;const isNew=unlocked&&!seenAchs.includes(ach.label);return <AchievementBadge key={i} ach={ach} unlocked={unlocked} isNew={isNew}/>;
+          })}
+        </div>
+      </>}
+      {activeTab === 'cravings' && <CravingsTab onOpenLog={() => { setPrefillBreathing(false); setShowCravingLog(true); }} />}
+    </div>
+
+    <DetailModal category={detailCat} elapsed={elapsed} onClose={()=>setDetailCat(null)}/>
+    {showSettings&&<SettingsModal config={config} onSave={c=>{Store.save(c);onUpdateConfig(c);}} onReset={onReset} onClose={()=>setShowSettings(false)}/>}
+    {showBreathing&&<BreathingExercise onClose={()=>setShowBreathing(false)} onLogCraving={(fromBreathing)=>{setPrefillBreathing(fromBreathing);setShowCravingLog(true);}}/>}
+    {showCravingLog && <CravingLogModal onClose={() => setShowCravingLog(false)} prefillBreathing={prefillBreathing} onSave={(entry) => { CravingStore.add(entry); }} />}
+  </div>;
+}
+
+function App() {
+  const[config,setConfig]=useState(()=>Store.get());
+  const[showOnboarding,setShowOnboarding]=useState(()=>!Store.hasOnboarded()&&!Store.get());
+  const handleSetup=(c)=>{Store.save(c);setConfig(c);};
+  const handleUpdate=(c)=>{Store.save(c);setConfig(c);};
+  const handleReset=()=>{Store.clear();CravingStore.clear();localStorage.removeItem('clearbody_seen');localStorage.removeItem('clearbody_onboarded');setConfig(null);setShowOnboarding(true);};
+  if(showOnboarding)return<Onboarding onComplete={()=>setShowOnboarding(false)}/>;
+  if(!config||!config.quitDate)return<SetupScreen onSave={handleSetup}/>;
+  return<Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}
+</script>
+</body>
+</html>

@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clear Suite - Recovery Trackers</title>
-<meta name="description" content="Free, private, clinically-sourced recovery trackers for cannabis, nicotine, and alcohol. No accounts. No servers. Everything stays on your device.">
+<meta name="description" content="Free, private, clinically-sourced recovery trackers for alcohol, cannabis, nicotine, and diet. No accounts. No servers. Everything stays on your device.">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Inter',system-ui,sans-serif; background:#0a0a0a; color:#e5e5e5; min-height:100vh; overflow-x:hidden; }
   
   .hero { text-align:center; padding:80px 24px 48px; max-width:680px; margin:0 auto; }
-  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#2dd4bf,#818cf8,#f59e0b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#2dd4bf,#818cf8,#f59e0b,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
   .hero p { font-size:18px; color:#a3a3a3; line-height:1.6; max-width:520px; margin:0 auto; }
   .hero .subtitle { font-size:14px; color:#737373; margin-top:12px; }
   
-  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; max-width:960px; margin:0 auto; padding:24px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; max-width:1080px; margin:0 auto; padding:24px; }
   
   .card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:32px 24px; text-align:center; transition:all 0.3s ease; cursor:pointer; text-decoration:none; color:inherit; display:block; }
   .card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); transform:translateY(-2px); }
@@ -28,12 +28,14 @@
   .card p { font-size:14px; color:#a3a3a3; line-height:1.5; }
   .card .categories { font-size:12px; color:#737373; margin-top:16px; line-height:1.6; }
   
+  .card.path h2 { color:#f59e0b; }
+  .card.path .substance { color:#d97706; }
   .card.mind h2 { color:#4ade80; }
   .card.mind .substance { color:#22c55e; }
   .card.air h2 { color:#2dd4bf; }
   .card.air .substance { color:#14b8a6; }
-  .card.path h2 { color:#f59e0b; }
-  .card.path .substance { color:#d97706; }
+  .card.body h2 { color:#ec4899; }
+  .card.body .substance { color:#db2777; }
   
   .features { max-width:680px; margin:48px auto; padding:48px 24px; text-align:center; border-top:1px solid rgba(255,255,255,0.06); }
   .features h3 { font-size:18px; font-weight:600; margin-bottom:24px; color:#d4d4d4; }
@@ -50,6 +52,7 @@
   .card:nth-child(1) { animation: fadeIn 0.6s ease-out 0.1s both; }
   .card:nth-child(2) { animation: fadeIn 0.6s ease-out 0.2s both; }
   .card:nth-child(3) { animation: fadeIn 0.6s ease-out 0.3s both; }
+  .card:nth-child(4) { animation: fadeIn 0.6s ease-out 0.4s both; }
 </style>
 </head>
 <body>
@@ -60,7 +63,15 @@
   </div>
   
   <div class="cards">
-    <a href="https://clear-mind-production.up.railway.app" class="card mind">
+    <a href="https://clearpath.mikegrowsgreens.com" class="card path">
+      <div class="card-icon"><img src="/clearpath-icon.png" alt="Clear Path"></div>
+      <h2>Clear Path</h2>
+      <div class="substance">Alcohol</div>
+      <p>Track liver regeneration, cognitive repair, cardiovascular healing, sleep quality, digestion, and immune recovery.</p>
+      <div class="categories">Liver, Cognitive, Cardiovascular, Sleep, Digestive, Immune</div>
+    </a>
+    
+    <a href="https://clearmind.mikegrowsgreens.com" class="card mind">
       <div class="card-icon"><img src="/clearmind-icon.png" alt="Clear Mind"></div>
       <h2>Clear Mind</h2>
       <div class="substance">Cannabis</div>
@@ -68,7 +79,7 @@
       <div class="categories">ECS Recovery, Cognitive, Sleep, Mood, Respiratory, Appetite</div>
     </a>
     
-    <a href="https://clear-air-production.up.railway.app" class="card air">
+    <a href="https://clearair.mikegrowsgreens.com" class="card air">
       <div class="card-icon"><img src="/clearair-icon.png" alt="Clear Air"></div>
       <h2>Clear Air</h2>
       <div class="substance">Nicotine / Vaping</div>
@@ -76,12 +87,12 @@
       <div class="categories">Cardiovascular, Respiratory, Senses, Blood, Nicotine, Immune</div>
     </a>
     
-    <a href="https://clear-path-production.up.railway.app" class="card path">
-      <div class="card-icon"><img src="/clearpath-icon.png" alt="Clear Path"></div>
-      <h2>Clear Path</h2>
-      <div class="substance">Alcohol</div>
-      <p>Track liver regeneration, cognitive repair, cardiovascular healing, sleep quality, digestion, and immune recovery.</p>
-      <div class="categories">Liver, Cognitive, Cardiovascular, Sleep, Digestive, Immune</div>
+    <a href="https://clearbody.mikegrowsgreens.com" class="card body">
+      <div class="card-icon"><img src="/clearbody-icon.png" alt="Clear Body"></div>
+      <h2>Clear Body</h2>
+      <div class="substance">Fast Food / Added Sugar</div>
+      <p>Track blood sugar stabilization, inflammation reduction, gut healing, dopamine reset, and skin recovery.</p>
+      <div class="categories">Blood Sugar, Inflammation, Gut Health, Dopamine, Energy, Skin</div>
     </a>
   </div>
   

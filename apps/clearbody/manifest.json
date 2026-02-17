@@ -1,0 +1,14 @@
+{
+  "name": "Clear Body - Fast Food & Sugar Recovery",
+  "short_name": "Clear Body",
+  "description": "Track your body's recovery from fast food and added sugar with clinically sourced milestones.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0608",
+  "theme_color": "#0a0608",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
