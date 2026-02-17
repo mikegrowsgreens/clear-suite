@@ -1,0 +1,20 @@
+:{$PORT}
+
+# Landing page (default)
+root * /srv/landing
+file_server
+
+# Serve all static files with proper caching
+header {
+    X-Content-Type-Options nosniff
+    X-Frame-Options DENY
+    Referrer-Policy strict-origin-when-cross-origin
+    Cache-Control "public, max-age=3600"
+}
+
+# PWA manifest and service workers need no-cache
+header /manifest.json Cache-Control "no-cache"
+header /sw.js Cache-Control "no-cache"
+
+# Try files, fallback to index.html for SPA routing
+try_files {path} {path}/ /index.html

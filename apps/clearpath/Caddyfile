@@ -1,0 +1,16 @@
+:{$PORT}
+
+root * /srv
+file_server
+
+header {
+    X-Content-Type-Options nosniff
+    X-Frame-Options DENY
+    Referrer-Policy strict-origin-when-cross-origin
+    Cache-Control "public, max-age=3600"
+}
+
+header /manifest.json Cache-Control "no-cache"
+header /sw.js Cache-Control "no-cache"
+
+try_files {path} {path}/ /index.html
