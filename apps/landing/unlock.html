@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clear Suite - Unlock</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#060a0a;color:#f1f5f9;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.container{text-align:center;max-width:380px}
+h2{font-size:20px;margin-bottom:12px}
+p{font-size:14px;color:#94a3b8;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="container">
+  <div style="font-size:48px;margin-bottom:16px">&#x1F513;</div>
+  <h2>Unlocking Clear Suite...</h2>
+  <p>Setting up your access to all four apps.</p>
+</div>
+<script>
+// This page serves as the Stripe Payment Link success URL redirect target.
+// It redirects to the thanks page which handles the unlock orchestration.
+// It can also be used as a direct landing for promo code unlock flow.
+
+// If arriving from Stripe, session_id will be in URL params
+var params = new URLSearchParams(window.location.search);
+
+// Set unlock on this origin
+localStorage.setItem('clear_suite_unlocked', 'true');
+localStorage.setItem('clear_suite_unlock_method', params.get('session_id') ? 'stripe' : 'direct');
+
+// Redirect to thanks page
+window.location.replace('/thanks.html' + window.location.search);
+</script>
+</body>
+</html>

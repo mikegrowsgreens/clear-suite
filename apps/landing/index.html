@@ -1,52 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LCRF7SMS2P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LCRF7SMS2P');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
 <title>Clear Suite - Recovery Trackers</title>
-<meta name="description" content="Free, private, clinically-sourced recovery trackers for alcohol, cannabis, nicotine, and diet. No accounts. No servers. Everything stays on your device.">
+<meta name="description" content="Private, clinically-sourced recovery trackers for alcohol, cannabis, nicotine, and diet. Free for 7 days. $4.99 to unlock all four apps forever. No ads. No accounts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',system-ui,sans-serif; background:#0a0a0a; color:#e5e5e5; min-height:100vh; overflow-x:hidden; }
-  
-  .hero { text-align:center; padding:80px 24px 48px; max-width:680px; margin:0 auto; }
-  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#2dd4bf,#818cf8,#f59e0b,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  .hero p { font-size:18px; color:#a3a3a3; line-height:1.6; max-width:520px; margin:0 auto; }
-  .hero .subtitle { font-size:14px; color:#737373; margin-top:12px; }
-  
+  [data-theme="dark"] {
+    --bg:#0a0a0a;--bg-card:rgba(255,255,255,0.03);--bg-card-hover:rgba(255,255,255,0.06);
+    --text:#e5e5e5;--text-secondary:#a3a3a3;--text-muted:#737373;--text-dim:#525252;
+    --border:rgba(255,255,255,0.08);--border-hover:rgba(255,255,255,0.15);
+  }
+  [data-theme="light"] {
+    --bg:#f8fafc;--bg-card:rgba(0,0,0,0.03);--bg-card-hover:rgba(0,0,0,0.06);
+    --text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--text-dim:#cbd5e1;
+    --border:rgba(0,0,0,0.08);--border-hover:rgba(0,0,0,0.15);
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+  .theme-toggle { position:fixed; top:20px; right:20px; z-index:50; width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); color:var(--text-muted); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+  .theme-toggle:hover { border-color:var(--border-hover); }
+
+  .hero { text-align:center; padding:80px 24px 32px; max-width:680px; margin:0 auto; }
+  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#f59e0b,#2dd4bf,#4ade80,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .hero p { font-size:18px; color:var(--text-secondary); line-height:1.6; max-width:520px; margin:0 auto; }
+  .hero .subtitle { font-size:14px; color:var(--text-muted); margin-top:12px; }
+
+  .pricing { text-align:center; padding:0 24px 40px; max-width:520px; margin:0 auto; }
+  .pricing-box { padding:20px 24px; border-radius:16px; background:var(--bg-card); border:1px solid var(--border); }
+  .pricing-box .price { font-size:28px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .pricing-box .price-detail { font-size:14px; color:var(--text-muted); line-height:1.6; }
+  .pricing-box .trial { font-size:13px; color:#2dd4bf; font-weight:600; margin-top:8px; }
+
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; max-width:1080px; margin:0 auto; padding:24px; }
-  
-  .card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:32px 24px; text-align:center; transition:all 0.3s ease; cursor:pointer; text-decoration:none; color:inherit; display:block; }
-  .card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); transform:translateY(-2px); }
-  
+
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:32px 24px; text-align:center; transition:all 0.3s ease; cursor:pointer; text-decoration:none; color:inherit; display:block; }
+  .card:hover { background:var(--bg-card-hover); border-color:var(--border-hover); transform:translateY(-2px); }
+
   .card-icon { width:80px; height:80px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; }
   .card-icon img { width:64px; height:64px; border-radius:50%; }
-  
+
   .card h2 { font-size:22px; font-weight:600; margin-bottom:8px; }
   .card .substance { font-size:13px; text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:12px; }
-  .card p { font-size:14px; color:#a3a3a3; line-height:1.5; }
-  .card .categories { font-size:12px; color:#737373; margin-top:16px; line-height:1.6; }
-  
-  .card.path h2 { color:#f59e0b; }
-  .card.path .substance { color:#d97706; }
+  .card p { font-size:14px; color:var(--text-secondary); line-height:1.5; }
+  .card .categories { font-size:12px; color:var(--text-muted); margin-top:16px; line-height:1.6; }
+
+  .card.flow h2 { color:#f59e0b; }
+  .card.flow .substance { color:#d97706; }
   .card.mind h2 { color:#4ade80; }
   .card.mind .substance { color:#22c55e; }
   .card.air h2 { color:#2dd4bf; }
   .card.air .substance { color:#14b8a6; }
   .card.body h2 { color:#ec4899; }
   .card.body .substance { color:#db2777; }
-  
-  .features { max-width:680px; margin:48px auto; padding:48px 24px; text-align:center; border-top:1px solid rgba(255,255,255,0.06); }
-  .features h3 { font-size:18px; font-weight:600; margin-bottom:24px; color:#d4d4d4; }
+
+  .features { max-width:680px; margin:48px auto; padding:48px 24px; text-align:center; border-top:1px solid var(--border); }
+  .features h3 { font-size:18px; font-weight:600; margin-bottom:24px; color:var(--text); }
   .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; text-align:left; }
   .feature { padding:16px; }
-  .feature .label { font-size:14px; font-weight:600; color:#e5e5e5; margin-bottom:4px; }
-  .feature .desc { font-size:13px; color:#737373; line-height:1.5; }
-  
-  .footer { text-align:center; padding:32px 24px; color:#525252; font-size:13px; }
-  .footer a { color:#737373; text-decoration:none; }
-  
+  .feature .label { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+  .feature .desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+  .footer { text-align:center; padding:32px 24px; color:var(--text-dim); font-size:13px; }
+  .footer a { color:var(--text-muted); text-decoration:none; }
+
   @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
   .hero { animation: fadeIn 0.6s ease-out; }
   .card:nth-child(1) { animation: fadeIn 0.6s ease-out 0.1s both; }
@@ -54,23 +83,40 @@
   .card:nth-child(3) { animation: fadeIn 0.6s ease-out 0.3s both; }
   .card:nth-child(4) { animation: fadeIn 0.6s ease-out 0.4s both; }
 </style>
+<script>
+(function(){
+  var theme = localStorage.getItem('clearsuite_theme') || 'auto';
+  var resolved = theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
+  document.documentElement.setAttribute('data-theme', resolved);
+})();
+</script>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme"></button>
+
   <div class="hero">
     <h1>Clear Suite</h1>
-    <p>Free, private recovery trackers backed by clinical research. Track your body's healing across every system that matters.</p>
-    <p class="subtitle">No accounts. No servers. No tracking. Everything stays on your device.</p>
+    <p>Private recovery trackers backed by clinical research. Track your body's healing across every system that matters.</p>
+    <p class="subtitle">No ads. No accounts. No tracking. Everything stays on your device.</p>
   </div>
-  
+
+  <div class="pricing">
+    <div class="pricing-box">
+      <div class="price">$4.99 <span style="font-size:16px;font-weight:400;color:var(--text-muted)">one-time</span></div>
+      <div class="price-detail">Unlock all four apps forever. No subscriptions.</div>
+      <div class="trial">Free for 7 days &mdash; full functionality, no restrictions.</div>
+    </div>
+  </div>
+
   <div class="cards">
-    <a href="https://clearpath.mikegrowsgreens.com" class="card path">
-      <div class="card-icon"><img src="/clearpath-icon.png" alt="Clear Path"></div>
-      <h2>Clear Path</h2>
+    <a href="https://clearflow.mikegrowsgreens.com" class="card flow">
+      <div class="card-icon"><img src="/clearflow-icon.png" alt="Clear Flow"></div>
+      <h2>Clear Flow</h2>
       <div class="substance">Alcohol</div>
       <p>Track liver regeneration, cognitive repair, cardiovascular healing, sleep quality, digestion, and immune recovery.</p>
       <div class="categories">Liver, Cognitive, Cardiovascular, Sleep, Digestive, Immune</div>
     </a>
-    
+
     <a href="https://clearmind.mikegrowsgreens.com" class="card mind">
       <div class="card-icon"><img src="/clearmind-icon.png" alt="Clear Mind"></div>
       <h2>Clear Mind</h2>
@@ -78,7 +124,7 @@
       <p>Track your endocannabinoid system rebalancing, cognitive recovery, sleep normalization, and mood stabilization.</p>
       <div class="categories">ECS Recovery, Cognitive, Sleep, Mood, Respiratory, Appetite</div>
     </a>
-    
+
     <a href="https://clearair.mikegrowsgreens.com" class="card air">
       <div class="card-icon"><img src="/clearair-icon.png" alt="Clear Air"></div>
       <h2>Clear Air</h2>
@@ -86,7 +132,7 @@
       <p>Track cardiovascular healing, respiratory recovery, nicotine clearance, and sensory restoration.</p>
       <div class="categories">Cardiovascular, Respiratory, Senses, Blood, Nicotine, Immune</div>
     </a>
-    
+
     <a href="https://clearbody.mikegrowsgreens.com" class="card body">
       <div class="card-icon"><img src="/clearbody-icon.png" alt="Clear Body"></div>
       <h2>Clear Body</h2>
@@ -95,7 +141,7 @@
       <div class="categories">Blood Sugar, Inflammation, Gut Health, Dopamine, Energy, Skin</div>
     </a>
   </div>
-  
+
   <div class="features">
     <h3>How it works</h3>
     <div class="feature-grid">
@@ -105,7 +151,7 @@
       </div>
       <div class="feature">
         <div class="label">Privacy first</div>
-        <div class="desc">100% client-side. No accounts, no servers, no analytics. Clear your browser to erase everything.</div>
+        <div class="desc">100% client-side. No accounts, no servers. Clear your browser to erase everything.</div>
       </div>
       <div class="feature">
         <div class="label">Works offline</div>
@@ -117,9 +163,39 @@
       </div>
     </div>
   </div>
-  
+
   <div class="footer">
     <p>Built by <a href="https://linkedin.com/in/mikepaulus">Mike Paulus</a></p>
   </div>
+
+<script>
+(function(){
+  var icons = { auto: '\u25D0', light: '\u2600', dark: '\u263E' };
+  var order = ['auto', 'light', 'dark'];
+  var btn = document.getElementById('themeToggle');
+  var current = localStorage.getItem('clearsuite_theme') || 'auto';
+
+  function apply(theme) {
+    var resolved = theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
+    document.documentElement.setAttribute('data-theme', resolved);
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#0a0a0a' : '#f8fafc');
+    btn.textContent = icons[theme];
+    btn.title = 'Theme: ' + theme.charAt(0).toUpperCase() + theme.slice(1);
+  }
+
+  apply(current);
+
+  btn.addEventListener('click', function() {
+    current = order[(order.indexOf(current) + 1) % 3];
+    localStorage.setItem('clearsuite_theme', current);
+    apply(current);
+    if (typeof gtag === 'function') gtag('event', 'theme_change', { theme: current, app: 'landing' });
+  });
+
+  if (current === 'auto') {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() { apply('auto'); });
+  }
+})();
+</script>
 </body>
 </html>
