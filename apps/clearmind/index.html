@@ -898,7 +898,7 @@ function SetupScreen({ onSave }) {
           <div>
             <label style={labelStyle}>When did you quit?</label>
             <div style={{ display:'flex', gap:8 }}>
-              <input type="date" value={quitDate} onChange={e => setQuitDate(e.target.value)} style={{ ...inputStyle, flex:1.2 }} />
+              <input type="date" value={quitDate} max={new Date().toISOString().split('T')[0]} onChange={e => setQuitDate(e.target.value)} style={{ ...inputStyle, flex:1.2 }} />
               <input type="time" value={quitTime} onChange={e => setQuitTime(e.target.value)} style={{ ...inputStyle, flex:0.8 }} />
             </div>
           </div>
@@ -1066,7 +1066,7 @@ function SettingsModal({ config, onSave, onReset, onClose }) {
           <div>
             <label style={labelStyle}>Quit Date</label>
             <div style={{ display:'flex', gap:8 }}>
-              <input type="date" value={qd} onChange={e => setQd(e.target.value)} style={{ ...inputStyle, flex:1.2 }} />
+              <input type="date" value={qd} max={new Date().toISOString().split('T')[0]} onChange={e => setQd(e.target.value)} style={{ ...inputStyle, flex:1.2 }} />
               <input type="time" value={qt} onChange={e => setQt(e.target.value)} style={{ ...inputStyle, flex:0.8 }} />
             </div>
           </div>
@@ -1201,6 +1201,7 @@ function AchievementBadge({ ach, unlocked, isNew }) {
 // ─────────────────────────────────────────────
 function ThemeToggle({ prefix }) {
   const [theme, setTheme] = React.useState(() => localStorage.getItem(prefix + '_theme') || 'auto');
+  const mountedRef = React.useRef(false);
   React.useEffect(() => {
     const applyTheme = () => {
       let resolved = theme;
@@ -1210,7 +1211,8 @@ function ThemeToggle({ prefix }) {
     };
     applyTheme();
     localStorage.setItem(prefix + '_theme', theme);
-    if (typeof gtag === 'function') gtag('event', 'theme_change', { theme: theme, app: 'clearmind' });
+    if (mountedRef.current && typeof gtag === 'function') gtag('event', 'theme_change', { theme: theme, app: 'clearmind' });
+    mountedRef.current = true;
     if (theme === 'auto') {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       mq.addEventListener('change', applyTheme);

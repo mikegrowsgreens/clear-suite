@@ -91,8 +91,12 @@ h1{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:12px;backgr
 
 <script>
 // Set local unlock flag (for clearsuite.mikegrowsgreens.com origin)
-localStorage.setItem('clear_suite_unlocked', 'true');
-localStorage.setItem('clear_suite_unlock_method', 'stripe');
+try {
+  localStorage.setItem('clear_suite_unlocked', 'true');
+  localStorage.setItem('clear_suite_unlock_method', 'stripe');
+} catch(e) {
+  document.querySelector('.status-text').textContent = 'Storage error. Try opening each app link below to unlock manually.';
+}
 
 // Generate unlock token (timestamp in base36)
 var token = Date.now().toString(36);

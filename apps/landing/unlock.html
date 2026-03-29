@@ -27,8 +27,10 @@ p{font-size:14px;color:#94a3b8;line-height:1.6}
 var params = new URLSearchParams(window.location.search);
 
 // Set unlock on this origin
-localStorage.setItem('clear_suite_unlocked', 'true');
-localStorage.setItem('clear_suite_unlock_method', params.get('session_id') ? 'stripe' : 'direct');
+try {
+  localStorage.setItem('clear_suite_unlocked', 'true');
+  localStorage.setItem('clear_suite_unlock_method', params.get('session_id') ? 'stripe' : 'direct');
+} catch(e) { /* localStorage may be full or disabled — apps will unlock via URL token */ }
 
 // Redirect to thanks page
 window.location.replace('/thanks.html' + window.location.search);

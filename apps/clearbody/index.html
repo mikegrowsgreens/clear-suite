@@ -625,7 +625,7 @@ function SetupScreen({onSave}) {
         <div>
           <label style={ls}>When did you quit?</label>
           <div style={{display:'flex',gap:8}}>
-            <input type="date" value={quitDate} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
+            <input type="date" value={quitDate} max={new Date().toISOString().split('T')[0]} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
             <input type="time" value={quitTime} onChange={e=>setQuitTime(e.target.value)} style={{...is,flex:0.8}}/>
           </div>
         </div>
@@ -692,7 +692,7 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
+        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={new Date().toISOString().split('T')[0]} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
         <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
         <div><label style={ls}>Fast Food Meals Per Week</label><input type="number" value={fm} onChange={e=>setFm(e.target.value)} style={is}/></div>
         <div><label style={ls}>Sugary Items Per Day</label><input type="number" value={si} onChange={e=>setSi(e.target.value)} style={is}/></div>
@@ -739,6 +739,7 @@ function AchievementBadge({ach,unlocked,isNew}) {
 
 function ThemeToggle({ prefix }) {
   const [theme, setTheme] = React.useState(() => localStorage.getItem(prefix + '_theme') || 'auto');
+  const mountedRef = React.useRef(false);
   React.useEffect(() => {
     const applyTheme = () => {
       let resolved = theme;
@@ -748,7 +749,8 @@ function ThemeToggle({ prefix }) {
     };
     applyTheme();
     localStorage.setItem(prefix + '_theme', theme);
-    if (typeof gtag === 'function') gtag('event', 'theme_change', { theme: theme, app: 'clearbody' });
+    if (mountedRef.current && typeof gtag === 'function') gtag('event', 'theme_change', { theme: theme, app: 'clearbody' });
+    mountedRef.current = true;
     if (theme === 'auto') {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       mq.addEventListener('change', applyTheme);
