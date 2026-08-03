@@ -1112,6 +1112,18 @@ function SettingsModal({ config, onSave, onReset, onClose }) {
             </div>
           </div>
 
+          <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+            <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
+            <a href="tel:988" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:8}}>
+              <strong>988</strong> &mdash; Suicide &amp; Crisis Lifeline (call or text, 24/7)
+            </a>
+            <a href="tel:18006624357" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:10}}>
+              <strong>1-800-662-4357</strong> &mdash; SAMHSA National Helpline (free, confidential, 24/7)
+            </a>
+            <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5,margin:0}}>
+              Clear Mind gives you information, not medical advice. It is not a medical device and does not diagnose or treat anything. For anything about your health, talk to a doctor or another qualified professional.
+            </p>
+          </div>
           <div style={{
             padding:'12px 16px', borderRadius:'var(--radius-md)',
             background:'var(--surface-faint)', border:'1px solid var(--border-subtle)'
@@ -1506,102 +1518,30 @@ function Dashboard({ config, onUpdateConfig, onReset }) {
 // ─────────────────────────────────────────────
 // APP ROOT
 // ─────────────────────────────────────────────
-const VALID_CODES = ['FRIENDS2026','CLEARLENT','MIKESBUDS','EARLYBIRD'];
-function validatePromoCode(code) { return VALID_CODES.includes(code.toUpperCase().trim()); }
-
-function getTrialStatus(prefix) {
-  const unlocked = localStorage.getItem('clear_suite_unlocked') === 'true';
-  if (unlocked) return { status: 'unlocked' };
-  const firstOpened = localStorage.getItem(prefix + '_first_opened');
-  if (!firstOpened) { localStorage.setItem(prefix + '_first_opened', Date.now().toString()); return { status: 'trial', daysLeft: 7 }; }
-  const daysInstalled = (Date.now() - parseInt(firstOpened)) / 86400000;
-  if (daysInstalled <= 7) return { status: 'trial', daysLeft: Math.ceil(7 - daysInstalled) };
-  return { status: 'expired' };
-}
-
-const STRIPE_PAYMENT_LINK = ''; // paste the Stripe Payment Link URL here to enable real checkout
-
-function Paywall({ prefix, config, onSnooze }) {
-  const [showPromo, setShowPromo] = React.useState(false);
-  const [promoCode, setPromoCode] = React.useState('');
-  const [promoError, setPromoError] = React.useState('');
-  const [showWhy, setShowWhy] = React.useState(false);
-  const elapsed = config && config.quitDate ? Date.now() - new Date(config.quitDate).getTime() : 0;
-  const daysTracked = Math.floor(elapsed / 86400000);
-  const moneySaved = config ? ((elapsed / 86400000) * (config.dailySpend || 0)).toFixed(2) : '0.00';
-
-  React.useEffect(() => {
-  }, []);
-
-  const handlePromo = () => {
-    if (validatePromoCode(promoCode)) {
-      localStorage.setItem('clear_suite_unlocked', 'true');
-      localStorage.setItem('clear_suite_unlock_method', 'promo');
-      localStorage.setItem('clear_suite_promo_code', promoCode.toUpperCase().trim());
-      window.location.reload();
-    } else { setPromoError('Invalid code. Please try again.'); }
-  };
-
-  return (
-    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.92)', zIndex:200, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(20px)', animation:'fadeIn 0.3s ease-out' }}>
-      <div style={{ maxWidth:380, width:'100%', padding:32, textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
-        <div style={{ fontSize:48, marginBottom:16 }}>{"\uD83D\uDD12"}</div>
-        <h2 style={{ fontFamily:'var(--font-display)', fontSize:24, color:'var(--text-primary)', marginBottom:8 }}>Your recovery data is safe</h2>
-        {daysTracked > 0 && <p style={{ fontSize:14, color:'var(--green-primary)', marginBottom:4 }}>{daysTracked} days tracked</p>}
-        {parseFloat(moneySaved) > 0 && <p style={{ fontSize:14, color:'var(--text-secondary)', marginBottom:16 }}>${moneySaved} saved so far</p>}
-        <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6, marginBottom:24 }}>Your 7-day trial has ended. Unlock Clear Suite to keep tracking your progress.</p>
-        <a href={STRIPE_PAYMENT_LINK || 'https://clearsuite.mikegrowsgreens.com/unlock'} style={{ display:'block', width:'100%', padding:'16px', borderRadius:40, border:'none', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #a3e635, #65a30d)', color:'#0a0f0a', textDecoration:'none', marginBottom:12 }}>Unlock Clear Suite &mdash; $4.99</a>
-        {!showPromo ? (
-          <button onClick={() => setShowPromo(true)} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:13, cursor:'pointer', fontFamily:'var(--font-body)', padding:8 }}>Have a promo code?</button>
-        ) : (
-          <div style={{ marginTop:8 }}>
-            <div style={{ display:'flex', gap:8, marginBottom:8 }}>
-              <input type="text" value={promoCode} onChange={e => { setPromoCode(e.target.value); setPromoError(''); }} placeholder="Enter code" style={{ flex:1, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-soft)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', textTransform:'uppercase' }} />
-              <button onClick={handlePromo} style={{ padding:'12px 20px', borderRadius:'var(--radius-md)', border:'none', background:'var(--green-primary)', color:'#0a0f0a', fontSize:14, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-body)' }}>Apply</button>
-            </div>
-            {promoError && <p style={{ fontSize:12, color:'var(--rose)', marginTop:4 }}>{promoError}</p>}
-          </div>
-        )}
-        <button onClick={() => setShowWhy(!showWhy)} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:12, cursor:'pointer', fontFamily:'var(--font-body)', padding:8, marginTop:8 }}>Why pay?</button>
-        {showWhy && <p style={{ fontSize:12, color:'var(--text-muted)', lineHeight:1.6, marginTop:4 }}>No ads ever. No accounts. No tracking. Your $4.99 keeps these apps alive and ad-free.</p>}
-        <div style={{ marginTop:20, paddingTop:16, borderTop:'1px solid var(--border-subtle)' }}>
-          <button onClick={onSnooze} style={{ background:'none', border:'none', color:'var(--text-secondary)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', padding:8 }}>Craving right now? Open the app &mdash; decide later</button>
-        </div>
-      </div>
-    </div>
-  );
-}
+// One-time cleanup: this suite is free forever. Remove the monetization keys
+// that older builds wrote, so nobody is left mid-"trial".
+(function(){
+  try {
+    ['clearmind_first_opened','clearmind_paywall_snooze','clear_suite_unlocked',
+     'clear_suite_unlock_method','clear_suite_promo_code']
+      .forEach(function(k){ localStorage.removeItem(k); });
+  } catch (e) {}
+})();
 
 function App() {
   const [config, setConfig] = useState(() => Store.get());
   const [showOnboarding, setShowOnboarding] = useState(() => !Store.hasOnboarded() && !Store.get());
   const handleSetup = (c) => { Store.save(c); setConfig(c); };
   const handleUpdate = (c) => { Store.save(c); setConfig(c); };
-  const[snoozeTick,setSnoozeTick]=useState(0);
   const handleReset = () => {
     Store.clear(); CravingStore.clear();
-    ['clearmind_seen','clearmind_onboarded','clearmind_first_opened','clearmind_streaks','clearmind_paywall_snooze']
+    ['clearmind_seen','clearmind_onboarded','clearmind_streaks']
       .forEach(k => localStorage.removeItem(k));
     setConfig(null); setShowOnboarding(true);
   };
   if (showOnboarding) return <Onboarding onComplete={() => setShowOnboarding(false)} />;
   if (!config || !config.quitDate) return <SetupScreen onSave={handleSetup} />;
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('unlock')) {
-    const ts = parseInt(params.get('unlock'), 36);
-    if (Date.now() - ts < 3600000) {
-      localStorage.setItem('clear_suite_unlocked', 'true');
-      localStorage.setItem('clear_suite_unlock_method', 'token');
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }
-  const trial = getTrialStatus('clearmind');
-  const snoozedUntil = parseInt(localStorage.getItem('clearmind_paywall_snooze')||'0',10)||0;
-  const showPaywall = trial.status === 'expired' && snoozedUntil < Date.now();
-  return <>
-    {showPaywall && <Paywall prefix="clearmind" config={config} onSnooze={()=>{localStorage.setItem('clearmind_paywall_snooze',String(Date.now()+4*3600000));setSnoozeTick(t=>t+1);}} />}
-    <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset} />
-  </>;
+  return <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset} />;
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);

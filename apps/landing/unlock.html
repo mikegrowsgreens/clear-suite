@@ -3,42 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clear Suite - Unlock</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:#060a0a;color:#f1f5f9;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.container{text-align:center;max-width:380px}
-h2{font-size:20px;margin-bottom:12px}
-p{font-size:14px;color:#94a3b8;line-height:1.6}
-</style>
+<meta name="robots" content="noindex">
+<title>Clear Suite</title>
+<!-- Clear Suite is free forever. This page only exists so older links don't 404. -->
+<meta http-equiv="refresh" content="0; url=/">
+<link rel="canonical" href="/">
 </head>
 <body>
-<div class="container" id="box">
-  <div style="font-size:48px;margin-bottom:16px">&#x1F513;</div>
-  <h2>Unlocking Clear Suite...</h2>
-  <p>Setting up your access to all four apps.</p>
-</div>
-<script>
-// Stripe Payment Link success-URL target.
-// GATE: only a checkout that actually completed carries a session_id. Without one,
-// this page must NOT grant access -- otherwise the "$4.99" button is a free unlock.
-var params = new URLSearchParams(window.location.search);
-var sessionId = params.get('session_id');
-
-if (sessionId) {
-  try {
-    localStorage.setItem('clear_suite_unlocked', 'true');
-    localStorage.setItem('clear_suite_unlock_method', 'stripe');
-    localStorage.setItem('clear_suite_session_id', sessionId);
-  } catch(e) { /* storage disabled -- apps still unlock via the URL token on /thanks */ }
-  window.location.replace('/thanks.html' + window.location.search);
-} else {
-  document.getElementById('box').innerHTML =
-    '<div style="font-size:48px;margin-bottom:16px">&#x1F6D2;</div>' +
-    '<h2>Ready to unlock Clear Suite?</h2>' +
-    '<p>One payment of $4.99 unlocks all four apps forever. No subscription, no account.</p>' +
-    '<p style="margin-top:20px"><a href="/" style="color:#2dd4bf">Back to Clear Suite</a></p>';
-}
-</script>
+<p>Clear Suite is free. <a href="/">Continue to Clear Suite</a>.</p>
+<script>location.replace('/');</script>
 </body>
 </html>
