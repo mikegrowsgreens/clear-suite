@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LCRF7SMS2P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-LCRF7SMS2P");
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#060a0a">
@@ -90,10 +83,14 @@ h1{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:12px;backgr
 </div>
 
 <script>
-// Set local unlock flag (for clearsuite.mikegrowsgreens.com origin)
+// Set local unlock flag (for clearsuite.mikegrowsgreens.com origin).
+// Only a real completed checkout carries session_id -- see unlock.html for the gate.
+var thanksParams = new URLSearchParams(window.location.search);
 try {
-  localStorage.setItem('clear_suite_unlocked', 'true');
-  localStorage.setItem('clear_suite_unlock_method', 'stripe');
+  if (thanksParams.get('session_id') || localStorage.getItem('clear_suite_unlocked') === 'true') {
+    localStorage.setItem('clear_suite_unlocked', 'true');
+    localStorage.setItem('clear_suite_unlock_method', 'stripe');
+  }
 } catch(e) {
   document.querySelector('.status-text').textContent = 'Storage error. Try opening each app link below to unlock manually.';
 }
@@ -109,11 +106,6 @@ apps.forEach(function(app) {
     link.href = 'https://' + app + '.mikegrowsgreens.com/?unlock=' + token;
   }
 });
-
-// GA4 event
-if (typeof gtag === 'function') {
-  gtag('event', 'unlock', { method: 'stripe', app: 'suite' });
-}
 </script>
 </body>
 </html>

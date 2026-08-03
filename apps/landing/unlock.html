@@ -13,27 +13,32 @@ p{font-size:14px;color:#94a3b8;line-height:1.6}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="box">
   <div style="font-size:48px;margin-bottom:16px">&#x1F513;</div>
   <h2>Unlocking Clear Suite...</h2>
   <p>Setting up your access to all four apps.</p>
 </div>
 <script>
-// This page serves as the Stripe Payment Link success URL redirect target.
-// It redirects to the thanks page which handles the unlock orchestration.
-// It can also be used as a direct landing for promo code unlock flow.
-
-// If arriving from Stripe, session_id will be in URL params
+// Stripe Payment Link success-URL target.
+// GATE: only a checkout that actually completed carries a session_id. Without one,
+// this page must NOT grant access -- otherwise the "$4.99" button is a free unlock.
 var params = new URLSearchParams(window.location.search);
+var sessionId = params.get('session_id');
 
-// Set unlock on this origin
-try {
-  localStorage.setItem('clear_suite_unlocked', 'true');
-  localStorage.setItem('clear_suite_unlock_method', params.get('session_id') ? 'stripe' : 'direct');
-} catch(e) { /* localStorage may be full or disabled — apps will unlock via URL token */ }
-
-// Redirect to thanks page
-window.location.replace('/thanks.html' + window.location.search);
+if (sessionId) {
+  try {
+    localStorage.setItem('clear_suite_unlocked', 'true');
+    localStorage.setItem('clear_suite_unlock_method', 'stripe');
+    localStorage.setItem('clear_suite_session_id', sessionId);
+  } catch(e) { /* storage disabled -- apps still unlock via the URL token on /thanks */ }
+  window.location.replace('/thanks.html' + window.location.search);
+} else {
+  document.getElementById('box').innerHTML =
+    '<div style="font-size:48px;margin-bottom:16px">&#x1F6D2;</div>' +
+    '<h2>Ready to unlock Clear Suite?</h2>' +
+    '<p>One payment of $4.99 unlocks all four apps forever. No subscription, no account.</p>' +
+    '<p style="margin-top:20px"><a href="/" style="color:#2dd4bf">Back to Clear Suite</a></p>';
+}
 </script>
 </body>
 </html>

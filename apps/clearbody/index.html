@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LCRF7SMS2P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-LCRF7SMS2P");
-</script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0a0608">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Clear Body">
 <meta name="description" content="Track your body's recovery from fast food and added sugar with clinically sourced milestones and real-time progress.">
+<meta property="og:title" content="Clear Body — Sugar & Fast Food Recovery Tracker">
+<meta property="og:description" content="Track your body's recovery from added sugar and ultra-processed food with research-based milestones. No ads, no accounts, no tracking.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://clearbody.mikegrowsgreens.com">
+<meta property="og:image" content="https://clearbody.mikegrowsgreens.com/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clear Body — Sugar & Fast Food Recovery Tracker">
+<meta name="twitter:description" content="Track your body's recovery from added sugar and ultra-processed food with research-based milestones. No ads, no accounts, no tracking.">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,12 +30,16 @@ input,textarea{-webkit-user-select:text;user-select:text}
   --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
   --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
   --input-bg:#0f1618;--modal-bg:#0a0e10;
+  --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
+  --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
 }
 [data-theme="light"] {
   --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
   --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
   --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
   --input-bg:#f1f5f9;--modal-bg:#ffffff;
+  --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
+  --ring-track:rgba(0,0,0,0.08);--text-disabled:rgba(0,0,0,0.3);
 }
 :root{
   --border-accent:rgba(236,72,153,0.25);
@@ -44,6 +49,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
   --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
 }
+html[data-theme="light"]{--rose-primary:#be185d;--rose-bright:#9d174d;}
 body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type="number"]{-moz-appearance:textfield}
@@ -271,7 +277,8 @@ const MOTIVATIONAL = {
   ]
 };
 
-function getElapsed(qd) { return Date.now() - new Date(qd).getTime() }
+function getElapsed(qd) { return Math.max(0, Date.now() - new Date(qd).getTime()) }
+function toLocalDateStr(d) { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); }
 function formatDuration(ms) {
   if (ms < 0) return "0s";
   const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24),y=Math.floor(d/365);
@@ -337,20 +344,11 @@ function getWeightedHealth(elapsed) {
 }
 
 // COMPONENTS
-function Confetti({active}) {
-  if(!active)return null;
-  const colors=['#ec4899','#f472b6','#60a5fa','#fbbf24','#a78bfa','#fb7185','#a3e635','#fb923c'];
-  const p=Array.from({length:40},(_,i)=>({id:i,left:Math.random()*100,delay:Math.random()*2,color:colors[i%colors.length],size:3+Math.random()*7,duration:1.8+Math.random()*1.5,shape:Math.random()>0.5?'50%':'2px'}));
-  return <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:200,overflow:'hidden'}}>
-    {p.map(x=><div key={x.id} style={{position:'absolute',left:`${x.left}%`,top:0,width:x.size,height:x.size,background:x.color,borderRadius:x.shape,animation:`confettiFall ${x.duration}s ease-out ${x.delay}s forwards`}}/>)}
-  </div>;
-}
-
 function ProgressRing({progress,color,size=100,strokeWidth=8,animated=true,children}) {
   const r=(size-strokeWidth)/2,circ=2*Math.PI*r,offset=circ-(progress/100)*circ;
   return <div style={{position:'relative',width:size,height:size}}>
     <svg width={size} height={size} style={{transform:'rotate(-90deg)'}}>
-      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth={strokeWidth}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" style={{stroke:'var(--ring-track)'}} strokeWidth={strokeWidth}/>
       <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={strokeWidth} strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" style={animated?{'--circ':circ,'--offset':offset,animation:'ringDraw 1.2s var(--ease-out) forwards',transition:'stroke-dashoffset 1s var(--ease-out)'}:{transition:'stroke-dashoffset 1s var(--ease-out)'}}/>
     </svg>
     <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>{children}</div>
@@ -394,7 +392,7 @@ function BreathingExercise({onClose, onLogCraving}) {
         </ProgressRing>
         {phase!=='idle'&&phase!=='done'&&<svg width={180} height={180} style={{position:'absolute',top:0,left:0,transform:'rotate(-90deg)'}}><circle cx={90} cy={90} r={87} fill="none" stroke={pc} strokeWidth={1} opacity={0.15} style={{animation:'breatheRing 4s ease-in-out infinite'}}/></svg>}
       </div>
-      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#ec4899':i===cycle&&phase!=='idle'?pc:'rgba(255,255,255,0.1)',transition:'all 0.3s'}}/>)}</div>}
+      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#ec4899':i===cycle&&phase!=='idle'?pc:'var(--surface-soft)',transition:'all 0.3s'}}/>)}</div>}
       {phase==='idle'&&<button onClick={()=>setPhase('inhale')} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #ec4899, #db2777)',color:'#fff'}}>Begin</button>}
       {phase==='done'&&<div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
         <button onClick={() => { onLogCraving && onLogCraving(true); onClose(); }} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #ec4899, #db2777)',color:'#fff'}}>Log This Craving</button>
@@ -436,7 +434,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
       <div onClick={e => e.stopPropagation()} style={{ background:'var(--bg-card)', borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
           <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, color:'var(--text-primary)' }}>Log Craving</h3>
-          <button onClick={onClose} style={{ background:'rgba(255,255,255,0.06)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>{"\u00D7"}</button>
+          <button onClick={onClose} style={{ background:'var(--surface-soft)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>{"\u00D7"}</button>
         </div>
         <div style={{ marginBottom:20 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:10 }}>
@@ -447,7 +445,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
               <button key={n} onClick={() => setIntensity(n)} style={{
                 flex:1, height:36, borderRadius:'var(--radius-sm)', border:'none', cursor:'pointer',
-                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'rgba(255,255,255,0.04)',
+                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'var(--surface-faint)',
                 color: n <= intensity ? 'var(--text-primary)' : 'var(--text-muted)',
                 fontSize:11, fontWeight:700, fontFamily:'var(--font-body)', transition:'all 0.15s'
               }}>{n}</button>
@@ -506,7 +504,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
         <div style={{ marginBottom:24 }}>
           <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:8 }}>Note (optional)</label>
           <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What were you feeling? Where were you?" rows={2}
-            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'rgba(255,255,255,0.04)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
+            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-faint)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
         </div>
         <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #ec4899, #db2777)', color:'#fff' }}>Save</button>
       </div>
@@ -550,7 +548,7 @@ function CravingsTab({ onOpenLog }) {
     {CRAVING_ACHIEVEMENTS.map((ach, i) => {
       const unlocked = stats && stats.total >= ach.count;
       return <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 0', opacity: unlocked ? 1 : 0.3 }}>
-        <div style={{ width:32, height:32, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, background: unlocked ? 'rgba(236,72,153,0.1)' : 'rgba(255,255,255,0.02)', border: unlocked ? '1px solid rgba(236,72,153,0.2)' : '1px solid rgba(255,255,255,0.03)' }}>{unlocked ? "\u2713" : "\uD83D\uDD12"}</div>
+        <div style={{ width:32, height:32, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, background: unlocked ? 'rgba(236,72,153,0.1)' : 'var(--surface-faint)', border: unlocked ? '1px solid rgba(236,72,153,0.2)' : '1px solid rgba(255,255,255,0.03)' }}>{unlocked ? "\u2713" : "\uD83D\uDD12"}</div>
         <div style={{ flex:1 }}>
           <div style={{ fontSize:13, fontWeight:600, color: unlocked ? 'var(--text-primary)' : 'var(--text-muted)' }}>{ach.label}</div>
           <div style={{ fontSize:11, color:'var(--text-muted)' }}>{ach.desc}</div>
@@ -592,15 +590,15 @@ function Onboarding({onComplete}) {
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
     <div style={{maxWidth:360,width:'100%',textAlign:'center',animation:'fadeIn 0.6s ease-out'}}>
       <div key={step} style={{animation:'scaleIn 0.4s var(--ease-spring)'}}>
-        <div style={{fontSize:56,marginBottom:24,animation:'float 3s ease-in-out infinite'}}>{slides[step].icon}</div>
+        <div style={{fontSize:56,marginBottom:24}}>{slides[step].icon}</div>
         <h2 style={{fontFamily:'var(--font-display)',fontSize:26,color:'var(--text-primary)',marginBottom:12,lineHeight:1.2}}>{slides[step].title}</h2>
         <p style={{fontSize:15,color:'var(--text-secondary)',lineHeight:1.6,marginBottom:8}}>{slides[step].body}</p>
         {slides[step].source&&<p style={{fontSize:11,color:'var(--text-muted)',fontStyle:'italic'}}>{slides[step].source}</p>}
       </div>
       <div style={{display:'flex',gap:6,justifyContent:'center',margin:'32px 0'}}>
-        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--rose-primary)':'rgba(255,255,255,0.1)',transition:'all 0.3s var(--ease-out)'}}/>)}
+        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--rose-primary)':'var(--surface-soft)',transition:'all 0.3s var(--ease-out)'}}/>)}
       </div>
-      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#ec4899,#db2777)':'rgba(255,255,255,0.06)',color:step===slides.length-1?'#fff':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
+      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#ec4899,#db2777)':'var(--surface-soft)',color:step===slides.length-1?'#fff':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
       {step<slides.length-1&&<button onClick={()=>{Store.setOnboarded();onComplete();}} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',marginTop:16,padding:8}}>Skip</button>}
     </div>
   </div>;
@@ -611,21 +609,22 @@ function SetupScreen({onSave}) {
   const[dailySpend,setDailySpend]=useState('');const[fastFoodMeals,setFastFoodMeals]=useState('');
   const[sugaryItems,setSugaryItems]=useState('');const[motivation,setMotivation]=useState('');
   const ready=quitDate&&quitTime;
-  const handleSave=()=>{if(!ready)return;const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,fastFoodMeals:parseInt(fastFoodMeals)||0,sugaryItems:parseInt(sugaryItems)||0,motivation:motivation||''};Store.save(c);onSave(c);};
-  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const[err,setErr]=useState('');
+  const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,fastFoodMeals:parseInt(fastFoodMeals)||0,sugaryItems:parseInt(sugaryItems)||0,motivation:motivation||''};Store.save(c);onSave(c);};
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
   const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
     <div style={{maxWidth:380,width:'100%'}}>
       <div style={{textAlign:'center',marginBottom:40}}>
-        <div style={{fontSize:48,marginBottom:16,animation:'float 3s ease-in-out infinite'}}>{"\uD83C\uDF31"}</div>
-        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,background:'linear-gradient(135deg,#ec4899,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:8}}>Clear Body</h1>
+        <div style={{fontSize:48,marginBottom:16}}>{"\uD83C\uDF31"}</div>
+        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,color:'var(--text-primary)',marginBottom:8}}>Clear Body</h1>
         <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from fast food and added sugar</p>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
         <div>
           <label style={ls}>When did you quit?</label>
           <div style={{display:'flex',gap:8}}>
-            <input type="date" value={quitDate} max={new Date().toISOString().split('T')[0]} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
+            <input type="date" value={quitDate} max={toLocalDateStr(Date.now())} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
             <input type="time" value={quitTime} onChange={e=>setQuitTime(e.target.value)} style={{...is,flex:0.8}}/>
           </div>
         </div>
@@ -633,10 +632,11 @@ function SetupScreen({onSave}) {
         <div><label style={ls}>Fast food meals per week</label><input type="number" placeholder="e.g. 5" value={fastFoodMeals} onChange={e=>setFastFoodMeals(e.target.value)} style={is}/></div>
         <div><label style={ls}>Sugary items per day (sodas, candy, desserts)</label><input type="number" placeholder="e.g. 3" value={sugaryItems} onChange={e=>setSugaryItems(e.target.value)} style={is}/></div>
         <div><label style={ls}>Why are you doing this? (optional)</label><input type="text" placeholder="e.g. Lent, health, energy, clarity" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/></div>
-        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
         </div>
-        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'rgba(255,255,255,0.04)':'linear-gradient(135deg,#ec4899,#db2777)',color:!ready?'rgba(255,255,255,0.15)':'#fff',transition:'all 0.3s'}}>Begin Tracking</button>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
+        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'var(--surface-faint)':'linear-gradient(135deg,#ec4899,#db2777)',color:!ready?'var(--text-disabled)':'#fff',transition:'all 0.3s'}}>Begin Tracking</button>
       </div>
     </div>
   </div>;
@@ -649,7 +649,7 @@ function DetailModal({category,elapsed,onClose}) {
     <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
         <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:category.color}}>{category.icon} {category.label}</h3>
-        <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
       </div>
       <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
         <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
@@ -659,14 +659,14 @@ function DetailModal({category,elapsed,onClose}) {
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
         {category.milestones.map((m,i)=>{
           const unlocked=elapsed>=m.time;const isCurrent=unlocked&&(i===category.milestones.length-1||elapsed<category.milestones[i+1]?.time);
-          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'rgba(255,255,255,0.04)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
-            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'rgba(255,255,255,0.08)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
+          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'var(--surface-faint)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
+            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'var(--surface-soft)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
             <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'rgba(255,255,255,0.2)'}}>{m.label}</div>
+              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'var(--text-disabled)'}}>{m.label}</div>
               <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
               {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
             </div>
-            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'rgba(255,255,255,0.1)',flexShrink:0}}>{unlocked?'\u2713':formatTime(Math.max(0,m.time-elapsed))}</span>
+            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'var(--surface-soft)',flexShrink:0}}>{unlocked?'\u2713':formatTime(Math.max(0,m.time-elapsed))}</span>
           </div>;
         })}
       </div>
@@ -675,32 +675,62 @@ function DetailModal({category,elapsed,onClose}) {
 }
 
 function SettingsModal({config,onSave,onReset,onClose}) {
-  const[qd,setQd]=useState(config.quitDate?new Date(config.quitDate).toISOString().slice(0,10):'');
+  const[qd,setQd]=useState(config.quitDate?toLocalDateStr(config.quitDate):'');
   const[qt,setQt]=useState(config.quitDate?new Date(config.quitDate).toTimeString().slice(0,5):'');
   const[ds,setDs]=useState(String(config.dailySpend||''));
   const[fm,setFm]=useState(String(config.fastFoodMeals||''));
   const[si,setSi]=useState(String(config.sugaryItems||''));
   const[mot,setMot]=useState(config.motivation||'');
   const[confirmReset,setConfirmReset]=useState(false);
-  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const[confirmSlip,setConfirmSlip]=useState(false);
+  const[err,setErr]=useState('');
+  const handleExport=()=>{
+    let streaks=[];try{streaks=JSON.parse(localStorage.getItem('clearbody_streaks')||'[]')}catch{}
+    const data={app:'clearbody',exportedAt:new Date().toISOString(),config:Store.get(),cravings:CravingStore.getAll(),milestonesSeen:Store.getSeen(),previousStreaks:streaks};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clearbody-backup-'+toLocalDateStr(Date.now())+'.json';a.click();URL.revokeObjectURL(a.href);
+  };
+  const handleSlip=()=>{
+    try{
+      const streaks=JSON.parse(localStorage.getItem('clearbody_streaks')||'[]');
+      streaks.push({quitDate:config.quitDate,endedAt:new Date().toISOString(),days:Math.floor(getElapsed(config.quitDate)/86400000)});
+      localStorage.setItem('clearbody_streaks',JSON.stringify(streaks));
+    }catch{}
+    const n=new Date();
+    onSave({...config,quitDate:toLocalDateStr(n)+'T'+n.toTimeString().slice(0,5)});
+    onClose();
+  };
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
   const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
-  const handleSave=()=>{if(!qd||!qt)return;onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,fastFoodMeals:parseInt(fm)||0,sugaryItems:parseInt(si)||0,motivation:mot});onClose();};
+  const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,fastFoodMeals:parseInt(fm)||0,sugaryItems:parseInt(si)||0,motivation:mot});onClose();};
   return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
     <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
         <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-primary)'}}>Settings</h3>
-        <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={new Date().toISOString().split('T')[0]} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
+        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={toLocalDateStr(Date.now())} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
         <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
         <div><label style={ls}>Fast Food Meals Per Week</label><input type="number" value={fm} onChange={e=>setFm(e.target.value)} style={is}/></div>
         <div><label style={ls}>Sugary Items Per Day</label><input type="number" value={si} onChange={e=>setSi(e.target.value)} style={is}/></div>
         <div><label style={ls}>Motivation</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
-        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Your data stays on this device only.</p>
         </div>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
         <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#ec4899,#db2777)',color:'#fff'}}>Save Changes</button>
+        <button onClick={handleExport} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Export My Data (JSON)</button>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped &mdash; restart my clock</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--text-secondary)',fontSize:13,marginBottom:10,lineHeight:1.5}}>A slip is part of recovery, not the end of it. Your craving log and history stay. Restart the clock from now?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmSlip(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Keep going</button>
+              <button onClick={handleSlip} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'linear-gradient(135deg,#ec4899,#db2777)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Restart clock</button>
+            </div>
+          </div>}
+        </div>
         <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
           {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid rgba(244,63,94,0.2)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
           <div style={{textAlign:'center'}}>
@@ -730,16 +760,14 @@ function HealthRingCard({category,elapsed,onClick,delay=0}) {
 
 function AchievementBadge({ach,unlocked,isNew}) {
   return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.2,transition:'opacity 0.5s',position:'relative'}}>
-    {isNew&&unlocked&&<div style={{position:'absolute',top:-2,right:-2,background:'var(--rose-primary)',color:'#fff',fontSize:7,fontWeight:800,padding:'2px 5px',borderRadius:6,zIndex:2,letterSpacing:0.5}}>NEW</div>}
-    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:unlocked?'var(--bg-card)':'rgba(255,255,255,0.02)',border:unlocked?'2px solid rgba(255,255,255,0.1)':'2px solid rgba(255,255,255,0.03)',boxShadow:unlocked&&isNew?'0 0 16px rgba(236,72,153,0.25)':'none'}}>{unlocked?ach.icon:"\uD83D\uDD12"}</div>
-    <span style={{fontSize:9,color:unlocked?'var(--text-secondary)':'rgba(255,255,255,0.15)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
+    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:unlocked?'var(--bg-card)':'var(--surface-faint)',border:unlocked?'2px solid rgba(255,255,255,0.1)':'2px solid rgba(255,255,255,0.03)',boxShadow:unlocked&&isNew?'0 0 16px rgba(236,72,153,0.25)':'none'}}>{unlocked?ach.icon:"\uD83D\uDD12"}</div>
+    <span style={{fontSize:9,color:unlocked?'var(--text-secondary)':'var(--text-disabled)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
     <span style={{fontSize:8,color:'var(--text-muted)'}}>{formatTime(ach.time)}</span>
   </div>;
 }
 
 function ThemeToggle({ prefix }) {
   const [theme, setTheme] = React.useState(() => localStorage.getItem(prefix + '_theme') || 'auto');
-  const mountedRef = React.useRef(false);
   React.useEffect(() => {
     const applyTheme = () => {
       let resolved = theme;
@@ -749,8 +777,6 @@ function ThemeToggle({ prefix }) {
     };
     applyTheme();
     localStorage.setItem(prefix + '_theme', theme);
-    if (mountedRef.current && typeof gtag === 'function') gtag('event', 'theme_change', { theme: theme, app: 'clearbody' });
-    mountedRef.current = true;
     if (theme === 'auto') {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       mq.addEventListener('change', applyTheme);
@@ -762,7 +788,7 @@ function ThemeToggle({ prefix }) {
   const labels = { auto: 'Auto', light: 'Light', dark: 'Dark' };
   return (
     <button onClick={cycle} title={`Theme: ${labels[theme]}`} style={{
-      background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-subtle)',
+      background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',
       color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',
       fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'
     }}>{icons[theme]}</button>
@@ -772,10 +798,10 @@ function ThemeToggle({ prefix }) {
 function Dashboard({config,onUpdateConfig,onReset}) {
   const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
   const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
-  const[showBreathing,setShowBreathing]=useState(false);const[showConfetti,setShowConfetti]=useState(false);
+  const[showBreathing,setShowBreathing]=useState(false);
   const [showCravingLog, setShowCravingLog] = useState(false);
   const [prefillBreathing, setPrefillBreathing] = useState(false);
-  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(0);
+  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(null);
   useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
   const elapsed=getElapsed(config.quitDate);
   const moneySaved=((elapsed/D)*config.dailySpend).toFixed(2);
@@ -792,11 +818,12 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   const seenAchs=Store.getSeen();
 
   useEffect(()=>{
-    if(unlockedCount>prevRef.current&&prevRef.current>0){
+    if(prevRef.current===null){prevRef.current=unlockedCount;return;}
+    if(unlockedCount>prevRef.current){
       const newest=unlockedAchs[unlockedAchs.length-1];
       if(!seenAchs.includes(newest.label)){
-        setNewAchievement(newest);setShowConfetti(true);Store.markSeen(newest.label);
-        setTimeout(()=>{setShowConfetti(false);setNewAchievement(null);},4500);
+        setNewAchievement(newest);Store.markSeen(newest.label);
+        setTimeout(()=>{setNewAchievement(null);},4500);
       }
     }
     prevRef.current=unlockedCount;
@@ -807,7 +834,6 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   const thirdStat = mealsAvoided > 0 ? {label:'Meals Skipped',value:mealsAvoided.toLocaleString(),color:'var(--rose-bright)'} : sugarsAvoided > 0 ? {label:'Sugars Skipped',value:sugarsAvoided.toLocaleString(),color:'var(--rose-bright)'} : {label:'Milestones',value:`${unlockedCount}/${ACHIEVEMENTS.length}`,color:'var(--rose-bright)'};
 
   return <div style={{minHeight:'100vh',minHeight:'100dvh',maxWidth:440,margin:'0 auto',position:'relative'}}>
-    <Confetti active={showConfetti}/>
     {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(236,72,153,0.12),rgba(167,139,250,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
       <span style={{fontSize:36}}>{newAchievement.icon}</span>
       <div>
@@ -817,21 +843,22 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     </div>}
 
     <div style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,background:'linear-gradient(135deg,#ec4899,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Clear Body</h1>
+      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,color:'var(--text-primary)'}}>Clear Body</h1>
       <div style={{display:'flex',gap:8}}>
         <ThemeToggle prefix="clearbody" />
         <button onClick={()=>setShowBreathing(true)} style={{background:'rgba(236,72,153,0.08)',border:'1px solid rgba(236,72,153,0.15)',color:'var(--rose-primary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}} title="Craving? Breathe.">{"\uD83C\uDF2C\uFE0F"}</button>
-        <button onClick={()=>setShowSettings(true)} style={{background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
+        <button onClick={()=>setShowSettings(true)} style={{background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
       </div>
     </div>
 
     <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
       <ProgressRing progress={overallHealth} color="var(--rose-primary)" size={160} strokeWidth={10}>
-        <span style={{fontSize:38,fontWeight:300,color:'var(--rose-primary)',fontFamily:'var(--font-display)'}}>{overallHealth.toFixed(1)}</span>
+        <span style={{fontSize:38,fontWeight:300,color:'var(--rose-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
         <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Recovery</span>
       </ProgressRing>
       <div style={{marginTop:14,fontSize:24,fontWeight:300,color:'var(--text-primary)',fontFamily:'var(--font-display)',letterSpacing:-0.5}}>{formatDuration(elapsed)}</div>
       <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>clean eating</div>
+      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearbody_streaks')||'[]');if(!s.length)return null;const longest=Math.max(daysClean,...s.map(x=>x.days||0));return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>Attempt {s.length+1} &middot; longest streak {longest}d</div>}catch{return null}})()}
       {config.motivation && <div style={{fontSize:11,color:'var(--rose-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
     </div>
 
@@ -850,12 +877,12 @@ function Dashboard({config,onUpdateConfig,onReset}) {
       <p style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6,fontStyle:'italic',fontFamily:'var(--font-display)'}}>&ldquo;{motivation}&rdquo;</p>
     </div>
 
-    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
       <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{tip}</p>
     </div>
 
     {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-medium)',display:'flex',alignItems:'center',gap:14}}>
-      <span style={{fontSize:28,animation:'float 3s ease-in-out infinite'}}>{nextAch.icon}</span>
+      <span style={{fontSize:28}}>{nextAch.icon}</span>
       <div style={{flex:1}}>
         <div style={{fontSize:10,color:'var(--rose-primary)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
         <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
@@ -908,7 +935,9 @@ function getTrialStatus(prefix) {
   return { status: 'expired' };
 }
 
-function Paywall({ prefix, config }) {
+const STRIPE_PAYMENT_LINK = ''; // paste the Stripe Payment Link URL here to enable real checkout
+
+function Paywall({ prefix, config, onSnooze }) {
   const [showPromo, setShowPromo] = React.useState(false);
   const [promoCode, setPromoCode] = React.useState('');
   const [promoError, setPromoError] = React.useState('');
@@ -918,7 +947,6 @@ function Paywall({ prefix, config }) {
   const moneySaved = config ? ((elapsed / 86400000) * (config.dailySpend || 0)).toFixed(2) : '0.00';
 
   React.useEffect(() => {
-    if (typeof gtag === 'function') gtag('event', 'paywall_shown', { app: 'clearbody', days_used: daysTracked, trial_expired: true });
   }, []);
 
   const handlePromo = () => {
@@ -926,7 +954,6 @@ function Paywall({ prefix, config }) {
       localStorage.setItem('clear_suite_unlocked', 'true');
       localStorage.setItem('clear_suite_unlock_method', 'promo');
       localStorage.setItem('clear_suite_promo_code', promoCode.toUpperCase().trim());
-      if (typeof gtag === 'function') gtag('event', 'unlock', { method: 'promo', app: 'clearbody', promo_code: promoCode.toUpperCase().trim() });
       window.location.reload();
     } else { setPromoError('Invalid code. Please try again.'); }
   };
@@ -939,13 +966,13 @@ function Paywall({ prefix, config }) {
         {daysTracked > 0 && <p style={{ fontSize:14, color:'var(--rose-primary)', marginBottom:4 }}>{daysTracked} days tracked</p>}
         {parseFloat(moneySaved) > 0 && <p style={{ fontSize:14, color:'var(--text-secondary)', marginBottom:16 }}>${moneySaved} saved so far</p>}
         <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6, marginBottom:24 }}>Your 7-day trial has ended. Unlock Clear Suite to keep tracking your progress.</p>
-        <a href="https://clearsuite.mikegrowsgreens.com/unlock" style={{ display:'block', width:'100%', padding:'16px', borderRadius:40, border:'none', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #ec4899, #db2777)', color:'#fff', textDecoration:'none', marginBottom:12 }}>Unlock Clear Suite &mdash; $4.99</a>
+        <a href={STRIPE_PAYMENT_LINK || 'https://clearsuite.mikegrowsgreens.com/unlock'} style={{ display:'block', width:'100%', padding:'16px', borderRadius:40, border:'none', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #ec4899, #db2777)', color:'#fff', textDecoration:'none', marginBottom:12 }}>Unlock Clear Suite &mdash; $4.99</a>
         {!showPromo ? (
           <button onClick={() => setShowPromo(true)} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:13, cursor:'pointer', fontFamily:'var(--font-body)', padding:8 }}>Have a promo code?</button>
         ) : (
           <div style={{ marginTop:8 }}>
             <div style={{ display:'flex', gap:8, marginBottom:8 }}>
-              <input type="text" value={promoCode} onChange={e => { setPromoCode(e.target.value); setPromoError(''); }} placeholder="Enter code" style={{ flex:1, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'rgba(255,255,255,0.06)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', textTransform:'uppercase' }} />
+              <input type="text" value={promoCode} onChange={e => { setPromoCode(e.target.value); setPromoError(''); }} placeholder="Enter code" style={{ flex:1, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-soft)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', textTransform:'uppercase' }} />
               <button onClick={handlePromo} style={{ padding:'12px 20px', borderRadius:'var(--radius-md)', border:'none', background:'var(--rose-primary)', color:'#fff', fontSize:14, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-body)' }}>Apply</button>
             </div>
             {promoError && <p style={{ fontSize:12, color:'var(--rose)', marginTop:4 }}>{promoError}</p>}
@@ -953,6 +980,9 @@ function Paywall({ prefix, config }) {
         )}
         <button onClick={() => setShowWhy(!showWhy)} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:12, cursor:'pointer', fontFamily:'var(--font-body)', padding:8, marginTop:8 }}>Why pay?</button>
         {showWhy && <p style={{ fontSize:12, color:'var(--text-muted)', lineHeight:1.6, marginTop:4 }}>No ads ever. No accounts. No tracking. Your $4.99 keeps these apps alive and ad-free.</p>}
+        <div style={{ marginTop:20, paddingTop:16, borderTop:'1px solid var(--border-subtle)' }}>
+          <button onClick={onSnooze} style={{ background:'none', border:'none', color:'var(--text-secondary)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', padding:8 }}>Craving right now? Open the app &mdash; decide later</button>
+        </div>
       </div>
     </div>
   );
@@ -963,22 +993,24 @@ function App() {
   const[showOnboarding,setShowOnboarding]=useState(()=>!Store.hasOnboarded()&&!Store.get());
   const handleSetup=(c)=>{Store.save(c);setConfig(c);};
   const handleUpdate=(c)=>{Store.save(c);setConfig(c);};
-  const handleReset=()=>{Store.clear();CravingStore.clear();localStorage.removeItem('clearbody_seen');localStorage.removeItem('clearbody_onboarded');setConfig(null);setShowOnboarding(true);};
+  const[snoozeTick,setSnoozeTick]=useState(0);
+  const handleReset=()=>{Store.clear();CravingStore.clear();['clearbody_seen','clearbody_onboarded','clearbody_first_opened','clearbody_streaks','clearbody_paywall_snooze'].forEach(k=>localStorage.removeItem(k));setConfig(null);setShowOnboarding(true);};
   if(showOnboarding)return<Onboarding onComplete={()=>setShowOnboarding(false)}/>;
   if(!config||!config.quitDate)return<SetupScreen onSave={handleSetup}/>;
-  const trial = getTrialStatus('clearbody');
   const params = new URLSearchParams(window.location.search);
   if (params.get('unlock')) {
     const ts = parseInt(params.get('unlock'), 36);
     if (Date.now() - ts < 3600000) {
       localStorage.setItem('clear_suite_unlocked', 'true');
       localStorage.setItem('clear_suite_unlock_method', 'token');
-      if (typeof gtag === 'function') gtag('event', 'unlock', { method: 'token', app: 'clearbody' });
       window.history.replaceState({}, '', window.location.pathname);
     }
   }
+  const trial = getTrialStatus('clearbody');
+  const snoozedUntil = parseInt(localStorage.getItem('clearbody_paywall_snooze')||'0',10)||0;
+  const showPaywall = trial.status === 'expired' && snoozedUntil < Date.now();
   return <>
-    {trial.status === 'expired' && <Paywall prefix="clearbody" config={config} />}
+    {showPaywall && <Paywall prefix="clearbody" config={config} onSnooze={()=>{localStorage.setItem('clearbody_paywall_snooze',String(Date.now()+4*3600000));setSnoozeTick(t=>t+1);}} />}
     <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>
   </>;
 }
