@@ -210,7 +210,7 @@ const ACHIEVEMENTS = [
   {time:20*60000,label:"Twenty Minutes",icon:"\u23F1",desc:"Heart rate already dropping. Healing starts this fast."},
   {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"One hour free. Nicotine levels already falling."},
   {time:2*H,label:"Two Hours",icon:"\u26A1",desc:"Nicotine at half its peak level. Your body works fast."},
-  {time:4*H,label:"Four Hours",icon:"\uD83D\uDCAA",desc:"Cravings are loud right now. You're louder."},
+  {time:4*H,label:"Four Hours Free",icon:"\uD83D\uDCAA",desc:"That noise is nicotine leaving, not you wanting. It is the sound of it losing."},
   {time:8*H,label:"Eight Hours",icon:"\uD83C\uDF19",desc:"Nicotine fading fast. Blood vessels starting to relax."},
   {time:12*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day free. Airways getting their first real break."},
   {time:18*H,label:"Eighteen Hours",icon:"\uD83E\uDDE0",desc:"Every craving you ride through rewires your brain."},
@@ -219,7 +219,7 @@ const ACHIEVEMENTS = [
   {time:48*H,label:"Two Days",icon:"\uD83D\uDC45",desc:"Taste and smell sharpening. Nerve endings healing."},
   {time:60*H,label:"Sixty Hours",icon:"\uD83D\uDD25",desc:"Nicotine cravings at their most intense. The peak passes."},
   {time:72*H,label:"Three Days",icon:"\u26A0",desc:"Nicotine essentially cleared. Chemical dependency broken."},
-  {time:5*D,label:"Five Days",icon:"\uD83C\uDFAF",desc:"Physical withdrawal easing. Psychological habits are next."},
+  {time:5*D,label:"Five Days",icon:"\uD83C\uDFAF",desc:"The chemical part is nearly done. What is left is only habit, and habit is not addiction."},
   {time:7*D,label:"One Week",icon:"\uD83C\uDFC6",desc:"Cilia regenerating. Immune system normalizing."},
   {time:10*D,label:"Double Digits",icon:"\uD83D\uDD1F",desc:"Each craving is weaker than the last."},
   {time:14*D,label:"Two Weeks",icon:"\uD83D\uDCAA",desc:"Circulation measurably improved. Exercise getting easier."},
@@ -253,15 +253,15 @@ const MOTIVATIONAL = {
   ],
   healing:[
     "Your immune system is rebuilding. Fewer colds. Faster recovery. Your body is defending itself properly again.",
-    "The hardest part is behind you. What you are doing now is consolidating. Deepening. Making it permanent.",
+    "There is nothing left to get through. This is simply what being free feels like now.",
     "Lung capacity is measurably higher than the day you quit. Exercise that winded you before feels different now.",
-    "You chose discomfort over numbness. That takes more strength than most people will ever understand."
+    "You did not give up a pleasure. You stopped paying for a discomfort you were sold as one."
   ],
   healed:[
     "Your cardiovascular system has had a full year to re-adapt. Time is doing its work.",
     "A year free. Your lungs, your heart, your immune system, all fundamentally transformed.",
     "You did not just quit vaping. You reclaimed your autonomy from a chemical that was designed to keep you.",
-    "Remember what the first three days felt like. That was the price. Look at what you bought with it."
+    "Nothing was taken from you. What is left is what was always underneath."
   ]
 };
 
@@ -428,10 +428,10 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
       <div style={{ textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
         <div style={{ fontSize:64, marginBottom:16 }}>🌊</div>
         <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'#2dd4bf' }}>
-          {outcome === 'surfed' ? 'Wave surfed.' : 'Logged.'}
+          {outcome === 'surfed' ? 'That was it leaving.' : 'Logged.'}
         </h2>
         <p style={{ fontSize:13, color:'var(--text-secondary)', marginTop:8 }}>
-          {outcome === 'surfed' ? 'Every one you ride makes the next one smaller.' : 'Honesty is the foundation of recovery. Keep going.'}
+          {outcome === 'surfed' ? 'That feeling was the dependence fading, not you wanting. Each one is weaker.' : 'Noted, no verdict attached. Nothing you already healed was undone.'}
         </p>
       </div>
     </div>
@@ -501,10 +501,10 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
           <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Outcome</label>
           <div style={{ display:'flex', gap:8 }}>
             <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid #2dd4bf' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'rgba(45,212,191,0.08)' : 'transparent', color: outcome === 'surfed' ? '#2dd4bf' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
-              <div style={{ fontSize:20, marginBottom:4 }}>🌊</div>Rode it out
+              <div style={{ fontSize:20, marginBottom:4 }}>🌊</div>It passed
             </button>
             <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'rgba(251,113,133,0.08)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
-              <div style={{ fontSize:20, marginBottom:4 }}>📝</div>Slipped
+              <div style={{ fontSize:20, marginBottom:4 }}>📝</div>I used
             </button>
           </div>
         </div>
@@ -541,7 +541,7 @@ function CravingsTab({ onOpenLog }) {
     <div style={{ animation:'fadeIn 0.3s ease-out' }}>
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:16 }}>
         {[
-          { label:'Surfed', value:`${stats.surfedRate}%`, color:'#2dd4bf' },
+          { label:'Logged', value:stats.total, color:'#2dd4bf' },
           { label:'Avg This Week', value:stats.weekAvgIntensity || '-', color:'var(--amber)' },
           { label:'This Week', value:stats.thisWeek, color:'var(--teal-primary)' }
         ].map((s, i) => (
@@ -589,7 +589,7 @@ function CravingsTab({ onOpenLog }) {
               <div style={{ width:36, height:36, borderRadius:'50%', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:800, fontFamily:'var(--font-display)', color: c.intensity <= 3 ? '#a3e635' : c.intensity <= 6 ? '#fbbf24' : '#fb7185', background: c.intensity <= 3 ? 'rgba(163,230,53,0.1)' : c.intensity <= 6 ? 'rgba(251,191,36,0.1)' : 'rgba(251,113,133,0.1)' }}>{c.intensity}</div>
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                  <span style={{ fontSize:12, fontWeight:600, color:'var(--text-primary)' }}>{c.outcome === 'surfed' ? '\uD83C\uDF0A Surfed' : '\uD83D\uDCDD Slipped'}</span>
+                  <span style={{ fontSize:12, fontWeight:600, color:'var(--text-primary)' }}>{c.outcome === 'surfed' ? '\uD83C\uDF0A Passed' : '\uD83D\uDCDD Used'}</span>
                   {c.usedBreathing && <span style={{ fontSize:9, color:'var(--teal-primary)', fontWeight:700, background:'rgba(45,212,191,0.1)', padding:'2px 6px', borderRadius:8 }}>4-4-6</span>}
                 </div>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
@@ -609,6 +609,7 @@ function CravingsTab({ onOpenLog }) {
 function Onboarding({onComplete}) {
   const[step,setStep]=useState(0);
   const slides=[
+    {icon:"\u2728",title:"You are not giving anything up",body:"Nicotine never gave you a lift. Each hit only ended the withdrawal the last one caused, and relief got mistaken for pleasure. Non-vapers feel that way all day, for free. You are not losing a pleasure \u2014 you are stopping paying for a discomfort.",source:"You are already free. The rest is your body catching up."},
     {icon:"\uD83E\uDEC1",title:"Healing starts in minutes",body:"Your heart rate starts dropping within 20 minutes of your last puff. Within about 72 hours, nicotine is essentially cleared from your bloodstream.",source:"Based on nicotine-cessation research (NIDA, AHA)"},
     {icon:"\u26A1",title:"Progress you can feel",body:"Clear Air weights your recovery score toward the rapid healing of your first weeks, not just calendar time. Long-term milestones are extrapolated from smoking-cessation research and labeled as such.",source:""},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
@@ -688,7 +689,7 @@ function DetailModal({category,elapsed,onClose}) {
               <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
               {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
             </div>
-            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'rgba(255,255,255,0.1)',flexShrink:0}}>{unlocked?'\u2713':formatTime(Math.max(0,m.time-elapsed))}</span>
+            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'rgba(255,255,255,0.1)',flexShrink:0}}>{unlocked?'\u2713':formatTime(m.time)}</span>
           </div>;
         })}
       </div>
@@ -789,10 +790,10 @@ function HealthRingCard({category,elapsed,onClick,delay=0}) {
 }
 
 function AchievementBadge({ach,unlocked,isNew}) {
-  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.2,transition:'opacity 0.5s',position:'relative'}}>
-    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:unlocked?'var(--bg-card)':'var(--surface-faint)',border:unlocked?'2px solid rgba(255,255,255,0.1)':'2px solid rgba(255,255,255,0.03)',boxShadow:unlocked&&isNew?'0 0 16px rgba(45,212,191,0.25)':'none'}}>{unlocked?ach.icon:"\uD83D\uDD12"}</div>
-    <span style={{fontSize:9,color:unlocked?'var(--text-secondary)':'var(--text-disabled)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
-    <span style={{fontSize:8,color:'var(--text-muted)'}}>{formatTime(ach.time)}</span>
+  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.55,transition:'opacity 0.5s',position:'relative'}}>
+    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:'var(--bg-card)',border:unlocked?'2px solid var(--border-medium)':'2px solid var(--border-subtle)',boxShadow:unlocked&&isNew?'0 0 16px rgba(45,212,191,0.25)':'none'}}>{ach.icon}</div>
+    <span style={{fontSize:9,color:unlocked?'var(--text-primary)':'var(--text-secondary)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
+    <span style={{fontSize:8,color:'var(--text-muted)'}}>{unlocked?'\u2713':formatTime(ach.time)}</span>
   </div>;
 }
 
@@ -881,11 +882,11 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
       <ProgressRing progress={overallHealth} color="var(--teal-primary)" size={160} strokeWidth={10}>
         <span style={{fontSize:38,fontWeight:300,color:'var(--teal-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
-        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Recovery</span>
+        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Repaired</span>
       </ProgressRing>
-      <div style={{marginTop:14,fontSize:24,fontWeight:300,color:'var(--text-primary)',fontFamily:'var(--font-display)',letterSpacing:-0.5}}>{formatDuration(elapsed)}</div>
-      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>vape-free</div>
-      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearair_streaks')||'[]');if(!s.length)return null;const longest=Math.max(daysClean,...s.map(x=>x.days||0));return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>Attempt {s.length+1} &middot; longest streak {longest}d</div>}catch{return null}})()}
+      <div style={{marginTop:14,fontSize:18,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)}</div>
+      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
+      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearair_streaks')||'[]');if(!s.length)return null;const prior=s.reduce((t,x)=>t+(x.days||0),0);const total=prior+daysClean;return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>{total.toLocaleString()} free days so far</div>}catch{return null}})()}
     </div>
 
     <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
