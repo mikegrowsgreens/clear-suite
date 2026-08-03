@@ -48,6 +48,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   --font-body:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
   --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
   --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --accent-primary:var(--teal-primary);--accent-glow:rgba(45,212,191,0.12);
 }
 html[data-theme="light"]{--teal-primary:#0d9488;--teal-bright:#0f766e;}
 body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
@@ -70,9 +71,9 @@ button{font-family:var(--font-body)}
 </head>
 <body>
 <div id="root"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="/vendor/react-18.2.0.production.min.js"></script>
+<script src="/vendor/react-dom-18.2.0.production.min.js"></script>
+<script src="/vendor/babel-7.23.9.min.js"></script>
 <script>
 // Apply theme on load
 (function() {
@@ -734,6 +735,7 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={toLocalDateStr(Date.now())} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
         <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
         <div><label style={ls}>Puffs Per Day</label><input type="number" value={pp} onChange={e=>setPp(e.target.value)} style={is}/></div>
+        {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
         <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
           <a href="tel:988" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:8}}>
@@ -973,7 +975,129 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}
+</script>
+<script>
+/* Clear Suite update channel.
+   Deliberately plain JS in its own script tag, NOT a React component: this
+   must keep working when React/Babel fail to load, because that is exactly
+   the deploy an update needs to repair. */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+
+  var MIN_INTERVAL  = 30 * 1000;
+  var POLL_INTERVAL = 30 * 60 * 1000;
+  var hadController = !!navigator.serviceWorker.controller;
+  var lastCheck     = Date.now();
+  var reg           = null;
+
+  window.__CS_VERSION = null;
+
+  function show() {
+    if (document.getElementById('cs-update')) return;
+    var el = document.createElement('div');
+    el.id = 'cs-update';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    /* zIndex 90 sits BELOW the app's modals (zIndex 100), so an open craving
+       log or breathing overlay hides this automatically. */
+    el.style.cssText =
+      'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:90;' +
+      'width:calc(100% - 32px);max-width:380px;box-sizing:border-box;' +
+      'padding:14px 16px;border-radius:var(--radius-lg);' +
+      'background:linear-gradient(135deg,var(--accent-glow),var(--surface-faint)),var(--bg-card);' +
+      'border:1px solid var(--border-medium);backdrop-filter:blur(16px);' +
+      '-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.4);' +
+      'display:flex;align-items:center;gap:12px;animation:slideDown 0.5s var(--ease-spring);' +
+      'font-family:var(--font-body);letter-spacing:-0.01em';
+
+    var txt = document.createElement('div');
+    txt.style.cssText = 'flex:1;min-width:0';
+    txt.innerHTML =
+      '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;' +
+      'color:var(--accent-primary)">Update ready</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-top:2px">' +
+      'A new version is ready</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px">' +
+      'Your progress is saved either way.</div>';
+
+    var reload = document.createElement('button');
+    reload.textContent = 'Reload';
+    reload.style.cssText =
+      'flex:none;background:var(--accent-primary);border:none;color:var(--bg-deep);' +
+      'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.3px;' +
+      'padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer';
+    reload.onclick = function () { window.location.reload(); };
+
+    var later = document.createElement('button');
+    later.setAttribute('aria-label', 'Dismiss');
+    later.innerHTML = '×';
+    later.style.cssText =
+      'flex:none;background:var(--surface-soft);border:none;color:var(--text-secondary);' +
+      'width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1';
+    /* Dismiss only hides it. The update is already in Cache Storage, so the
+       user gets it on their next cold launch regardless. */
+    later.onclick = function () { el.remove(); };
+
+    el.appendChild(txt); el.appendChild(reload); el.appendChild(later);
+    document.body.appendChild(el);
+  }
+
+  function check() {
+    var now = Date.now();
+    if (now - lastCheck < MIN_INTERVAL) return;
+    lastCheck = now;
+    if (reg) { try { reg.update(); } catch (_) {} }
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
+    }
+  }
+
+  function askVersion() {
+    if (!navigator.serviceWorker.controller || !window.MessageChannel) return;
+    var ch = new MessageChannel();
+    ch.port1.onmessage = function (ev) {
+      if (ev.data && ev.data.type === 'VERSION') {
+        window.__CS_VERSION = ev.data.version;
+        window.dispatchEvent(new CustomEvent('cs-version', { detail: ev.data }));
+      }
+    };
+    navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [ch.port2]);
+  }
+
+  navigator.serviceWorker.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.type === 'UPDATE_READY') show();
+    else if (d.type === 'HTML_REPLACED') { window.__CS_VERSION = d.version; }
+  });
+
+  /* Do NOT reload here — the classic footgun that reloads a user mid-session. */
+  navigator.serviceWorker.addEventListener('controllerchange', askVersion);
+
+  /* iOS has no Periodic Background Sync, so every check is user-driven:
+     resume, focus, regained network. iOS also often restores a frozen page
+     instead of reloading, which is why pageshow/visibilitychange matter most. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') check();
+  });
+  window.addEventListener('focus', check);
+  window.addEventListener('online', check);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+  setInterval(function () { if (document.visibilityState === 'visible') check(); }, POLL_INTERVAL);
+
+  navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none' })
+    .then(function (r) {
+      reg = r;
+      askVersion();
+      r.addEventListener('updatefound', function () {
+        var nw = r.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', function () {
+          if (nw.state === 'activated' && hadController) show();
+        });
+      });
+    })
+    .catch(function () { /* SW unavailable: app still works, just no offline */ });
+})();
 </script>
 </body>
 </html>
