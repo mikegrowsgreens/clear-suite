@@ -39,11 +39,25 @@
   .hero p { font-size:18px; color:var(--text-secondary); line-height:1.6; max-width:520px; margin:0 auto; }
   .hero .subtitle { font-size:14px; color:var(--text-muted); margin-top:12px; }
 
-  .pricing { text-align:center; padding:0 24px 40px; max-width:520px; margin:0 auto; }
-  .pricing-box { padding:20px 24px; border-radius:16px; background:var(--bg-card); border:1px solid var(--border); }
-  .pricing-box .price { font-size:28px; font-weight:700; color:var(--text); margin-bottom:4px; }
-  .pricing-box .price-detail { font-size:14px; color:var(--text-muted); line-height:1.6; }
-  .pricing-box .trial { font-size:13px; color:#2dd4bf; font-weight:600; margin-top:8px; }
+  /* Four plain facts, inline. Deliberately not a card: there is no price to
+     put in a price box, and a bordered frame around the word "Free" reads
+     like a pricing widget with the price missing. */
+  .facts { display:flex; flex-wrap:wrap; justify-content:center; align-items:center;
+           gap:10px 22px; max-width:880px; margin:0 auto; padding:0 24px 44px; }
+  .fact { display:inline-flex; align-items:center; gap:7px; font-size:13.5px;
+          color:var(--text-secondary); white-space:nowrap; }
+  .fact svg { flex:none; width:14px; height:14px; stroke:#2dd4bf; stroke-width:2.5;
+              fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  /* Darker tick on light backgrounds, matching the apps' light-mode accents. */
+  html[data-theme="light"] .fact svg { stroke:#0d9488; }
+
+  /* Narrow screens: a centred wrap goes ragged (2/1/1), so stack into a
+     single left-aligned column where the ticks line up. */
+  @media (max-width:820px) {
+    .facts { flex-direction:column; align-items:flex-start; width:max-content;
+             gap:9px; padding-bottom:36px; }
+    .fact { white-space:normal; }
+  }
 
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; max-width:1080px; margin:0 auto; padding:24px; }
 
@@ -97,16 +111,15 @@
 
   <div class="hero">
     <h1>Clear Suite</h1>
-    <p>Four quit trackers. Free forever. No account, no ads, no tracking, no catch.</p>
+    <p>Four quit trackers, free forever.</p>
     <p class="subtitle">Already stopped? Enter the date and see what your body has already done.</p>
   </div>
 
-  <div class="pricing">
-    <div class="pricing-box">
-      <div class="price">Free <span style="font-size:16px;font-weight:400;color:var(--text-muted)">forever, not a trial</span></div>
-      <div class="price-detail">All four apps, every feature. Nothing is locked, nothing expires, nothing is upsold.</div>
-      <div class="trial">Your data never leaves your device &mdash; there is no server to send it to.</div>
-    </div>
+  <div class="facts">
+    <span class="fact"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Nothing locked or expiring</span>
+    <span class="fact"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>No account</span>
+    <span class="fact"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>No ads or tracking</span>
+    <span class="fact"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Your data never leaves your device</span>
   </div>
 
   <div class="cards">
