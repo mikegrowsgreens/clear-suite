@@ -28,7 +28,8 @@ handle /manifest.json {
 	file_server
 }
 
-handle /icon-192.png /icon-512.png {
+@icons path /icon-192.png /icon-512.png
+handle @icons {
 	header Cache-Control "public, max-age=604800"
 	file_server
 }
