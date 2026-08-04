@@ -1,67 +1,67 @@
-# Clear Suite - Recovery Trackers
+# Clear Suite
 
-Free, private, clinically-sourced recovery tracking PWAs. No accounts, no servers, no tracking. Everything stays on the user's device.
+Four free, private quit trackers. No account, no ads, no analytics, no server.
 
-## Apps
+| App | For | Live |
+|-----|-----|------|
+| **Clear Flow** | Alcohol | [clearflow.mikegrowsgreens.com](https://clearflow.mikegrowsgreens.com) |
+| **Clear Air** | Nicotine / vaping | [clearair.mikegrowsgreens.com](https://clearair.mikegrowsgreens.com) |
+| **Clear Mind** | Cannabis | [clearmind.mikegrowsgreens.com](https://clearmind.mikegrowsgreens.com) |
+| **Clear Body** | Fast food & added sugar | [clearbody.mikegrowsgreens.com](https://clearbody.mikegrowsgreens.com) |
 
-| App | Substance | Health Categories | Live |
-|-----|-----------|-------------------|------|
-| **Clear Mind** | Cannabis | ECS Recovery, Cognitive, Sleep, Mood, Respiratory, Appetite | [clearmind.mikegrowsgreens.com](https://clearmind.mikegrowsgreens.com) |
-| **Clear Air** | Nicotine/Vaping | Cardiovascular, Respiratory, Senses, Blood, Nicotine, Immune | [clearair.mikegrowsgreens.com](https://clearair.mikegrowsgreens.com) |
-| **Clear Path** | Alcohol | Liver, Cognitive, Cardiovascular, Sleep, Digestive, Immune | [clearpath.mikegrowsgreens.com](https://clearpath.mikegrowsgreens.com) |
+Add any of them to your home screen and it works offline, forever, for free.
+
+## The privacy claim, and how to check it
+
+Everything you enter stays in your browser's `localStorage`, on your own device. There is no account, no backend, and no analytics — **not even Google Analytics**, which was removed in August 2026 precisely because the apps claimed "no tracking" while it was running.
+
+You don't have to take that on trust, which is the point of this repo being public and AGPL-licensed: read `apps/*/index.html` and look for a network call. The only outbound request the apps make is for Google Fonts. Nothing else leaves your device.
+
+## Not medical advice
+
+These apps show physiological recovery timelines drawn from published cessation research. They are **not a medical device**, they don't diagnose or treat anything, and they contain no medication guidance of any kind. For anything about your health, talk to a doctor.
+
+**If you drink heavily, read this before using Clear Flow.** People who are physically dependent on alcohol can become seriously ill — or die — if they suddenly stop completely. If you get shaking hands, sweating, anxiety, trouble sleeping, or see things that aren't there while sobering up, talk to a doctor or a local alcohol service before stopping. Clear Flow says this during onboarding, before it will count a single day.
+
+Crisis support, in every app: **988** (Suicide & Crisis Lifeline) and **1-800-662-4357** (SAMHSA National Helpline).
+
+## What the evidence actually says
+
+Honest framing, because the alternative is marketing: the pooled evidence for standalone quit-tracker apps is **null** — odds ratio 1.03 (95% CI 0.85–1.26) across 9 RCTs and 12,967 adults ([JMIR 2023](https://www.jmir.org/2023/1/e43242)), and Cochrane reached the same conclusion. So no claim is made that this app will make you quit.
+
+What it is: an accurate, private, free place to see what your body is doing — for people whose alternative is an ad-supported tracker that monetizes their relapse data.
+
+## Design principles
+
+- **You're already free.** Freedom is complete the moment you stop; it doesn't accumulate. Nothing is locked behind time served, and milestones show what your body is doing rather than a reward to be earned.
+- **A slip is not a reset.** Restarting the clock keeps your craving log and your history, and the day count is cumulative across attempts. Nothing you already healed gets undone.
+- **A craving is the dependence leaving**, not a test of character. The word "willpower" appears nowhere in the product.
+- **Never a bare zero** as the only number on screen.
 
 ## Architecture
 
-Each app is a single-file React PWA (~70KB) served by Caddy on Railway. Zero backend dependencies.
-
-- **Single HTML file** with inline React, CSS, and all logic
-- **Clinically weighted scoring** - milestones sourced from peer-reviewed research, weighted by clinical significance
-- **Front-loaded recovery curves** - most progress visible in the first weeks when motivation matters most
-- **Full PWA support** - installable, works offline, service worker caching
-- **100% client-side** - localStorage only, no network requests after initial load
-- **4-4-6 breathing exercise** - built-in craving intervention tool
-- **Craving logging** with trigger categorization and outcome tracking
-
-## Deployment
-
-Each app deploys as an independent Railway service using the Caddy Docker image.
+Each app is a single `index.html` — inline React 18 via Babel-standalone, no build step, no bundler. Data is `localStorage` only.
 
 ```
-apps/
-  clearpath/     -> clearpath.yourdomain.com
-  clearmind/     -> clearmind.yourdomain.com
-  clearair/      -> clearair.yourdomain.com
-  landing/       -> clearsuite.yourdomain.com
+apps/<app>/
+  index.html      the whole app
+  sw.js           service worker (identical across apps except the APP constant)
+  manifest.json
+  vendor/         React, ReactDOM, Babel — self-hosted, version in the filename
+  Caddyfile       note: /vendor/* has no try_files, deliberately
+  Dockerfile
 ```
 
-### Deploy to Railway
+**Updates.** The document is fetched network-first, so a change to `index.html` reaches installed apps without touching the service worker. The version is a content hash computed in the browser — there's no constant to bump. A live session gets a dismissible "new version ready" banner; it never force-reloads, because you might be mid-craving-log. Service worker caches are the only thing an update may clear — `localStorage` isn't reachable from a service worker at all.
 
-1. Push this repo to GitHub
-2. Create a new Railway project
-3. Add a service for each app (connect GitHub repo, set root directory)
-4. Generate domains or add custom domains
-5. Each service auto-builds from its Dockerfile
+**Deploying.** `scripts/deploy.sh` rsyncs to the server, then verifies the bytes actually landed and the cache headers are right. Note that Cloudflare sits in front and will override Caddy's `Cache-Control` on `sw.js` unless a cache rule says otherwise — the script checks for exactly this.
 
-### Environment
+## Support
 
-No environment variables needed. No secrets. No API keys. Each service is a static file server.
+Issues are open and I read them. **A response isn't promised**, there's no roadmap, and nothing is guaranteed — this is a free thing maintained by one person in spare time. Pull requests are welcome; forks are entirely fine.
 
-## Tech Stack
+## Licence
 
-- React 19 (CDN, no build step)
-- Caddy web server (Alpine Docker)
-- Railway (deployment platform)
-- localStorage (client-side persistence)
+[AGPL-3.0](LICENSE). Use it, fork it, run it. If you host a modified version, publish your changes — that's the deal, and it's what keeps the privacy claim verifiable for the next person.
 
-## Clinical Sources
-
-- Cleveland Clinic, American Liver Foundation (alcohol/liver timelines)
-- American Heart Association (cardiovascular recovery)
-- Journal of Hepatology (liver regeneration research)
-- NIDA (substance dependence and recovery milestones)
-- Recovery Village (withdrawal and detox timelines)
-- PMC/PubMed peer-reviewed studies (ECS, nicotine, cognitive recovery)
-
-## License
-
-MIT
+Not affiliated with, endorsed by, or licensed by any commercial cessation programme.

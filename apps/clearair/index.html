@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LCRF7SMS2P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-LCRF7SMS2P");
-</script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#060a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Clear Air">
-<meta name="description" content="Track your body's recovery from vaping with clinically sourced milestones and real-time progress.">
+<meta name="description" content="Track your body's recovery from vaping with research-based milestones and real-time progress. No ads, no accounts, no tracking.">
+<meta property="og:title" content="Clear Air — Vaping Recovery Tracker">
+<meta property="og:description" content="Track your body's recovery from vaping with research-based milestones. No ads, no accounts, no tracking.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://clearair.mikegrowsgreens.com">
+<meta property="og:image" content="https://clearair.mikegrowsgreens.com/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clear Air — Vaping Recovery Tracker">
+<meta name="twitter:description" content="Track your body's recovery from vaping with research-based milestones. No ads, no accounts, no tracking.">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,12 +30,16 @@ input,textarea{-webkit-user-select:text;user-select:text}
   --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
   --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
   --input-bg:#0f1618;--modal-bg:#0a0e10;
+  --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
+  --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
 }
 [data-theme="light"] {
   --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
   --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
   --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
   --input-bg:#f1f5f9;--modal-bg:#ffffff;
+  --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
+  --ring-track:rgba(0,0,0,0.08);--text-disabled:rgba(0,0,0,0.3);
 }
 :root{
   --border-accent:rgba(45,212,191,0.25);
@@ -43,7 +48,9 @@ input,textarea{-webkit-user-select:text;user-select:text}
   --font-body:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
   --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
   --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --accent-primary:var(--teal-primary);--accent-glow:rgba(45,212,191,0.12);
 }
+html[data-theme="light"]{--teal-primary:#0d9488;--teal-bright:#0f766e;}
 body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type="number"]{-moz-appearance:textfield}
@@ -64,9 +71,9 @@ button{font-family:var(--font-body)}
 </head>
 <body>
 <div id="root"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="/vendor/react-18.2.0.production.min.js"></script>
+<script src="/vendor/react-dom-18.2.0.production.min.js"></script>
+<script src="/vendor/babel-7.23.9.min.js"></script>
 <script>
 // Apply theme on load
 (function() {
@@ -135,59 +142,61 @@ const CRAVING_ACHIEVEMENTS = [
 
 
 /*
- * CLEAR AIR v3 -- Vaping/Nicotine Cessation Recovery
- * Sources:
- *  American Heart Association: Heart rate/BP recovery
- *  American Lung Association: Lung function recovery
- *  WHO / Surgeon General: Long-term cardiovascular risk
- *  PMC: E-cigarette cessation respiratory inflammation
- *  NIDA: Nicotine half-life, cotinine clearance
- *  Cleveland Clinic: Taste/smell receptor regeneration
- *  Johns Hopkins: Immune function post-nicotine
- * Last audited: February 2026
+ * CLEAR AIR v3.1 -- Vaping/Nicotine Cessation Recovery
+ * Evidence basis:
+ *  NIDA: nicotine half-life (~2h), cotinine clearance (~2-4 days)
+ *  American Heart Association: acute cardiovascular effects of nicotine
+ *  PMC: e-cigarette cessation and airway irritation/inflammation
+ *  Sleep Foundation / clinical reviews: withdrawal timeline
+ * HONESTY NOTE: long-term milestones (1y+) are extrapolated from
+ * smoking-cessation research (CDC/WHO). Vaping-specific long-term outcome
+ * data does not exist yet. Milestone tips say so where it applies.
+ * Carbon-monoxide claims were removed in v3.1 -- vaping produces
+ * negligible CO; those timelines belong to smoking cessation only.
+ * Last audited: August 2026
  */
 
 const HEALTH_CATEGORIES = [
   { id:"cardiovascular", label:"Heart & BP", icon:"\u2764\uFE0F", color:"#fb7185", weight:0.25, milestones:[
-    {time:20*60000,label:"Heart rate beginning to drop",pct:8,tip:"Within 20 minutes, heart rate starts returning to normal."},
-    {time:2*H,label:"Heart rate normalizing",pct:18,tip:"Blood pressure dropping. Circulation improving."},
-    {time:24*H,label:"Heart attack risk starting to decrease",pct:35,tip:"Carbon monoxide cleared. Blood carrying oxygen properly."},
-    {time:14*D,label:"Circulation measurably improved",pct:50,tip:"Blood vessels dilating more naturally."},
-    {time:90*D,label:"Cardiovascular function significantly better",pct:68,tip:"Heart and lungs working together more efficiently."},
-    {time:Y,label:"Heart disease risk halved",pct:82,tip:"Coronary heart disease risk cut by 50%."},
-    {time:5*Y,label:"Stroke risk normalized",pct:95,tip:"Stroke risk dropped to that of a non-smoker."},
-    {time:15*Y,label:"Full cardiovascular recovery",pct:100,tip:"Heart disease risk equal to someone who never vaped."}
+    {time:20*60000,label:"Heart rate beginning to drop",pct:8,tip:"Nicotine's stimulant effect fades within about 20 minutes of your last puff."},
+    {time:2*H,label:"Heart rate normalizing",pct:18,tip:"Blood pressure settling as nicotine levels fall."},
+    {time:24*H,label:"Heart working under less strain",pct:35,tip:"A full day without nicotine spikes means steadier heart rate and blood pressure."},
+    {time:14*D,label:"Circulation measurably improved",pct:50,tip:"Blood vessels respond more naturally without nicotine's repeated constriction."},
+    {time:90*D,label:"Cardiovascular strain substantially reduced",pct:68,tip:"Three months of steady rhythm. Your heart isn't fighting nicotine anymore."},
+    {time:Y,label:"A year of lower cardiovascular strain",pct:82,tip:"In smokers, one year quit cuts heart-disease risk sharply. Vaping-specific data is still emerging, but the direction is the same."},
+    {time:5*Y,label:"Long-term risk continuing to fall",pct:95,tip:"Years without nicotine let your cardiovascular system fully re-adapt."},
+    {time:15*Y,label:"Full long-term recovery",pct:100,tip:"Timeline extrapolated from smoking-cessation research; quitting early means the long-term unknowns of vaping never apply to you."}
   ]},
   { id:"respiratory", label:"Lung Function", icon:"\uD83E\uDEC1", color:"#60a5fa", weight:0.25, milestones:[
-    {time:12*H,label:"Carbon monoxide levels normalizing",pct:5,tip:"CO dropping to normal. Oxygen levels rising."},
+    {time:12*H,label:"Airway irritation beginning to settle",pct:5,tip:"Without aerosol exposure, irritated airways get their first real break."},
     {time:72*H,label:"Bronchial tubes relaxing",pct:15,tip:"Breathing feels easier. Airways opening."},
-    {time:7*D,label:"Cilia beginning to regenerate",pct:25,tip:"The cleaning system of your lungs is waking up."},
+    {time:7*D,label:"Airway inflammation decreasing",pct:25,tip:"Studies of vapers who quit show respiratory symptoms easing within weeks."},
     {time:30*D,label:"Lung function improving measurably",pct:45,tip:"Coughing and shortness of breath decreasing."},
-    {time:90*D,label:"Lung capacity increased 10-30%",pct:68,tip:"Noticeable improvement in exercise capacity."},
-    {time:180*D,label:"Airway inflammation resolved",pct:80,tip:"Deep lung tissue healing well."},
-    {time:270*D,label:"Cilia fully functional",pct:90,tip:"Lungs cleaning themselves at full capacity."},
+    {time:90*D,label:"Exercise noticeably easier",pct:68,tip:"Less airway inflammation means more capacity when you push yourself."},
+    {time:180*D,label:"Airway inflammation largely resolved",pct:80,tip:"Deep airway tissue healing well."},
+    {time:270*D,label:"Airways cleaning themselves freely",pct:90,tip:"Your airways' natural clearance systems are working without constant irritation."},
     {time:Y,label:"Lung function approaching full restoration",pct:96,tip:"Respiratory system nearly fully recovered."},
-    {time:10*Y,label:"Lung cancer risk halved",pct:100,tip:"Risk of dying from lung cancer cut by half."}
+    {time:10*Y,label:"Long-term respiratory risk minimized",pct:100,tip:"Based on smoking research; quitting vaping early sidesteps the long-term unknowns entirely."}
   ]},
   { id:"senses", label:"Taste & Smell", icon:"\uD83D\uDC45", color:"#fbbf24", weight:0.10, milestones:[
-    {time:24*H,label:"Nerve endings beginning to regenerate",pct:15,tip:"Taste and smell receptors starting to heal."},
+    {time:24*H,label:"Taste and smell getting a break",pct:15,tip:"Constant flavor and nicotine exposure can dull taste over time. Recovery starts now."},
     {time:48*H,label:"Taste sensitivity increasing",pct:38,tip:"Food is starting to taste different. More vivid."},
-    {time:72*H,label:"Smell returning to normal range",pct:60,tip:"You may notice scents you haven't smelled in months."},
-    {time:7*D,label:"Full taste and smell sensitivity",pct:80,tip:"Receptor regeneration well underway."},
-    {time:30*D,label:"Senses fully restored",pct:100,tip:"Your taste and smell are back to their natural capacity."}
+    {time:72*H,label:"Smell sharpening",pct:60,tip:"You may notice scents you haven't noticed in months."},
+    {time:7*D,label:"Vaper's tongue fading",pct:80,tip:"Dulled taste from heavy vaping typically clears within days to weeks."},
+    {time:30*D,label:"Senses back to baseline",pct:100,tip:"Your taste and smell are back to their natural capacity."}
   ]},
-  { id:"blood", label:"Blood Oxygen", icon:"\uD83E\uDE78", color:"#f97316", weight:0.10, milestones:[
+  { id:"blood", label:"Circulation", icon:"\uD83E\uDE78", color:"#f97316", weight:0.10, milestones:[
     {time:2*H,label:"Nicotine levels dropping rapidly",pct:30,tip:"Nicotine half-life is about 2 hours. Levels are crashing."},
-    {time:8*H,label:"Blood oxygen levels improving",pct:60,tip:"Carbon monoxide losing its grip on your hemoglobin."},
-    {time:24*H,label:"Carbon monoxide eliminated from blood",pct:85,tip:"Your blood is carrying oxygen at full capacity."},
-    {time:72*H,label:"Blood chemistry fully normalized",pct:100,tip:"Cotinine (nicotine metabolite) nearly cleared."}
+    {time:8*H,label:"Blood vessels relaxing",pct:60,tip:"Less vasoconstriction means better blood flow and oxygen delivery."},
+    {time:24*H,label:"Oxygen delivery improving",pct:85,tip:"A day without nicotine's vessel-tightening lets your blood do its job."},
+    {time:72*H,label:"Blood chemistry normalized",pct:100,tip:"Cotinine (nicotine's metabolite) nearly cleared."}
   ]},
   { id:"nicotine", label:"Nicotine Clearance", icon:"\u26A1", color:"#a78bfa", weight:0.15, milestones:[
     {time:2*H,label:"Nicotine at half original level",pct:20,tip:"Two hours. Nicotine half-life reached."},
     {time:8*H,label:"Nicotine mostly metabolized",pct:40,tip:"Cravings are peaking because nicotine levels are crashing."},
     {time:24*H,label:"Nicotine cleared from bloodstream",pct:60,tip:"Nicotine gone. Cotinine is the remaining metabolite."},
     {time:48*H,label:"Cotinine levels dropping",pct:80,tip:"Your body is processing the last traces of nicotine metabolites."},
-    {time:72*H,label:"Nicotine and metabolites fully cleared",pct:100,tip:"Zero nicotine in your system. Chemical dependency broken."}
+    {time:72*H,label:"Nicotine essentially cleared",pct:100,tip:"Traces of cotinine can linger a few more days, but the chemical grip is broken."}
   ]},
   { id:"immune", label:"Immune System", icon:"\uD83D\uDEE1\uFE0F", color:"#2dd4bf", weight:0.15, milestones:[
     {time:7*D,label:"White blood cell count normalizing",pct:10,tip:"Your immune system is no longer fighting constant inflammation."},
@@ -202,26 +211,26 @@ const ACHIEVEMENTS = [
   {time:20*60000,label:"Twenty Minutes",icon:"\u23F1",desc:"Heart rate already dropping. Healing starts this fast."},
   {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"One hour free. Nicotine levels already falling."},
   {time:2*H,label:"Two Hours",icon:"\u26A1",desc:"Nicotine at half its peak level. Your body works fast."},
-  {time:4*H,label:"Four Hours",icon:"\uD83D\uDCAA",desc:"Cravings are loud right now. You're louder."},
-  {time:8*H,label:"Eight Hours",icon:"\uD83C\uDF19",desc:"Blood oxygen climbing. Carbon monoxide fading."},
-  {time:12*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"CO levels normalizing. Lungs breathing easier."},
+  {time:4*H,label:"Four Hours Free",icon:"\uD83D\uDCAA",desc:"That noise is nicotine leaving, not you wanting. It is the sound of it losing."},
+  {time:8*H,label:"Eight Hours",icon:"\uD83C\uDF19",desc:"Nicotine fading fast. Blood vessels starting to relax."},
+  {time:12*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day free. Airways getting their first real break."},
   {time:18*H,label:"Eighteen Hours",icon:"\uD83E\uDDE0",desc:"Every craving you ride through rewires your brain."},
-  {time:24*H,label:"Day One Complete",icon:"\uD83C\uDF1F",desc:"Carbon monoxide gone. Heart attack risk dropping."},
+  {time:24*H,label:"Day One Complete",icon:"\uD83C\uDF1F",desc:"A full day nicotine-free. Heart working under less strain."},
   {time:36*H,label:"Thirty-Six Hours",icon:"\u2728",desc:"Taste buds starting to regenerate. Food will change."},
   {time:48*H,label:"Two Days",icon:"\uD83D\uDC45",desc:"Taste and smell sharpening. Nerve endings healing."},
   {time:60*H,label:"Sixty Hours",icon:"\uD83D\uDD25",desc:"Nicotine cravings at their most intense. The peak passes."},
-  {time:72*H,label:"Three Days",icon:"\u26A0",desc:"Nicotine fully cleared. Chemical dependency broken."},
-  {time:5*D,label:"Five Days",icon:"\uD83C\uDFAF",desc:"Physical withdrawal easing. Psychological habits are next."},
+  {time:72*H,label:"Three Days",icon:"\u26A0",desc:"Nicotine essentially cleared. Chemical dependency broken."},
+  {time:5*D,label:"Five Days",icon:"\uD83C\uDFAF",desc:"The chemical part is nearly done. What is left is only habit, and habit is not addiction."},
   {time:7*D,label:"One Week",icon:"\uD83C\uDFC6",desc:"Cilia regenerating. Immune system normalizing."},
   {time:10*D,label:"Double Digits",icon:"\uD83D\uDD1F",desc:"Each craving is weaker than the last."},
   {time:14*D,label:"Two Weeks",icon:"\uD83D\uDCAA",desc:"Circulation measurably improved. Exercise getting easier."},
   {time:21*D,label:"Three Weeks",icon:"\uD83C\uDFD4",desc:"New neural pathways forming around your new patterns."},
   {time:30*D,label:"One Month",icon:"\uD83C\uDF3F",desc:"Lung function improving. Senses fully restored."},
   {time:60*D,label:"Two Months",icon:"\uD83D\uDCC8",desc:"Energy levels noticeably higher. Breathing deeper."},
-  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFC6",desc:"Lung capacity up 10-30%. Cardiovascular function transformed."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFC6",desc:"Breathing easier. Exercise feels different now."},
   {time:180*D,label:"Six Months",icon:"\uD83D\uDE80",desc:"Immune system at full strength. Lungs deeply healed."},
   {time:270*D,label:"Nine Months",icon:"\uD83D\uDEE1\uFE0F",desc:"Cilia fully functional. Lungs cleaning at full capacity."},
-  {time:Y,label:"One Year Free",icon:"\uD83D\uDC8E",desc:"Heart disease risk halved. Every system transformed."}
+  {time:Y,label:"One Year Free",icon:"\uD83D\uDC8E",desc:"A year without nicotine. Every system running free of it."}
 ];
 
 const MOTIVATIONAL = {
@@ -245,19 +254,20 @@ const MOTIVATIONAL = {
   ],
   healing:[
     "Your immune system is rebuilding. Fewer colds. Faster recovery. Your body is defending itself properly again.",
-    "The hardest part is behind you. What you are doing now is consolidating. Deepening. Making it permanent.",
+    "There is nothing left to get through. This is simply what being free feels like now.",
     "Lung capacity is measurably higher than the day you quit. Exercise that winded you before feels different now.",
-    "You chose discomfort over numbness. That takes more strength than most people will ever understand."
+    "You did not give up a pleasure. You stopped paying for a discomfort you were sold as one."
   ],
   healed:[
-    "Your cardiovascular risk is dropping toward that of someone who never vaped. Time is doing its work.",
+    "Your cardiovascular system has had a full year to re-adapt. Time is doing its work.",
     "A year free. Your lungs, your heart, your immune system, all fundamentally transformed.",
     "You did not just quit vaping. You reclaimed your autonomy from a chemical that was designed to keep you.",
-    "Remember what the first three days felt like. That was the price. Look at what you bought with it."
+    "Nothing was taken from you. What is left is what was always underneath."
   ]
 };
 
-function getElapsed(qd) { return Date.now() - new Date(qd).getTime() }
+function getElapsed(qd) { return Math.max(0, Date.now() - new Date(qd).getTime()) }
+function toLocalDateStr(d) { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); }
 function formatDuration(ms) {
   if (ms < 0) return "0s";
   const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24),y=Math.floor(d/365);
@@ -290,15 +300,15 @@ function getDailyMotivation(elapsed) {
 function getContextualTip(elapsed) {
   if(elapsed<H)return"Your heart rate is already dropping. Blood pressure beginning to normalize. Healing started immediately.";
   if(elapsed<8*H)return"Nicotine levels are crashing. Cravings may hit hard in the next few hours. They last 3-5 minutes.";
-  if(elapsed<24*H)return"Carbon monoxide is clearing from your blood. Oxygen levels rising. Your blood can do its job again.";
+  if(elapsed<24*H)return"Nicotine is nearly out of your bloodstream. Blood vessels are relaxing, and oxygen delivery is improving.";
   if(elapsed<48*H)return"Nerve endings for taste and smell are regenerating. Food may start tasting different.";
   if(elapsed<72*H)return"Nicotine is almost fully cleared. This is the intensity peak. It drops after this.";
   if(elapsed<7*D)return"Physical withdrawal is fading. Cilia in your lungs are starting to regenerate.";
   if(elapsed<14*D)return"Circulation improving measurably. Your immune system is normalizing.";
   if(elapsed<30*D)return"Lung function improving. Coughing and shortness of breath decreasing.";
-  if(elapsed<90*D)return"Lung capacity increasing. Cardiovascular function significantly better.";
+  if(elapsed<90*D)return"Airway inflammation easing. Exercise capacity climbing.";
   if(elapsed<180*D)return"Deep healing in progress. Immune system strengthening. Respiratory immunity rebuilding.";
-  if(elapsed<Y)return"Approaching the one-year mark. Heart disease risk dropping significantly.";
+  if(elapsed<Y)return"Approaching the one-year mark. Your cardiovascular system has nearly a year of running without nicotine.";
   return"Full recovery underway. Every system in your body has been transformed by this decision.";
 }
 function getCategoryProgress(cat, elapsed) {
@@ -325,20 +335,11 @@ function getWeightedHealth(elapsed) {
 }
 
 // ── COMPONENTS ──
-function Confetti({active}) {
-  if(!active)return null;
-  const colors=['#2dd4bf','#5eead4','#60a5fa','#fbbf24','#a78bfa','#fb7185','#a3e635','#fb923c'];
-  const p=Array.from({length:40},(_,i)=>({id:i,left:Math.random()*100,delay:Math.random()*2,color:colors[i%colors.length],size:3+Math.random()*7,duration:1.8+Math.random()*1.5,shape:Math.random()>0.5?'50%':'2px'}));
-  return <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:200,overflow:'hidden'}}>
-    {p.map(x=><div key={x.id} style={{position:'absolute',left:`${x.left}%`,top:0,width:x.size,height:x.size,background:x.color,borderRadius:x.shape,animation:`confettiFall ${x.duration}s ease-out ${x.delay}s forwards`}}/>)}
-  </div>;
-}
-
 function ProgressRing({progress,color,size=100,strokeWidth=8,animated=true,children}) {
   const r=(size-strokeWidth)/2,circ=2*Math.PI*r,offset=circ-(progress/100)*circ;
   return <div style={{position:'relative',width:size,height:size}}>
     <svg width={size} height={size} style={{transform:'rotate(-90deg)'}}>
-      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth={strokeWidth}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" style={{stroke:'var(--ring-track)'}} strokeWidth={strokeWidth}/>
       <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={strokeWidth} strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" style={animated?{'--circ':circ,'--offset':offset,animation:'ringDraw 1.2s var(--ease-out) forwards',transition:'stroke-dashoffset 1s var(--ease-out)'}:{transition:'stroke-dashoffset 1s var(--ease-out)'}}/>
     </svg>
     <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>{children}</div>
@@ -383,6 +384,13 @@ function BreathingExercise({onClose, onLogCraving}) {
         {phase!=='idle'&&phase!=='done'&&<svg width={180} height={180} style={{position:'absolute',top:0,left:0,transform:'rotate(-90deg)'}}><circle cx={90} cy={90} r={87} fill="none" stroke={pc} strokeWidth={1} opacity={0.15} style={{animation:'breatheRing 4s ease-in-out infinite'}}/></svg>}
       </div>
       {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#2dd4bf':i===cycle&&phase!=='idle'?pc:'rgba(255,255,255,0.1)',transition:'all 0.3s'}}/>)}</div>}
+        {phase === 'idle' ? (
+          <button onClick={() => setPhase('inhale')} style={{
+            padding:'14px 48px', borderRadius:40, border:'none', cursor:'pointer',
+            fontSize:15, fontWeight:700, fontFamily:'var(--font-body)',
+            background:'linear-gradient(135deg, #2dd4bf, #0d9488)', color:'#042f2e'
+          }}>Start Breathing</button>
+        ) : phase === 'done' ? (
           <div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
             <button onClick={() => { onLogCraving && onLogCraving(true); onClose(); }} style={{
               padding:'14px 48px', borderRadius:40, border:'none', cursor:'pointer',
@@ -395,6 +403,7 @@ function BreathingExercise({onClose, onLogCraving}) {
               background:'transparent', color:'var(--text-secondary)'
             }}>I'm Good</button>
           </div>
+        ) : null}
       <button onClick={onClose} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',padding:8}}>close</button>
     </div>
   </div>;
@@ -420,10 +429,10 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
       <div style={{ textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
         <div style={{ fontSize:64, marginBottom:16 }}>🌊</div>
         <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'#2dd4bf' }}>
-          {outcome === 'surfed' ? 'Wave surfed.' : 'Logged.'}
+          {outcome === 'surfed' ? 'That was it leaving.' : 'Logged.'}
         </h2>
         <p style={{ fontSize:13, color:'var(--text-secondary)', marginTop:8 }}>
-          {outcome === 'surfed' ? 'Every one you ride makes the next one smaller.' : 'Honesty is the foundation of recovery. Keep going.'}
+          {outcome === 'surfed' ? 'That feeling was the dependence fading, not you wanting. Each one is weaker.' : 'Noted, no verdict attached. Nothing you already healed was undone.'}
         </p>
       </div>
     </div>
@@ -433,7 +442,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
       <div onClick={e => e.stopPropagation()} style={{ background:'var(--bg-card)', borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
           <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, color:'var(--text-primary)' }}>Log Craving</h3>
-          <button onClick={onClose} style={{ background:'rgba(255,255,255,0.06)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>×</button>
+          <button onClick={onClose} style={{ background:'var(--surface-soft)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>×</button>
         </div>
         <div style={{ marginBottom:20 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:10 }}>
@@ -444,7 +453,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
               <button key={n} onClick={() => setIntensity(n)} style={{
                 flex:1, height:36, borderRadius:'var(--radius-sm)', border:'none', cursor:'pointer',
-                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'rgba(255,255,255,0.04)',
+                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'var(--surface-faint)',
                 color: n <= intensity ? 'var(--text-primary)' : 'var(--text-muted)',
                 fontSize:11, fontWeight:700, fontFamily:'var(--font-body)', transition:'all 0.15s'
               }}>{n}</button>
@@ -493,17 +502,17 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
           <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Outcome</label>
           <div style={{ display:'flex', gap:8 }}>
             <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid #2dd4bf' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'rgba(45,212,191,0.08)' : 'transparent', color: outcome === 'surfed' ? '#2dd4bf' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
-              <div style={{ fontSize:20, marginBottom:4 }}>🌊</div>Rode it out
+              <div style={{ fontSize:20, marginBottom:4 }}>🌊</div>It passed
             </button>
             <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'rgba(251,113,133,0.08)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
-              <div style={{ fontSize:20, marginBottom:4 }}>📝</div>Slipped
+              <div style={{ fontSize:20, marginBottom:4 }}>📝</div>I used
             </button>
           </div>
         </div>
         <div style={{ marginBottom:24 }}>
           <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:8 }}>Note (optional)</label>
           <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What was happening? How did you feel?" rows={2}
-            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'rgba(255,255,255,0.04)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
+            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-faint)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
         </div>
         <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #2dd4bf, #0d9488)', color:'#042f2e' }}>Save</button>
       </div>
@@ -519,7 +528,7 @@ function CravingsTab({ onOpenLog }) {
 
   if (!stats || stats.total === 0) return (
     <div style={{ textAlign:'center', padding:'40px 20px', animation:'fadeIn 0.4s ease-out' }}>
-      <div style={{ fontSize:48, marginBottom:16, animation:'float 3s ease-in-out infinite' }}>🌊</div>
+      <div style={{ fontSize:48, marginBottom:16 }}>🌊</div>
       <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)', marginBottom:8 }}>Track Your Cravings</h3>
       <p style={{ fontSize:13, color:'var(--text-secondary)', lineHeight:1.6, maxWidth:280, margin:'0 auto 24px' }}>
         Log when cravings hit, what triggers them, and how you respond. Over time you will see your own patterns clearly.
@@ -533,9 +542,9 @@ function CravingsTab({ onOpenLog }) {
     <div style={{ animation:'fadeIn 0.3s ease-out' }}>
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:16 }}>
         {[
-          { label:'Surfed', value:`${stats.surfedRate}%`, color:'#2dd4bf' },
+          { label:'Logged', value:stats.total, color:'#2dd4bf' },
           { label:'Avg This Week', value:stats.weekAvgIntensity || '-', color:'var(--amber)' },
-          { label:'This Week', value:stats.thisWeek, color:'var(--teal)' }
+          { label:'This Week', value:stats.thisWeek, color:'var(--teal-primary)' }
         ].map((s, i) => (
           <div key={i} style={{ textAlign:'center', padding:'14px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
             <div style={{ fontSize:22, fontWeight:700, color:s.color, letterSpacing:-0.5 }}>{s.value}</div>
@@ -551,7 +560,7 @@ function CravingsTab({ onOpenLog }) {
               const t = CRAVING_TRIGGERS.find(tr => tr.id === tid);
               if (!t) return null;
               return (
-                <div key={tid} style={{ flex:1, textAlign:'center', padding:'10px 6px', borderRadius:'var(--radius-sm)', background:'rgba(255,255,255,0.03)' }}>
+                <div key={tid} style={{ flex:1, textAlign:'center', padding:'10px 6px', borderRadius:'var(--radius-sm)', background:'var(--surface-faint)' }}>
                   <div style={{ fontSize:18, marginBottom:4 }}>{t.icon}</div>
                   <div style={{ fontSize:11, fontWeight:600, color:'var(--text-primary)' }}>{t.label}</div>
                   <div style={{ fontSize:10, color:'var(--text-muted)' }}>{count}x</div>
@@ -563,7 +572,7 @@ function CravingsTab({ onOpenLog }) {
       )}
       {nextAch && (
         <div style={{ padding:'12px 16px', borderRadius:'var(--radius-md)', marginBottom:16, background:'linear-gradient(135deg, rgba(45,212,191,0.04), rgba(45,212,191,0.02))', border:'1px solid var(--border-medium)', display:'flex', alignItems:'center', gap:12 }}>
-          <div style={{ fontSize:24, animation:'float 3s ease-in-out infinite' }}>🌊</div>
+          <div style={{ fontSize:24 }}>🌊</div>
           <div style={{ flex:1 }}>
             <div style={{ fontSize:10, color:'#2dd4bf', fontWeight:700, letterSpacing:0.5, textTransform:'uppercase' }}>Next: {nextAch.label}</div>
             <div style={{ fontSize:12, color:'var(--text-secondary)' }}>{nextAch.count - stats.total} more to go</div>
@@ -581,8 +590,8 @@ function CravingsTab({ onOpenLog }) {
               <div style={{ width:36, height:36, borderRadius:'50%', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:800, fontFamily:'var(--font-display)', color: c.intensity <= 3 ? '#a3e635' : c.intensity <= 6 ? '#fbbf24' : '#fb7185', background: c.intensity <= 3 ? 'rgba(163,230,53,0.1)' : c.intensity <= 6 ? 'rgba(251,191,36,0.1)' : 'rgba(251,113,133,0.1)' }}>{c.intensity}</div>
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                  <span style={{ fontSize:12, fontWeight:600, color:'var(--text-primary)' }}>{c.outcome === 'surfed' ? '\uD83C\uDF0A Surfed' : '\uD83D\uDCDD Slipped'}</span>
-                  {c.usedBreathing && <span style={{ fontSize:9, color:'var(--teal)', fontWeight:700, background:'rgba(45,212,191,0.1)', padding:'2px 6px', borderRadius:8 }}>4-4-6</span>}
+                  <span style={{ fontSize:12, fontWeight:600, color:'var(--text-primary)' }}>{c.outcome === 'surfed' ? '\uD83C\uDF0A Passed' : '\uD83D\uDCDD Used'}</span>
+                  {c.usedBreathing && <span style={{ fontSize:9, color:'var(--teal-primary)', fontWeight:700, background:'rgba(45,212,191,0.1)', padding:'2px 6px', borderRadius:8 }}>4-4-6</span>}
                 </div>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
                   {trigIcons && <span style={{ marginRight:6 }}>{trigIcons}</span>}
@@ -601,14 +610,15 @@ function CravingsTab({ onOpenLog }) {
 function Onboarding({onComplete}) {
   const[step,setStep]=useState(0);
   const slides=[
-    {icon:"\uD83E\uDEC1",title:"Healing starts in minutes",body:"Your heart rate drops within 20 minutes of your last puff. By 72 hours, nicotine is completely cleared from your bloodstream.",source:"American Heart Association"},
-    {icon:"\u26A1",title:"Progress you can feel",body:"Clear Air uses clinically weighted scoring. The rapid healing in your first weeks carries the weight it deserves, not just calendar time.",source:""},
+    {icon:"\u2728",title:"You are not giving anything up",body:"Nicotine never gave you a lift. Each hit only ended the withdrawal the last one caused, and relief got mistaken for pleasure. Non-vapers feel that way all day, for free. You are not losing a pleasure \u2014 you are stopping paying for a discomfort.",source:"You are already free. The rest is your body catching up."},
+    {icon:"\uD83E\uDEC1",title:"Healing starts in minutes",body:"Your heart rate starts dropping within 20 minutes of your last puff. Within about 72 hours, nicotine is essentially cleared from your bloodstream.",source:"Based on nicotine-cessation research (NIDA, AHA)"},
+    {icon:"\u26A1",title:"Progress you can feel",body:"Clear Air weights your recovery score toward the rapid healing of your first weeks, not just calendar time. Long-term milestones are extrapolated from smoking-cessation research and labeled as such.",source:""},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
     <div style={{maxWidth:360,width:'100%',textAlign:'center',animation:'fadeIn 0.6s ease-out'}}>
       <div key={step} style={{animation:'scaleIn 0.4s var(--ease-spring)'}}>
-        <div style={{fontSize:56,marginBottom:24,animation:'float 3s ease-in-out infinite'}}>{slides[step].icon}</div>
+        <div style={{fontSize:56,marginBottom:24}}>{slides[step].icon}</div>
         <h2 style={{fontFamily:'var(--font-display)',fontSize:26,color:'var(--text-primary)',marginBottom:12,lineHeight:1.2}}>{slides[step].title}</h2>
         <p style={{fontSize:15,color:'var(--text-secondary)',lineHeight:1.6,marginBottom:8}}>{slides[step].body}</p>
         {slides[step].source&&<p style={{fontSize:11,color:'var(--text-muted)',fontStyle:'italic'}}>{slides[step].source}</p>}
@@ -616,7 +626,7 @@ function Onboarding({onComplete}) {
       <div style={{display:'flex',gap:6,justifyContent:'center',margin:'32px 0'}}>
         {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--teal-primary)':'rgba(255,255,255,0.1)',transition:'all 0.3s var(--ease-out)'}}/>)}
       </div>
-      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#2dd4bf,#0d9488)':'rgba(255,255,255,0.06)',color:step===slides.length-1?'#042f2e':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
+      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#2dd4bf,#0d9488)':'var(--surface-soft)',color:step===slides.length-1?'#042f2e':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
       {step<slides.length-1&&<button onClick={()=>{Store.setOnboarded();onComplete();}} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',marginTop:16,padding:8}}>Skip</button>}
     </div>
   </div>;
@@ -625,30 +635,32 @@ function Onboarding({onComplete}) {
 function SetupScreen({onSave}) {
   const[quitDate,setQuitDate]=useState('');const[quitTime,setQuitTime]=useState('');
   const[dailySpend,setDailySpend]=useState('');const[puffsPerDay,setPuffsPerDay]=useState('');
+  const[err,setErr]=useState('');
   const ready=quitDate&&quitTime;
-  const handleSave=()=>{if(!ready)return;const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,puffsPerDay:parseInt(puffsPerDay)||0};Store.save(c);onSave(c);};
-  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,puffsPerDay:parseInt(puffsPerDay)||0};Store.save(c);onSave(c);};
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
   const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
     <div style={{maxWidth:380,width:'100%'}}>
       <div style={{textAlign:'center',marginBottom:40}}>
-        <div style={{fontSize:48,marginBottom:16,animation:'float 3s ease-in-out infinite'}}>{"\uD83E\uDEC1"}</div>
-        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,background:'linear-gradient(135deg,#2dd4bf,#0d9488)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:8}}>Clear Air</h1>
+        <div style={{fontSize:48,marginBottom:16}}>{"\uD83E\uDEC1"}</div>
+        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,color:'var(--text-primary)',marginBottom:8}}>Clear Air</h1>
         <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from the first minute forward</p>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
         <div><label style={ls}>When did you quit?</label>
           <div style={{display:'flex',gap:8}}>
-            <input type="date" value={quitDate} max={new Date().toISOString().split('T')[0]} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
+            <input type="date" value={quitDate} max={toLocalDateStr(Date.now())} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
             <input type="time" value={quitTime} onChange={e=>setQuitTime(e.target.value)} style={{...is,flex:0.8}}/>
           </div>
         </div>
         <div><label style={ls}>Daily spend on vaping ($)</label><input type="number" placeholder="e.g. 8" value={dailySpend} onChange={e=>setDailySpend(e.target.value)} style={is}/></div>
         <div><label style={ls}>Puffs per day (approx)</label><input type="number" placeholder="e.g. 200" value={puffsPerDay} onChange={e=>setPuffsPerDay(e.target.value)} style={is}/></div>
-        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
         </div>
-        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'rgba(255,255,255,0.04)':'linear-gradient(135deg,#2dd4bf,#0d9488)',color:!ready?'rgba(255,255,255,0.15)':'#042f2e',transition:'all 0.3s'}}>Begin Tracking</button>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
+        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'var(--surface-faint)':'linear-gradient(135deg,#2dd4bf,#0d9488)',color:!ready?'var(--text-disabled)':'#042f2e',transition:'all 0.3s'}}>Begin Tracking</button>
       </div>
     </div>
   </div>;
@@ -661,7 +673,7 @@ function DetailModal({category,elapsed,onClose}) {
     <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
         <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:category.color}}>{category.icon} {category.label}</h3>
-        <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
       </div>
       <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
         <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
@@ -671,14 +683,14 @@ function DetailModal({category,elapsed,onClose}) {
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
         {category.milestones.map((m,i)=>{
           const unlocked=elapsed>=m.time;const isCurrent=unlocked&&(i===category.milestones.length-1||elapsed<category.milestones[i+1]?.time);
-          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'rgba(255,255,255,0.04)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
-            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'rgba(255,255,255,0.08)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
+          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'var(--surface-faint)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
+            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'var(--surface-soft)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
             <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'rgba(255,255,255,0.2)'}}>{m.label}</div>
+              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'var(--text-disabled)'}}>{m.label}</div>
               <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
               {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
             </div>
-            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'rgba(255,255,255,0.1)',flexShrink:0}}>{unlocked?'\u2713':formatTime(Math.max(0,m.time-elapsed))}</span>
+            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'rgba(255,255,255,0.1)',flexShrink:0}}>{unlocked?'\u2713':formatTime(m.time)}</span>
           </div>;
         })}
       </div>
@@ -687,28 +699,71 @@ function DetailModal({category,elapsed,onClose}) {
 }
 
 function SettingsModal({config,onSave,onReset,onClose}) {
-  const[qd,setQd]=useState(config.quitDate?new Date(config.quitDate).toISOString().slice(0,10):'');
+  const[qd,setQd]=useState(config.quitDate?toLocalDateStr(config.quitDate):'');
   const[qt,setQt]=useState(config.quitDate?new Date(config.quitDate).toTimeString().slice(0,5):'');
   const[ds,setDs]=useState(String(config.dailySpend||''));
   const[pp,setPp]=useState(String(config.puffsPerDay||''));
   const[confirmReset,setConfirmReset]=useState(false);
-  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const[confirmSlip,setConfirmSlip]=useState(false);
+  const[err,setErr]=useState('');
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
   const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
-  const handleSave=()=>{if(!qd||!qt)return;onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,puffsPerDay:parseInt(pp)||0});onClose();};
+  const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,puffsPerDay:parseInt(pp)||0});onClose();};
+  const handleExport=()=>{
+    let streaks=[];try{streaks=JSON.parse(localStorage.getItem('clearair_streaks')||'[]')}catch{}
+    const data={app:'clearair',exportedAt:new Date().toISOString(),config:Store.get(),cravings:CravingStore.getAll(),milestonesSeen:Store.getSeen(),previousStreaks:streaks};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clearair-backup-'+toLocalDateStr(Date.now())+'.json';a.click();URL.revokeObjectURL(a.href);
+  };
+  const handleSlip=()=>{
+    try{
+      const streaks=JSON.parse(localStorage.getItem('clearair_streaks')||'[]');
+      streaks.push({quitDate:config.quitDate,endedAt:new Date().toISOString(),days:Math.floor(getElapsed(config.quitDate)/86400000)});
+      localStorage.setItem('clearair_streaks',JSON.stringify(streaks));
+    }catch{}
+    const n=new Date();
+    onSave({...config,quitDate:toLocalDateStr(n)+'T'+n.toTimeString().slice(0,5)});
+    onClose();
+  };
   return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
     <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
         <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-primary)'}}>Settings</h3>
-        <button onClick={onClose} style={{background:'rgba(255,255,255,0.06)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={new Date().toISOString().split('T')[0]} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
+        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={toLocalDateStr(Date.now())} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
         <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
         <div><label style={ls}>Puffs Per Day</label><input type="number" value={pp} onChange={e=>setPp(e.target.value)} style={is}/></div>
-        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+        {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
+        <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
+          <a href="tel:988" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:8}}>
+            <strong>988</strong> &mdash; Suicide &amp; Crisis Lifeline (call or text, 24/7)
+          </a>
+          <a href="tel:18006624357" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:10}}>
+            <strong>1-800-662-4357</strong> &mdash; SAMHSA National Helpline (free, confidential, 24/7)
+          </a>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5,margin:0}}>
+            Clear Air gives you information, not medical advice. It is not a medical device and does not diagnose or treat anything. For anything about your health, talk to a doctor or another qualified professional.
+          </p>
+        </div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Your data stays on this device only.</p>
         </div>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
         <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#2dd4bf,#0d9488)',color:'#042f2e'}}>Save Changes</button>
+        <button onClick={handleExport} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Export My Data (JSON)</button>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped — restart my clock</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--text-secondary)',fontSize:13,marginBottom:10,lineHeight:1.5}}>A slip is part of recovery, not the end of it. Your craving log and history stay. Restart the clock from now?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmSlip(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Keep going</button>
+              <button onClick={handleSlip} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'linear-gradient(135deg,#2dd4bf,#0d9488)',color:'#042f2e',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Restart clock</button>
+            </div>
+          </div>}
+        </div>
         <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
           {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid rgba(244,63,94,0.2)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
           <div style={{textAlign:'center'}}>
@@ -737,17 +792,15 @@ function HealthRingCard({category,elapsed,onClick,delay=0}) {
 }
 
 function AchievementBadge({ach,unlocked,isNew}) {
-  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.2,transition:'opacity 0.5s',position:'relative'}}>
-    {isNew&&unlocked&&<div style={{position:'absolute',top:-2,right:-2,background:'var(--teal-primary)',color:'var(--bg-deep)',fontSize:7,fontWeight:800,padding:'2px 5px',borderRadius:6,zIndex:2,letterSpacing:0.5}}>NEW</div>}
-    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:unlocked?'var(--bg-card)':'rgba(255,255,255,0.02)',border:unlocked?'2px solid rgba(255,255,255,0.1)':'2px solid rgba(255,255,255,0.03)',boxShadow:unlocked&&isNew?'0 0 16px rgba(45,212,191,0.25)':'none'}}>{unlocked?ach.icon:"\uD83D\uDD12"}</div>
-    <span style={{fontSize:9,color:unlocked?'var(--text-secondary)':'rgba(255,255,255,0.15)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
-    <span style={{fontSize:8,color:'var(--text-muted)'}}>{formatTime(ach.time)}</span>
+  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.55,transition:'opacity 0.5s',position:'relative'}}>
+    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:'var(--bg-card)',border:unlocked?'2px solid var(--border-medium)':'2px solid var(--border-subtle)',boxShadow:unlocked&&isNew?'0 0 16px rgba(45,212,191,0.25)':'none'}}>{ach.icon}</div>
+    <span style={{fontSize:9,color:unlocked?'var(--text-primary)':'var(--text-secondary)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
+    <span style={{fontSize:8,color:'var(--text-muted)'}}>{unlocked?'\u2713':formatTime(ach.time)}</span>
   </div>;
 }
 
 function ThemeToggle({ prefix }) {
   const [theme, setTheme] = React.useState(() => localStorage.getItem(prefix + '_theme') || 'auto');
-  const mountedRef = React.useRef(false);
   React.useEffect(() => {
     const applyTheme = () => {
       let resolved = theme;
@@ -757,8 +810,6 @@ function ThemeToggle({ prefix }) {
     };
     applyTheme();
     localStorage.setItem(prefix + '_theme', theme);
-    if (mountedRef.current && typeof gtag === 'function') gtag('event', 'theme_change', { theme: theme, app: 'clearair' });
-    mountedRef.current = true;
     if (theme === 'auto') {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       mq.addEventListener('change', applyTheme);
@@ -770,7 +821,7 @@ function ThemeToggle({ prefix }) {
   const labels = { auto: 'Auto', light: 'Light', dark: 'Dark' };
   return (
     <button onClick={cycle} title={`Theme: ${labels[theme]}`} style={{
-      background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-subtle)',
+      background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',
       color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',
       fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'
     }}>{icons[theme]}</button>
@@ -780,10 +831,10 @@ function ThemeToggle({ prefix }) {
 function Dashboard({config,onUpdateConfig,onReset}) {
   const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
   const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
-  const[showBreathing,setShowBreathing]=useState(false);const[showConfetti,setShowConfetti]=useState(false);
+  const[showBreathing,setShowBreathing]=useState(false);
   const [showCravingLog, setShowCravingLog] = useState(false);
   const [prefillBreathing, setPrefillBreathing] = useState(false);
-  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(0);
+  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(null);
   useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
   const elapsed=getElapsed(config.quitDate);
   const moneySaved=((elapsed/D)*config.dailySpend).toFixed(2);
@@ -799,12 +850,13 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   const seenAchs=Store.getSeen();
 
   useEffect(()=>{
-    if(unlockedCount>prevRef.current&&prevRef.current>0){
-      const newest=unlockedAchs[unlockedAchs.length-1];
-      if(!seenAchs.includes(newest.label)){
-        setNewAchievement(newest);setShowConfetti(true);Store.markSeen(newest.label);
-        setTimeout(()=>{setShowConfetti(false);setNewAchievement(null);},4500);
-      }
+    if(prevRef.current===null){prevRef.current=unlockedCount;return;}
+    if(unlockedCount>prevRef.current){
+      const newlyUnlocked=unlockedAchs.slice(prevRef.current);
+      newlyUnlocked.forEach(a=>Store.markSeen(a.label));
+      const newest=newlyUnlocked[newlyUnlocked.length-1];
+      setNewAchievement(newest);
+      setTimeout(()=>setNewAchievement(null),4500);
     }
     prevRef.current=unlockedCount;
   },[unlockedCount]);
@@ -812,7 +864,6 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   const ts=(a)=>({flex:1,padding:'12px 0',textAlign:'center',fontSize:11,fontWeight:700,color:a?'var(--teal-primary)':'var(--text-muted)',cursor:'pointer',transition:'all 0.2s',letterSpacing:0.8,textTransform:'uppercase',background:'none',border:'none',borderBottom:a?'2px solid var(--teal-primary)':'2px solid transparent',fontFamily:'var(--font-body)'});
 
   return <div style={{minHeight:'100vh',minHeight:'100dvh',maxWidth:440,margin:'0 auto',position:'relative'}}>
-    <Confetti active={showConfetti}/>
     {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(45,212,191,0.12),rgba(13,148,136,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
       <span style={{fontSize:36}}>{newAchievement.icon}</span>
       <div>
@@ -822,21 +873,22 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     </div>}
 
     <div style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,background:'linear-gradient(135deg,#2dd4bf,#0d9488)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Clear Air</h1>
+      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,color:'var(--text-primary)'}}>Clear Air</h1>
       <div style={{display:'flex',gap:8}}>
         <ThemeToggle prefix="clearair" />
         <button onClick={()=>setShowBreathing(true)} style={{background:'rgba(244,63,94,0.08)',border:'1px solid rgba(244,63,94,0.15)',color:'var(--rose)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}} title="Craving? Breathe.">{"\uD83C\uDF2C\uFE0F"}</button>
-        <button onClick={()=>setShowSettings(true)} style={{background:'rgba(255,255,255,0.04)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
+        <button onClick={()=>setShowSettings(true)} style={{background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
       </div>
     </div>
 
     <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
       <ProgressRing progress={overallHealth} color="var(--teal-primary)" size={160} strokeWidth={10}>
-        <span style={{fontSize:38,fontWeight:300,color:'var(--teal-primary)',fontFamily:'var(--font-display)'}}>{overallHealth.toFixed(1)}</span>
-        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Recovery</span>
+        <span style={{fontSize:38,fontWeight:300,color:'var(--teal-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
+        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Repaired</span>
       </ProgressRing>
-      <div style={{marginTop:14,fontSize:24,fontWeight:300,color:'var(--text-primary)',fontFamily:'var(--font-display)',letterSpacing:-0.5}}>{formatDuration(elapsed)}</div>
-      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>vape-free</div>
+      <div style={{marginTop:14,fontSize:18,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)}</div>
+      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
+      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearair_streaks')||'[]');if(!s.length)return null;const prior=s.reduce((t,x)=>t+(x.days||0),0);const total=prior+daysClean;return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>{total.toLocaleString()} free days so far</div>}catch{return null}})()}
     </div>
 
     <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
@@ -854,12 +906,12 @@ function Dashboard({config,onUpdateConfig,onReset}) {
       <p style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6,fontStyle:'italic',fontFamily:'var(--font-display)'}}>&ldquo;{motivation}&rdquo;</p>
     </div>
 
-    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'rgba(255,255,255,0.02)',border:'1px solid var(--border-subtle)'}}>
+    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
       <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{tip}</p>
     </div>
 
     {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-medium)',display:'flex',alignItems:'center',gap:14}}>
-      <span style={{fontSize:28,animation:'float 3s ease-in-out infinite'}}>{nextAch.icon}</span>
+      <span style={{fontSize:28}}>{nextAch.icon}</span>
       <div style={{flex:1}}>
         <div style={{fontSize:10,color:'var(--teal-primary)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
         <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
@@ -889,9 +941,8 @@ function Dashboard({config,onUpdateConfig,onReset}) {
           })}
         </div>
       </>}
+      {activeTab === 'cravings' && <CravingsTab onOpenLog={() => { setPrefillBreathing(false); setShowCravingLog(true); }} />}
     </div>
-
-        {activeTab === 'cravings' && <CravingsTab onOpenLog={() => { setPrefillBreathing(false); setShowCravingLog(true); }} />}
 
 
     <DetailModal category={detailCat} elapsed={elapsed} onClose={()=>setDetailCat(null)}/>
@@ -902,97 +953,151 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   </div>;
 }
 
-// ── MONETIZATION ──
-const VALID_CODES = ['FRIENDS2026','CLEARLENT','MIKESBUDS','EARLYBIRD'];
-function validatePromoCode(code) { return VALID_CODES.includes(code.toUpperCase().trim()); }
-
-function getTrialStatus(prefix) {
-  const unlocked = localStorage.getItem('clear_suite_unlocked') === 'true';
-  if (unlocked) return { status: 'unlocked' };
-  const firstOpened = localStorage.getItem(prefix + '_first_opened');
-  if (!firstOpened) { localStorage.setItem(prefix + '_first_opened', Date.now().toString()); return { status: 'trial', daysLeft: 7 }; }
-  const daysInstalled = (Date.now() - parseInt(firstOpened)) / 86400000;
-  if (daysInstalled <= 7) return { status: 'trial', daysLeft: Math.ceil(7 - daysInstalled) };
-  return { status: 'expired' };
-}
-
-function Paywall({ prefix, config }) {
-  const [showPromo, setShowPromo] = React.useState(false);
-  const [promoCode, setPromoCode] = React.useState('');
-  const [promoError, setPromoError] = React.useState('');
-  const [showWhy, setShowWhy] = React.useState(false);
-  const elapsed = config && config.quitDate ? Date.now() - new Date(config.quitDate).getTime() : 0;
-  const daysTracked = Math.floor(elapsed / 86400000);
-  const moneySaved = config ? ((elapsed / 86400000) * (config.dailySpend || 0)).toFixed(2) : '0.00';
-
-  React.useEffect(() => {
-    if (typeof gtag === 'function') gtag('event', 'paywall_shown', { app: 'clearair', days_used: daysTracked, trial_expired: true });
-  }, []);
-
-  const handlePromo = () => {
-    if (validatePromoCode(promoCode)) {
-      localStorage.setItem('clear_suite_unlocked', 'true');
-      localStorage.setItem('clear_suite_unlock_method', 'promo');
-      localStorage.setItem('clear_suite_promo_code', promoCode.toUpperCase().trim());
-      if (typeof gtag === 'function') gtag('event', 'unlock', { method: 'promo', app: 'clearair', promo_code: promoCode.toUpperCase().trim() });
-      window.location.reload();
-    } else { setPromoError('Invalid code. Please try again.'); }
-  };
-
-  return (
-    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.92)', zIndex:200, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(20px)', animation:'fadeIn 0.3s ease-out' }}>
-      <div style={{ maxWidth:380, width:'100%', padding:32, textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
-        <div style={{ fontSize:48, marginBottom:16 }}>{"\uD83D\uDD12"}</div>
-        <h2 style={{ fontFamily:'var(--font-display)', fontSize:24, color:'var(--text-primary)', marginBottom:8 }}>Your recovery data is safe</h2>
-        {daysTracked > 0 && <p style={{ fontSize:14, color:'var(--teal-primary)', marginBottom:4 }}>{daysTracked} days tracked</p>}
-        {parseFloat(moneySaved) > 0 && <p style={{ fontSize:14, color:'var(--text-secondary)', marginBottom:16 }}>${moneySaved} saved so far</p>}
-        <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6, marginBottom:24 }}>Your 7-day trial has ended. Unlock Clear Suite to keep tracking your progress.</p>
-        <a href="https://clearsuite.mikegrowsgreens.com/unlock" style={{ display:'block', width:'100%', padding:'16px', borderRadius:40, border:'none', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #2dd4bf, #0d9488)', color:'#fff', textDecoration:'none', marginBottom:12 }}>Unlock Clear Suite &mdash; $4.99</a>
-        {!showPromo ? (
-          <button onClick={() => setShowPromo(true)} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:13, cursor:'pointer', fontFamily:'var(--font-body)', padding:8 }}>Have a promo code?</button>
-        ) : (
-          <div style={{ marginTop:8 }}>
-            <div style={{ display:'flex', gap:8, marginBottom:8 }}>
-              <input type="text" value={promoCode} onChange={e => { setPromoCode(e.target.value); setPromoError(''); }} placeholder="Enter code" style={{ flex:1, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'rgba(255,255,255,0.06)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', textTransform:'uppercase' }} />
-              <button onClick={handlePromo} style={{ padding:'12px 20px', borderRadius:'var(--radius-md)', border:'none', background:'var(--teal-primary)', color:'#fff', fontSize:14, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-body)' }}>Apply</button>
-            </div>
-            {promoError && <p style={{ fontSize:12, color:'var(--rose)', marginTop:4 }}>{promoError}</p>}
-          </div>
-        )}
-        <button onClick={() => setShowWhy(!showWhy)} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:12, cursor:'pointer', fontFamily:'var(--font-body)', padding:8, marginTop:8 }}>Why pay?</button>
-        {showWhy && <p style={{ fontSize:12, color:'var(--text-muted)', lineHeight:1.6, marginTop:4 }}>No ads ever. No accounts. No tracking. Your $4.99 keeps these apps alive and ad-free.</p>}
-      </div>
-    </div>
-  );
-}
+// One-time cleanup: this suite is free forever. Remove the monetization keys
+// that older builds wrote, so nobody is left mid-"trial".
+(function(){
+  try {
+    ['clearair_first_opened','clearair_paywall_snooze','clear_suite_unlocked',
+     'clear_suite_unlock_method','clear_suite_promo_code']
+      .forEach(function(k){ localStorage.removeItem(k); });
+  } catch (e) {}
+})();
 
 function App() {
   const[config,setConfig]=useState(()=>Store.get());
   const[showOnboarding,setShowOnboarding]=useState(()=>!Store.hasOnboarded()&&!Store.get());
   const handleSetup=(c)=>{Store.save(c);setConfig(c);};
   const handleUpdate=(c)=>{Store.save(c);setConfig(c);};
-  const handleReset=()=>{Store.clear();CravingStore.clear();localStorage.removeItem('clearair_seen');localStorage.removeItem('clearair_onboarded');setConfig(null);setShowOnboarding(true);};
+  const handleReset=()=>{Store.clear();CravingStore.clear();['clearair_seen','clearair_onboarded','clearair_streaks'].forEach(k=>localStorage.removeItem(k));setConfig(null);setShowOnboarding(true);};
   if(showOnboarding)return<Onboarding onComplete={()=>setShowOnboarding(false)}/>;
   if(!config||!config.quitDate)return<SetupScreen onSave={handleSetup}/>;
-  const trial = getTrialStatus('clearair');
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('unlock')) {
-    const ts = parseInt(params.get('unlock'), 36);
-    if (Date.now() - ts < 3600000) {
-      localStorage.setItem('clear_suite_unlocked', 'true');
-      localStorage.setItem('clear_suite_unlock_method', 'token');
-      if (typeof gtag === 'function') gtag('event', 'unlock', { method: 'token', app: 'clearair' });
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }
-  return <>
-    {trial.status === 'expired' && <Paywall prefix="clearair" config={config} />}
-    <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>
-  </>;
+  return <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>;
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}
+</script>
+<script>
+/* Clear Suite update channel.
+   Deliberately plain JS in its own script tag, NOT a React component: this
+   must keep working when React/Babel fail to load, because that is exactly
+   the deploy an update needs to repair. */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+
+  var MIN_INTERVAL  = 30 * 1000;
+  var POLL_INTERVAL = 30 * 60 * 1000;
+  var hadController = !!navigator.serviceWorker.controller;
+  var lastCheck     = Date.now();
+  var reg           = null;
+
+  window.__CS_VERSION = null;
+
+  function show() {
+    if (document.getElementById('cs-update')) return;
+    var el = document.createElement('div');
+    el.id = 'cs-update';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    /* zIndex 90 sits BELOW the app's modals (zIndex 100), so an open craving
+       log or breathing overlay hides this automatically. */
+    el.style.cssText =
+      'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:90;' +
+      'width:calc(100% - 32px);max-width:380px;box-sizing:border-box;' +
+      'padding:14px 16px;border-radius:var(--radius-lg);' +
+      'background:linear-gradient(135deg,var(--accent-glow),var(--surface-faint)),var(--bg-card);' +
+      'border:1px solid var(--border-medium);backdrop-filter:blur(16px);' +
+      '-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.4);' +
+      'display:flex;align-items:center;gap:12px;animation:slideDown 0.5s var(--ease-spring);' +
+      'font-family:var(--font-body);letter-spacing:-0.01em';
+
+    var txt = document.createElement('div');
+    txt.style.cssText = 'flex:1;min-width:0';
+    txt.innerHTML =
+      '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;' +
+      'color:var(--accent-primary)">Update ready</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-top:2px">' +
+      'A new version is ready</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px">' +
+      'Your progress is saved either way.</div>';
+
+    var reload = document.createElement('button');
+    reload.textContent = 'Reload';
+    reload.style.cssText =
+      'flex:none;background:var(--accent-primary);border:none;color:var(--bg-deep);' +
+      'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.3px;' +
+      'padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer';
+    reload.onclick = function () { window.location.reload(); };
+
+    var later = document.createElement('button');
+    later.setAttribute('aria-label', 'Dismiss');
+    later.innerHTML = '×';
+    later.style.cssText =
+      'flex:none;background:var(--surface-soft);border:none;color:var(--text-secondary);' +
+      'width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1';
+    /* Dismiss only hides it. The update is already in Cache Storage, so the
+       user gets it on their next cold launch regardless. */
+    later.onclick = function () { el.remove(); };
+
+    el.appendChild(txt); el.appendChild(reload); el.appendChild(later);
+    document.body.appendChild(el);
+  }
+
+  function check() {
+    var now = Date.now();
+    if (now - lastCheck < MIN_INTERVAL) return;
+    lastCheck = now;
+    if (reg) { try { reg.update(); } catch (_) {} }
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
+    }
+  }
+
+  function askVersion() {
+    if (!navigator.serviceWorker.controller || !window.MessageChannel) return;
+    var ch = new MessageChannel();
+    ch.port1.onmessage = function (ev) {
+      if (ev.data && ev.data.type === 'VERSION') {
+        window.__CS_VERSION = ev.data.version;
+        window.dispatchEvent(new CustomEvent('cs-version', { detail: ev.data }));
+      }
+    };
+    navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [ch.port2]);
+  }
+
+  navigator.serviceWorker.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.type === 'UPDATE_READY') show();
+    else if (d.type === 'HTML_REPLACED') { window.__CS_VERSION = d.version; }
+  });
+
+  /* Do NOT reload here — the classic footgun that reloads a user mid-session. */
+  navigator.serviceWorker.addEventListener('controllerchange', askVersion);
+
+  /* iOS has no Periodic Background Sync, so every check is user-driven:
+     resume, focus, regained network. iOS also often restores a frozen page
+     instead of reloading, which is why pageshow/visibilitychange matter most. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') check();
+  });
+  window.addEventListener('focus', check);
+  window.addEventListener('online', check);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+  setInterval(function () { if (document.visibilityState === 'visible') check(); }, POLL_INTERVAL);
+
+  navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none' })
+    .then(function (r) {
+      reg = r;
+      askVersion();
+      r.addEventListener('updatefound', function () {
+        var nw = r.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', function () {
+          if (nw.state === 'activated' && hadController) show();
+        });
+      });
+    })
+    .catch(function () { /* SW unavailable: app still works, just no offline */ });
+})();
 </script>
 </body>
 </html>
