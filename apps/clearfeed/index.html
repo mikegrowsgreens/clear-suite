@@ -150,11 +150,14 @@ const CRAVING_ACHIEVEMENTS = [
  *  Gloria Mark, UC Irvine: attention switching, fragmentation, and refocus costs
  *  Sleep research: pre-bed screen use, sleep onset latency, and sleep quality
  *  Reviews of dopamine reward-prediction and variable-reward (slot machine) design
+ *  Hunt et al. 2018 also: reduced social comparison pathway for depression effects
+ *  Social comparison theory (Festinger 1954) applied to curated feeds; appearance-
+ *    comparison and body-image literature on image-based platforms
  * Last audited: August 2026
  */
 
 const HEALTH_CATEGORIES = [
-  { id:"attention", label:"Attention Span", icon:"\uD83C\uDFAF", color:"#8b5cf6", weight:0.25, milestones:[
+  { id:"attention", label:"Attention Span", icon:"\uD83C\uDFAF", color:"#8b5cf6", weight:0.20, milestones:[
     {time:6*H,label:"First long feed-free stretch",pct:4,tip:"A few hours without checking is already the longest unbroken stretch many scrollers get all day."},
     {time:24*H,label:"Fewer mid-task interruptions",pct:10,tip:"Every check costs minutes of refocus time. Today your tasks got more of your full attention."},
     {time:72*H,label:"Attention residue clearing",pct:18,tip:"The mental tab the feed kept open is closing. Thoughts are completing instead of fragmenting."},
@@ -166,7 +169,7 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Deep-work capacity rebuilt",pct:90,tip:"Three months. Sustained, single-task attention is your working norm again."},
     {time:Y,label:"Sustained attention is your default",pct:97,tip:"A year of owning your attention. Long-form thinking is simply how your mind works now."}
   ]},
-  { id:"dopamine", label:"Dopamine Reset", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.25, milestones:[
+  { id:"dopamine", label:"Dopamine Reset", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.20, milestones:[
     {time:6*H,label:"First urges to check hitting",pct:3,tip:"The feed trained your brain with unpredictable rewards, like a slot machine. The pull is chemical, not weakness."},
     {time:24*H,label:"Urge spikes at their peak",pct:8,tip:"The first 24-72 hours bring the strongest urges. Each one peaks and passes in minutes."},
     {time:72*H,label:"Peak urge window passing",pct:18,tip:"Days 1-3 are typically the hardest. The reflex to reach for the phone starts weakening from here."},
@@ -188,7 +191,7 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Sleep routine rebuilt",pct:90,tip:"Three months. A consistent wind-down and wake cycle with no feed at either end."},
     {time:Y,label:"Healthy sleep locked in",pct:97,tip:"A year of screen-free nights. Your sleep no longer competes with an algorithm."}
   ]},
-  { id:"mood", label:"Mood & Anxiety", icon:"\uD83C\uDF24\uFE0F", color:"#fbbf24", weight:0.20, milestones:[
+  { id:"mood", label:"Mood & Anxiety", icon:"\uD83C\uDF24\uFE0F", color:"#fbbf24", weight:0.15, milestones:[
     {time:12*H,label:"FOMO spikes beginning",pct:3,tip:"Worrying you are missing something is the withdrawal talking. Almost nothing in the feed was for you."},
     {time:24*H,label:"Comparison inputs cut off",pct:8,tip:"One day without curated highlight reels to measure yourself against. The comparison engine is starved."},
     {time:72*H,label:"Restlessness peaking, then easing",pct:16,tip:"The anxious itch to check peaks in the first few days, then genuinely eases."},
@@ -198,6 +201,17 @@ const HEALTH_CATEGORIES = [
     {time:60*D,label:"Mood steadier day to day",pct:80,tip:"Two months. Your mood no longer swings with strangers' opinions and engagement bait."},
     {time:90*D,label:"Comparison habit largely broken",pct:91,tip:"Three months. You measure your life against your own yardstick again."},
     {time:Y,label:"Mood no longer tied to a feed",pct:97,tip:"A year free. Your emotional baseline belongs to you, not to an engagement algorithm."}
+  ]},
+  { id:"comparison", label:"Self-Image & Comparison", icon:"\uD83E\uDE9E", color:"#2dd4bf", weight:0.15, milestones:[
+    {time:12*H,label:"Comparison triggers cut off",pct:4,tip:"Feeds are curated to be compared against. Half a day out, your brain is simply seeing fewer engineered triggers."},
+    {time:24*H,label:"No highlight reels today",pct:9,tip:"One full day without measuring your life against everyone's best moments. The contest was rigged anyway."},
+    {time:72*H,label:"Comparison reflex going idle",pct:17,tip:"Social comparison is automatic when the inputs are there. Three days without them, the reflex has less to work with."},
+    {time:7*D,label:"Self-referential rumination easing",pct:31,tip:"One week. The replay loop of how you stack up quiets when it stops getting fresh material."},
+    {time:14*D,label:"Mood decoupling from others' feeds",pct:45,tip:"Two weeks. Hunt et al. (2018) found limiting social media measurably reduced depression and loneliness within weeks."},
+    {time:21*D,label:"Appearance pressure softening",pct:55,tip:"Three weeks. Image-based feeds are strongly linked to appearance comparison. Less exposure, less pressure. Mirrors get kinder."},
+    {time:30*D,label:"Self-esteem steadying from within",pct:67,tip:"One month. People commonly report self-worth feeling less contingent on likes and external validation around this point."},
+    {time:90*D,label:"Internal yardstick back in charge",pct:87,tip:"Three months. You evaluate your progress against your own past, not a stranger's curated present."},
+    {time:Y,label:"Self-image on a stable baseline",pct:95,tip:"A year free. Your sense of self runs on lived experience, not on how it would rank in a feed."}
   ]},
   { id:"connection", label:"Real-World Connection", icon:"\uD83E\uDD1D", color:"#a3e635", weight:0.15, milestones:[
     {time:24*H,label:"Idle moments returning to you",pct:5,tip:"Queues, elevators, red lights. Today those moments were yours, not the feed's."},
@@ -578,7 +592,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"The feed never satisfied you. It created the itch it then scratched, and sold your attention while you scrolled. Your curiosity worked fine before it was trained. You are not losing connection \u2014 you are getting your own attention back.",source:"You are already free. The rest is your brain catching up."},
     {icon:"\uD83C\uDF31",title:"Your brain starts recovering immediately",body:"Within days of stepping away, urges to check start fading, sleep improves, and mood measurably lifts. A single week off social media improved wellbeing and reduced anxiety in a randomized trial.",source:"Lambert et al. 2022; Hunt et al. 2018"},
-    {icon:"\u26A1",title:"Five dimensions of recovery",body:"Track attention span, dopamine reset, sleep, mood and anxiety, and real-world connection. All grounded in published research on social media abstinence.",source:"Cyberpsychology; J. of Social & Clinical Psychology"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track attention span, dopamine reset, sleep, mood and anxiety, self-image and comparison, and real-world connection. All grounded in published research on social media abstinence.",source:"Cyberpsychology; J. of Social & Clinical Psychology"},
     {icon:"\uD83D\uDD12",title:"An app that doesn't want your attention",body:"Everything stays on your device. No ads, no accounts, no tracking, no feed. Check it as rarely as you like \u2014 it will never ping you. Clear your browser data to erase everything.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>

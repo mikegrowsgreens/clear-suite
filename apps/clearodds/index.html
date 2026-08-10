@@ -146,6 +146,7 @@ const CRAVING_ACHIEVEMENTS = [
  *  DSM-5: Gambling disorder diagnostic criteria (APA)
  *  Journal of Gambling Studies: Urge decay and cue reactivity in problem gambling
  *  Clark et al. (Cambridge): Near-miss effects and dopamine response in gambling
+ *  Ladouceur et al.: Cognitive therapy for pathological gambling; cognitive distortions (illusion of control, gambler's fallacy)
  *  Neuropsychopharmacology: Reward system recovery in behavioral addictions
  *  National Council on Problem Gambling (NCPG): Recovery resources and helpline data
  *  Journal of Gambling Studies / GA populations: Financial and relationship recovery timelines
@@ -166,7 +167,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Urges rare and short-lived",pct:90,tip:"Six months. Most days pass without a single urge. When one appears, it is a visitor, not a resident."},
     {time:Y,label:"Urges rare, weak, and manageable",pct:96,tip:"A year bet-free. Occasional urges may still surface around big events, but they no longer run the show."}
   ]},
-  { id:"money", label:"Financial Recovery", icon:"\uD83D\uDCB0", color:"#a3e635", weight:0.25, milestones:[
+  { id:"money", label:"Financial Recovery", icon:"\uD83D\uDCB0", color:"#a3e635", weight:0.20, milestones:[
     {time:1*H,label:"The bleeding has stopped",pct:5,tip:"Financial recovery starts instantly. The house edge only works on money you wager. From this hour, it gets nothing."},
     {time:24*H,label:"First day of zero losses",pct:12,tip:"One full day where every dollar you earned stayed yours. That is the whole mechanism \u2014 it just compounds from here."},
     {time:7*D,label:"A week of money kept",pct:25,tip:"A full week of deposits not made and parlays not chased. Check your account \u2014 the difference is already real."},
@@ -177,7 +178,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Debt paydown momentum",pct:88,tip:"Six months. If gambling left debt behind, this is where consistent payments start visibly shrinking it."},
     {time:Y,label:"A full year of kept money",pct:97,tip:"Fifty-two weeks of losses that never happened. Add up your old weekly loss \u2014 that number is now yours."}
   ]},
-  { id:"stress", label:"Stress & Anxiety", icon:"\uD83E\uDDD8", color:"#fbbf24", weight:0.20, milestones:[
+  { id:"stress", label:"Stress & Anxiety", icon:"\uD83E\uDDD8", color:"#fbbf24", weight:0.15, milestones:[
     {time:12*H,label:"Adrenaline cycle settling",pct:5,tip:"No open bets means no sweating results tonight. The spike-crash arousal cycle is already winding down."},
     {time:24*H,label:"First day without result anxiety",pct:12,tip:"One day with nothing riding on any game. Notice how differently you watched \u2014 or didn't watch at all."},
     {time:72*H,label:"Restlessness peaking, then easing",pct:20,tip:"Early withdrawal from gambling commonly shows up as restlessness and irritability. It peaks in the first days and fades."},
@@ -189,6 +190,18 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Anxiety near baseline",pct:91,tip:"Six months. Most people report their overall anxiety is dramatically lower than when they were betting."},
     {time:Y,label:"Stress recovery consolidated",pct:96,tip:"A year of your nervous system running on real life instead of variable-reward spikes. This is the new normal."}
   ]},
+  { id:"thinking", label:"Clear Thinking", icon:"\uD83E\uDDED", color:"#2dd4bf", weight:0.15, milestones:[
+    {time:12*H,label:"Out of the live-odds stream",pct:4,tip:"Distorted gambling thinking is fed by constant exposure to lines and odds. Twelve hours of distance is where it starts to starve."},
+    {time:24*H,label:"'Next bet fixes it' loop untriggered",pct:10,tip:"The urge to win back losses is a thinking error, not a plan. One day without acting on it is one day it goes unrewarded."},
+    {time:72*H,label:"Betting math loosening its grip",pct:18,tip:"Days away from live action, you may notice you are no longer converting everything \u2014 games, news, injuries \u2014 into odds. That reflex fades with distance."},
+    {time:7*D,label:"Chasing logic starting to break",pct:30,tip:"One week. Chasing losses runs on the gambler's fallacy \u2014 the false sense that a win is 'due.' Unfed for a week, that logic starts to sound less convincing."},
+    {time:14*D,label:"Wins and losses remembered honestly",pct:42,tip:"Two weeks. Gambling memory is selective \u2014 wins vivid, losses fuzzy. With distance, the real ledger comes back into focus, and it changes the story."},
+    {time:30*D,label:"Probabilities look like probabilities",pct:55,tip:"One month. Cognitive therapy for gambling (Ladouceur et al.) targets illusions of control and 'due' wins. Time away does some of that work naturally: a 5% shot starts reading as 5%."},
+    {time:60*D,label:"Promos read as pricing, not opportunity",pct:67,tip:"Two months. 'Risk-free' bets and boosted odds start looking like what they are \u2014 marketing priced against you \u2014 instead of chances you are missing."},
+    {time:90*D,label:"Near-misses read as losses",pct:78,tip:"Three months. Near-miss research (Clark et al.) shows almost-winning fires reward circuits like winning. With sustained distance, an almost is just a loss again."},
+    {time:180*D,label:"Judgment steadier under pressure",pct:88,tip:"Six months. People in recovery commonly report steadier everyday decisions \u2014 money, time, risk \u2014 as the distorted betting lens fades."},
+    {time:Y,label:"Thinking clear of the betting lens",pct:95,tip:"A year. The distortions that made gambling feel winnable \u2014 control, streaks, systems \u2014 have largely lost their pull. Skepticism is your default now."}
+  ]},
   { id:"trust", label:"Relationships & Trust", icon:"\uD83E\uDD1D", color:"#a78bfa", weight:0.15, milestones:[
     {time:24*H,label:"The honesty clock starts",pct:3,tip:"Trust rebuilds slowly \u2014 research on recovery in GA populations says months, not days. Day one of nothing to hide."},
     {time:7*D,label:"Fewer cover stories needed",pct:12,tip:"A week without lies about where money or time went. Honesty is getting easier because there is nothing to cover."},
@@ -199,7 +212,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Repaired ground under key relationships",pct:80,tip:"Six months. Long enough that people stop bracing for the next discovery. Keep being boringly reliable."},
     {time:Y,label:"Trust substantially rebuilt",pct:95,tip:"A year of honesty and follow-through. Some scars remain, but the people who mattered can count on you again."}
   ]},
-  { id:"sleep", label:"Sleep & Clarity", icon:"\uD83C\uDF19", color:"#60a5fa", weight:0.15, milestones:[
+  { id:"sleep", label:"Sleep & Clarity", icon:"\uD83C\uDF19", color:"#60a5fa", weight:0.10, milestones:[
     {time:24*H,label:"First night without late-night betting",pct:6,tip:"No live odds at 1am, no checking scores in bed. Your first chance in a while at a full night's wind-down."},
     {time:72*H,label:"Racing mind at night easing",pct:15,tip:"The replay loop \u2014 bets you should have made, losses you need back \u2014 quiets when it stops getting new material."},
     {time:7*D,label:"Falling asleep easier",pct:28,tip:"One week. Less pre-sleep arousal from odds checking and result anxiety means shorter time to fall asleep."},
@@ -578,7 +591,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\uD83C\uDFB2",title:"The odds were never yours",body:"Every line, every parlay, every promo is priced so the book wins over time. Near misses were designed to feel like almost-wins. You are not giving up an edge \u2014 you never had one. You are keeping your money instead.",source:"The only unbeatable move is not playing."},
     {icon:"\uD83C\uDF31",title:"Recovery starts immediately",body:"Your financial position stops getting worse the moment you stop betting, and it compounds from there. Urges fade over days and weeks, sleep improves as late-night betting ends, and trust rebuilds over months.",source:"DSM-5 gambling disorder research; Journal of Gambling Studies"},
-    {icon:"\u26A1",title:"Five dimensions of recovery",body:"Track urge intensity, financial recovery, stress and anxiety, relationships and trust, and sleep and clarity. All grounded in problem-gambling research.",source:"Clark et al. (Cambridge); NCPG"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track urge intensity, financial recovery, stress and anxiety, clear thinking, relationships and trust, and sleep and clarity. All grounded in problem-gambling research.",source:"Clark et al. (Cambridge); Ladouceur et al.; NCPG"},
     {icon:"\uD83D\uDCDE",title:"You do not have to do this alone",body:"If gambling is hurting you or someone you love, free confidential help is one call away.",source:"",helpline:true},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];

@@ -152,6 +152,12 @@ const CRAVING_ACHIEVEMENTS = [
  *  Sleep-architecture studies: slow-wave sleep recovery after cessation
  *  Blood pressure literature: caffeine's acute pressor effect resolves off-drug
  *  Anxiety literature: caffeine-induced anxiety and caffeinism resolve with cessation
+ *  Boekema et al. 1999 (Scand J Gastroenterol Suppl): coffee/caffeine stimulates
+ *    gastric acid secretion and lowers lower-esophageal-sphincter (LES) pressure --
+ *    reflux/heartburn link; effects resolve off-drug
+ *  GI motility literature: caffeine stimulates colonic motor activity (laxative
+ *    effect); transient constipation is a documented adjustment symptom after
+ *    cessation as the gut re-regulates its own rhythm
  * Last audited: August 2026
  */
 
@@ -168,7 +174,7 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Full adenosine reset",pct:94,tip:"Three months. Your sleep-pressure system works the way it was designed to, with no chemical interference."},
     {time:Y,label:"A year of natural signaling",pct:98,tip:"A full year of your brain regulating alertness on its own. The reset is complete and stable."}
   ]},
-  { id:"sleep", label:"Sleep Quality", icon:"\uD83D\uDE34", color:"#a78bfa", weight:0.25, milestones:[
+  { id:"sleep", label:"Sleep Quality", icon:"\uD83D\uDE34", color:"#a78bfa", weight:0.20, milestones:[
     {time:12*H,label:"First caffeine-free bedtime approaching",pct:5,tip:"Even caffeine taken 6 hours before bed measurably disrupts sleep (Drake et al. 2013). Tonight, nothing is working against you."},
     {time:24*H,label:"First night without caffeine on board",pct:12,tip:"With no caffeine in your blood at lights-out, your brain can build sleep pressure naturally."},
     {time:72*H,label:"Falling asleep faster",pct:22,tip:"Sleep latency shortens once adenosine can accumulate unopposed through the evening."},
@@ -201,7 +207,7 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Nervous system rebalanced",pct:93,tip:"Three months. Racing heart, restlessness, and wired-but-tired feelings are no longer part of your daily loop."},
     {time:Y,label:"A year of unforced calm",pct:98,tip:"A full year without a daily stimulant working against your calm. This steadiness is yours."}
   ]},
-  { id:"heart", label:"Heart & Blood Pressure", icon:"\u2764\uFE0F", color:"#fb7185", weight:0.15, milestones:[
+  { id:"heart", label:"Heart & Blood Pressure", icon:"\u2764\uFE0F", color:"#fb7185", weight:0.10, milestones:[
     {time:5*H,label:"Acute blood pressure effect fading",pct:6,tip:"Caffeine acutely raises blood pressure for hours after each dose. That pressor effect is wearing off now."},
     {time:24*H,label:"First day without pressure spikes",pct:15,tip:"No doses means no repeated daily blood pressure bumps. Your cardiovascular system gets a full day off."},
     {time:72*H,label:"Resting heart rhythm settling",pct:26,tip:"Palpitations and skipped-beat sensations linked to caffeine typically ease within days."},
@@ -211,6 +217,17 @@ const HEALTH_CATEGORIES = [
     {time:60*D,label:"Steady rhythm, steady pressure",pct:82,tip:"Two months. Your resting heart rate and blood pressure reflect your true baseline now."},
     {time:90*D,label:"Cardiovascular reset complete",pct:93,tip:"Three months. Your heart runs its natural pace all day, every day \u2014 no stimulant tax."},
     {time:Y,label:"A year of easier heartbeats",pct:98,tip:"A year of lower cardiovascular load. Small daily differences, compounded across millions of beats."}
+  ]},
+  { id:"digestion", label:"Digestion", icon:"\uD83C\uDF4F", color:"#2dd4bf", weight:0.10, milestones:[
+    {time:5*H,label:"Acid stimulus fading with the drug",pct:5,tip:"Caffeine stimulates gastric acid secretion. As blood levels fall, that extra acid drive is easing off."},
+    {time:24*H,label:"Acid secretion normalizing",pct:14,tip:"One day off, your stomach is no longer being prodded to over-produce acid, and the valve above it (the LES) is no longer being chemically relaxed."},
+    {time:3*D,label:"Reflux and heartburn easing",pct:24,tip:"Caffeine relaxes the lower esophageal sphincter, which lets acid splash upward. With the drug gone, that valve can hold. Honest note: your gut may feel sluggish this week \u2014 caffeine was a laxative, and rebound constipation is a real, temporary adjustment symptom."},
+    {time:7*D,label:"Bowel rhythm finding its own pace",pct:38,tip:"One week. Any transition constipation typically resolves around now as your colon relearns to move without a chemical prod. Fiber and water help it along."},
+    {time:14*D,label:"Motility re-regulating",pct:54,tip:"Two weeks. Gut motility is settling into its own rhythm, and without caffeine's mild diuretic load, your hydration is steadier \u2014 which helps digestion too."},
+    {time:30*D,label:"LES tone and bowel rhythm restored",pct:70,tip:"One month. The esophageal valve is back to full tone and bowel habits are re-regulated for most people. Heartburn triggered by coffee is off the table."},
+    {time:60*D,label:"Comfortable, predictable digestion",pct:82,tip:"Two months. Less acid irritation, steadier motility, better hydration \u2014 the whole tract is running quieter."},
+    {time:90*D,label:"Digestion at its natural baseline",pct:93,tip:"Three months. Your digestive system runs unstimulated \u2014 acid, valve tone, and motility all at the rhythm your body sets, not the drug."},
+    {time:Y,label:"A year of unstimulated digestion",pct:97,tip:"A full year of your gut setting its own pace. No acid surges, no chemical hurry, no rebound."}
   ]}
 ];
 
@@ -581,7 +598,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"Caffeine never gave you energy. It blocked the signal telling you that you were tired, then borrowed against tonight's sleep to cover the gap. You are not losing alertness \u2014 you are getting your own energy back.",source:"You are already free. The rest is your brain catching up."},
     {icon:"\uD83C\uDF31",title:"Recovery starts in hours",body:"Caffeine's half-life is about 5 hours \u2014 it is mostly out of your system within a day. From that point on, everything you feel is your brain resetting, and every hour counts.",source:"Caffeine pharmacokinetics; Juliano & Griffiths 2004"},
-    {icon:"\u26A1",title:"Five dimensions of recovery",body:"Track your adenosine reset, sleep quality, natural energy, anxiety and calm, and heart and blood pressure. All grounded in clinical research \u2014 and the withdrawal is short and front-loaded: worst by day 2, gone within about a week for most people.",source:"Psychopharmacology, J Clin Sleep Med"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track your adenosine reset, sleep quality, natural energy, anxiety and calm, heart and blood pressure, and digestion. All grounded in clinical research \u2014 and the withdrawal is short and front-loaded: worst by day 2, gone within about a week for most people.",source:"Psychopharmacology, J Clin Sleep Med"},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>

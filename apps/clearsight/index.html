@@ -155,13 +155,20 @@ const CRAVING_ACHIEVEMENTS = [
  *  Fernandez, Kuss & Griffiths 2021 review: abstinence effects largely
  *    self-reported; withdrawal-like symptoms and a temporary "flatline"
  *    are commonly reported but not universally verified
+ *  Sleep category: grounded in displacement + sleep-hygiene research, not
+ *    porn-specific RCTs. Exelmans & Van den Bulck 2017 (and related media
+ *    displacement studies): late-night media use displaces sleep and delays
+ *    bedtime. Chang et al. 2015, PNAS: evening light-emitting screen use
+ *    delays sleep onset and circadian timing. Pre-bed arousal is a known
+ *    sleep-onset disruptor (general sleep-hygiene literature). Improved
+ *    sleep after quitting is commonly self-reported, not clinically proven.
  * Note: much of this literature is correlational or self-report based.
  * Milestones are typical reported timelines, not guarantees.
  * Last audited: August 2026
  */
 
 const HEALTH_CATEGORIES = [
-  { id:"dopamine", label:"Dopamine Sensitivity", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.25, milestones:[
+  { id:"dopamine", label:"Dopamine Sensitivity", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.20, milestones:[
     {time:12*H,label:"First urges surfacing",pct:3,tip:"Urges now are conditioned reflexes, not needs. They rise, peak in 10-20 minutes, and pass on their own."},
     {time:24*H,label:"Reward system getting its first rest",pct:8,tip:"One day without supernormal stimulation. Your dopamine system is beginning to downshift."},
     {time:72*H,label:"Cue-triggered cravings near their strongest",pct:15,tip:"The first 1-2 weeks typically bring the strongest urges. Each one you surf weakens the loop that drives the next."},
@@ -173,7 +180,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"New baseline consolidating",pct:94,tip:"Six months. The rewired baseline is becoming your default, not something you maintain by effort."},
     {time:Y,label:"Dopamine sensitivity largely recovered",pct:98,tip:"A year. The pull is gone for most people. What remains is the habit of noticing, which keeps you free."}
   ]},
-  { id:"drive", label:"Motivation & Focus", icon:"\uD83C\uDFAF", color:"#a78bfa", weight:0.20, milestones:[
+  { id:"drive", label:"Motivation & Focus", icon:"\uD83C\uDFAF", color:"#a78bfa", weight:0.15, milestones:[
     {time:24*H,label:"Mental energy no longer feeding the loop",pct:4,tip:"The search-scroll-escape cycle consumed real cognitive energy. That drain stopped today."},
     {time:72*H,label:"Restlessness as your brain seeks stimulation",pct:10,tip:"Feeling scattered is common early on. It is your brain asking for the old stimulation. Give it a walk instead."},
     {time:7*D,label:"Small tasks starting to feel doable",pct:22,tip:"One week. Many people report a first bump in follow-through around now."},
@@ -206,7 +213,18 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Mood stable, self-respect rebuilt",pct:88,tip:"Three months. Most people report feeling durably steadier and prouder of themselves by now."},
     {time:Y,label:"Mood resilience at full strength",pct:97,tip:"A year. Hard days still happen. They no longer route through the old escape."}
   ]},
-  { id:"connection", label:"Relationships", icon:"\uD83E\uDD1D", color:"#a3e635", weight:0.15, milestones:[
+  { id:"sleep", label:"Sleep", icon:"\uD83D\uDE34", color:"#2dd4bf", weight:0.15, milestones:[
+    {time:12*H,label:"No late-night session eating into tonight",pct:5,tip:"Late-night use directly displaces sleep. Whatever else changes slowly, that hour comes back tonight."},
+    {time:24*H,label:"First night without the pre-sleep screen loop",pct:10,tip:"Evening screen exposure and arousal are both known to delay sleep onset. Removing them is a straightforward win."},
+    {time:72*H,label:"Bedtime drifting earlier",pct:18,tip:"Three nights. Without the one-more-video spiral, many people find themselves in bed noticeably earlier."},
+    {time:7*D,label:"Falling asleep faster, commonly reported",pct:30,tip:"One week. Less pre-bed light and arousal means less to wind down from. Faster sleep onset is a common early report."},
+    {time:14*D,label:"Sleep quality gains often noticed",pct:44,tip:"Two weeks. Many people report sleeping deeper and waking less. Self-reported, but consistent with the sleep-hygiene research."},
+    {time:30*D,label:"Consistent bedtime taking hold",pct:58,tip:"One month. A regular schedule is one of the best-supported levers for sleep quality, and it is much easier without the habit."},
+    {time:60*D,label:"Sleep debt largely repaid",pct:74,tip:"Two months of reclaimed hours. Better sleep quietly supports mood, focus, and urge resistance."},
+    {time:90*D,label:"Stable sleep supporting everything else",pct:86,tip:"Three months. A settled sleep schedule underpins every other dimension of recovery here."},
+    {time:Y,label:"Sleep fully decoupled from the habit",pct:95,tip:"A year. Late nights happen, but they are choices now, not compulsions. Your sleep belongs to you."}
+  ]},
+  { id:"connection", label:"Relationships", icon:"\uD83E\uDD1D", color:"#a3e635", weight:0.10, milestones:[
     {time:24*H,label:"No secret to manage today",pct:4,tip:"Hiding a habit takes constant low-level effort. Today that effort went back into your relationships."},
     {time:72*H,label:"More present in conversations",pct:10,tip:"Attention that kept cycling back to the habit is freeing up for the people in front of you."},
     {time:7*D,label:"Eye contact and social ease improving",pct:22,tip:"One week. Many report feeling less avoidant and more comfortable around people."},
@@ -586,7 +604,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"Internet porn is a supernormal stimulus: engineered novelty your brain was never built to price correctly. It created the craving it then relieved. You are not losing intimacy \u2014 you are getting your own attention and attraction back.",source:"You are already free. The rest is your brain catching up."},
     {icon:"\uD83E\uDDE0",title:"Your brain adapts fast",body:"Neuroplasticity works in both directions. The same wiring that learned the habit starts unlearning it within days of stopping: urges fade, cue reactivity drops, ordinary rewards regain their pull. Timelines vary and some findings are correlational \u2014 but the direction is yours.",source:"Kuhn & Gallinat 2014 (JAMA Psychiatry), Voon et al. 2014"},
-    {icon:"\uD83C\uDFAF",title:"Five dimensions of recovery",body:"Track dopamine sensitivity, motivation and focus, sexual health, mood, and relationships. Honest, research-grounded milestones \u2014 including the temporary flatline many people report in weeks 2-6.",source:"ICD-11 CSBD, Fernandez et al. 2021"},
+    {icon:"\uD83C\uDFAF",title:"Six dimensions of recovery",body:"Track dopamine sensitivity, motivation and focus, sexual health, mood, sleep, and relationships. Honest, research-grounded milestones \u2014 including the temporary flatline many people report in weeks 2-6.",source:"ICD-11 CSBD, Fernandez et al. 2021"},
     {icon:"\uD83D\uDD12",title:"Total privacy, by design",body:"Everything stays on this device. No account, no server, no analytics \u2014 nothing to leak, ever. Clear your browser data and it is gone.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
