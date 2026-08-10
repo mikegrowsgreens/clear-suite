@@ -1,0 +1,14 @@
+{
+  "name": "Clear Feed - Social Media Recovery",
+  "short_name": "Clear Feed",
+  "description": "Track your brain's recovery from social media and doomscrolling with research-based milestones.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0810",
+  "theme_color": "#0a0810",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

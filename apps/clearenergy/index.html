@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c0806">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Clear Energy">
+<meta name="description" content="Track your body's recovery from caffeine with clinically sourced milestones and real-time progress.">
+<meta property="og:title" content="Clear Energy — Caffeine Recovery Tracker">
+<meta property="og:description" content="Track your body's recovery from caffeine with research-based milestones. No ads, no accounts, no tracking.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://clearenergy.mikegrowsgreens.com">
+<meta property="og:image" content="https://clearenergy.mikegrowsgreens.com/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clear Energy — Caffeine Recovery Tracker">
+<meta name="twitter:description" content="Track your body's recovery from caffeine with research-based milestones. No ads, no accounts, no tracking.">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<title>Clear Energy - Caffeine Recovery Tracker</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+[data-theme="dark"] {
+  --bg-deep:#0c0806;--bg-surface:#110d0f;--bg-card:#171114;--bg-card-hover:#1e161a;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
+  --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
+  --input-bg:#0f1618;--modal-bg:#0a0e10;
+  --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
+  --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
+}
+[data-theme="light"] {
+  --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
+  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
+  --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
+  --input-bg:#f1f5f9;--modal-bg:#ffffff;
+  --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
+  --ring-track:rgba(0,0,0,0.08);--text-disabled:rgba(0,0,0,0.3);
+}
+:root{
+  --border-accent:rgba(249,115,22,0.25);
+  --orange-primary:#f97316;--orange-bright:#fb923c;--orange-muted:#ea580c;--orange-dark:#7c2d12;
+  --purple:#a78bfa;--blue:#60a5fa;--amber:#fbbf24;--green:#a3e635;--rose:#fb7185;--orange:#fb923c;
+  --font-body:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --accent-primary:var(--orange-primary);--accent-glow:rgba(249,115,22,0.12);
+}
+html[data-theme="light"]{--orange-primary:#c2410c;--orange-bright:#9a3412;}
+body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type="number"]{-moz-appearance:textfield}
+::-webkit-scrollbar{width:0}
+button{font-family:var(--font-body)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 16px rgba(249,115,22,0.2)}50%{box-shadow:0 0 32px rgba(249,115,22,0.5),0 0 48px rgba(249,115,22,0.15)}}
+@keyframes breatheRing{0%{r:42;opacity:0.3}50%{r:56;opacity:0.8}100%{r:42;opacity:0.3}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg) scale(1);opacity:1}80%{opacity:1}100%{transform:translateY(130px) rotate(720deg) scale(0.5);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes ringDraw{from{stroke-dashoffset:var(--circ)}to{stroke-dashoffset:var(--offset)}}
+.milestone-new{animation:pulseGlow 2s ease-in-out 3}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="/vendor/react-18.2.0.production.min.js"></script>
+<script src="/vendor/react-dom-18.2.0.production.min.js"></script>
+<script src="/vendor/babel-7.23.9.min.js"></script>
+<script>
+(function() {
+  var theme = localStorage.getItem('clearenergy_theme') || 'auto';
+  var resolved = theme;
+  if (theme === 'auto') {
+    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', resolved);
+})();
+</script>
+<script type="text/babel" data-type="module">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+const Store = {
+  _key: 'clearenergy_data',
+  get() { try { const d = localStorage.getItem(this._key); return d ? JSON.parse(d) : null } catch { return null } },
+  save(data) { try { localStorage.setItem(this._key, JSON.stringify({ ...data, updatedAt: Date.now() })) } catch {} },
+  clear() { localStorage.removeItem(this._key) },
+  getSeen() { try { const d = localStorage.getItem('clearenergy_seen'); return d ? JSON.parse(d) : [] } catch { return [] } },
+  markSeen(label) { try { const s = this.getSeen(); if (!s.includes(label)) { s.push(label); localStorage.setItem('clearenergy_seen', JSON.stringify(s)) } } catch {} },
+  hasOnboarded() { return localStorage.getItem('clearenergy_onboarded') === 'true' },
+  setOnboarded() { localStorage.setItem('clearenergy_onboarded', 'true') }
+};
+
+const CravingStore = {
+  _key: 'clearenergy_cravings',
+  getAll() { try { const d = localStorage.getItem(this._key); return d ? JSON.parse(d) : []; } catch { return []; } },
+  add(entry) { try { const all = this.getAll(); all.unshift({ ...entry, id: Date.now(), timestamp: Date.now() }); localStorage.setItem(this._key, JSON.stringify(all)); } catch {} },
+  clear() { localStorage.removeItem(this._key); }
+};
+function getCravingStats() {
+  const all = CravingStore.getAll();
+  if (all.length === 0) return null;
+  const now = Date.now();
+  const week = all.filter(c => now - c.timestamp < 7 * 86400000);
+  const surfed = all.filter(c => c.outcome === 'surfed');
+  const triggers = {};
+  all.forEach(c => { (c.triggers || []).forEach(t => { triggers[t] = (triggers[t] || 0) + 1; }); });
+  const topTriggers = Object.entries(triggers).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const weekAvg = week.length > 0 ? Math.round((week.reduce((s, c) => s + (c.intensity || 5), 0) / week.length) * 10) / 10 : 0;
+  return { total: all.length, thisWeek: week.length, surfedCount: surfed.length, surfedRate: all.length > 0 ? Math.round((surfed.length / all.length) * 100) : 0, topTriggers, weekAvgIntensity: weekAvg };
+}
+
+const H = 3600000, D = 86400000, Y = 365 * D;
+
+const CRAVING_TRIGGERS = [
+  { id:'morning', label:'Morning Routine', icon:"\uD83C\uDF05" },
+  { id:'slump', label:'3pm Slump', icon:"\uD83D\uDE34" },
+  { id:'deadline', label:'Deadline', icon:"\u23F0" },
+  { id:'smell', label:'Coffee Shop Smell', icon:"\uD83D\uDC43" },
+  { id:'social', label:'Social Coffee', icon:"\uD83D\uDC65" },
+  { id:'headache', label:'Headache', icon:"\uD83E\uDD15" },
+  { id:'grogginess', label:'Grogginess', icon:"\uD83E\uDD71" },
+  { id:'drive', label:'Long Drive', icon:"\uD83D\uDE97" },
+  { id:'stress', label:'Stress', icon:"\uD83D\uDE24" },
+  { id:'workout', label:'Pre-Workout', icon:"\uD83C\uDFCB\uFE0F" }
+];
+
+const CRAVING_ACHIEVEMENTS = [
+  { count: 1, label: "First Impulse", desc: "You logged your first craving. Awareness changes everything." },
+  { count: 5, label: "Pattern Spotter", desc: "5 cravings logged. You are seeing your triggers clearly now." },
+  { count: 10, label: "Self-Aware", desc: "10 cravings tracked. You know yourself better than most." },
+  { count: 25, label: "Craving Surfer", desc: "25 cravings surfed and documented." },
+  { count: 50, label: "Pattern Clear", desc: "50 logged. You can see the pattern clearly now \u2014 and a pattern you can see has lost its grip." }
+];
+
+/*
+ * CLEAR ENERGY v1.0 -- Caffeine Cessation Recovery
+ * Caffeine has the best-documented withdrawal arc of any Clear Suite app.
+ * Sources:
+ *  Juliano & Griffiths 2004 (Psychopharmacology): caffeine withdrawal review --
+ *    onset 12-24h, peak 24-51h, duration 2-9 days
+ *  Caffeine pharmacokinetics: plasma half-life ~5 hours, mostly cleared by ~24h
+ *  Adenosine A1/A2A receptor upregulation and normalization research (~7-12 days)
+ *  Drake et al. 2013 (J Clin Sleep Med): caffeine 6h before bed disrupts sleep
+ *  Sleep-architecture studies: slow-wave sleep recovery after cessation
+ *  Blood pressure literature: caffeine's acute pressor effect resolves off-drug
+ *  Anxiety literature: caffeine-induced anxiety and caffeinism resolve with cessation
+ * Last audited: August 2026
+ */
+
+const HEALTH_CATEGORIES = [
+  { id:"adenosine", label:"Adenosine Reset", icon:"\uD83E\uDDE0", color:"#f97316", weight:0.25, milestones:[
+    {time:5*H,label:"Caffeine level in your blood halved",pct:4,tip:"Caffeine's half-life is about 5 hours. Half of your last dose is already gone."},
+    {time:12*H,label:"Withdrawal window opening",pct:8,tip:"Blood caffeine is dropping fast. Adenosine receptors are unblocking \u2014 the first fog and heaviness may appear."},
+    {time:24*H,label:"Caffeine essentially cleared",pct:15,tip:"After roughly five half-lives, the drug is functionally out of your system. What you feel now is your brain adjusting, not caffeine."},
+    {time:36*H,label:"Peak receptor rebound",pct:22,tip:"Withdrawal peaks 24-51 hours in (Juliano & Griffiths 2004). The headache is your surplus adenosine receptors all firing at once. It passes."},
+    {time:72*H,label:"Worst of the rebound behind you",pct:32,tip:"For most people, symptoms crest by day 2-3 and start fading from here."},
+    {time:7*D,label:"Extra receptors being pruned",pct:52,tip:"Your brain grew extra adenosine receptors to fight caffeine. Without the drug, it is dismantling them."},
+    {time:12*D,label:"Receptor density near baseline",pct:68,tip:"Research suggests adenosine receptor levels normalize in roughly 7-12 days. Withdrawal is over for nearly everyone by now."},
+    {time:30*D,label:"Brain chemistry rebalanced",pct:82,tip:"One month. Adenosine signaling is running at its natural rhythm \u2014 tiredness now means tired, alertness means awake."},
+    {time:90*D,label:"Full adenosine reset",pct:94,tip:"Three months. Your sleep-pressure system works the way it was designed to, with no chemical interference."},
+    {time:Y,label:"A year of natural signaling",pct:98,tip:"A full year of your brain regulating alertness on its own. The reset is complete and stable."}
+  ]},
+  { id:"sleep", label:"Sleep Quality", icon:"\uD83D\uDE34", color:"#a78bfa", weight:0.25, milestones:[
+    {time:12*H,label:"First caffeine-free bedtime approaching",pct:5,tip:"Even caffeine taken 6 hours before bed measurably disrupts sleep (Drake et al. 2013). Tonight, nothing is working against you."},
+    {time:24*H,label:"First night without caffeine on board",pct:12,tip:"With no caffeine in your blood at lights-out, your brain can build sleep pressure naturally."},
+    {time:72*H,label:"Falling asleep faster",pct:22,tip:"Sleep latency shortens once adenosine can accumulate unopposed through the evening."},
+    {time:7*D,label:"Deep sleep increasing",pct:38,tip:"Caffeine suppresses slow-wave sleep. A week off, and the deepest, most restorative stage is rebounding."},
+    {time:14*D,label:"Sleep architecture normalizing",pct:55,tip:"Two weeks. More slow-wave sleep, fewer awakenings \u2014 the structure of your night is rebuilding itself."},
+    {time:30*D,label:"Waking genuinely rested",pct:70,tip:"One month of uninterfered sleep. Morning grogginess fades faster because the sleep underneath it is deeper."},
+    {time:60*D,label:"Consistent, consolidated nights",pct:82,tip:"Two months. Your sleep is deeper and more predictable than it has been in years."},
+    {time:90*D,label:"Sleep fully recovered",pct:93,tip:"Three months. Sleep quality at its natural baseline \u2014 this is what your nights are supposed to feel like."},
+    {time:Y,label:"A year of restorative sleep",pct:98,tip:"Hundreds of nights of naturally deep sleep. The compounding benefits touch every system in your body."}
+  ]},
+  { id:"energy", label:"Natural Energy", icon:"\u26A1", color:"#a3e635", weight:0.20, milestones:[
+    {time:24*H,label:"Fatigue as the drug exits",pct:4,tip:"Feeling drained is expected \u2014 withdrawal fatigue peaks in the first two days. It is temporary and front-loaded."},
+    {time:48*H,label:"Peak withdrawal fatigue",pct:10,tip:"This is usually the low point. From here, your natural energy system starts taking back over."},
+    {time:72*H,label:"Fog beginning to lift",pct:20,tip:"Day 3. Concentration and drive start returning as receptor rebound settles."},
+    {time:7*D,label:"Energy steadier through the day",pct:38,tip:"One week. No more borrowed alertness, no more repayment crashes \u2014 energy comes from sleep and food again."},
+    {time:14*D,label:"The 3pm crash is fading",pct:55,tip:"Two weeks. The afternoon slump was largely a caffeine trough. Without the spike, there is less of a dip."},
+    {time:21*D,label:"Stable all-day energy emerging",pct:68,tip:"Three weeks. Most people report smooth, even energy from morning to evening by weeks 2-4."},
+    {time:30*D,label:"Mornings without the fix",pct:78,tip:"One month. You wake up and simply get going \u2014 no chemical bootstrap required."},
+    {time:60*D,label:"Natural energy fully online",pct:88,tip:"Two months. Deep sleep plus normal adenosine signaling equals real, sustainable energy."},
+    {time:90*D,label:"Energy system reset complete",pct:95,tip:"Three months. This steady, honest energy is your actual baseline \u2014 caffeine was masking it, not creating it."}
+  ]},
+  { id:"anxiety", label:"Anxiety & Calm", icon:"\uD83E\uDDD8", color:"#60a5fa", weight:0.15, milestones:[
+    {time:12*H,label:"Jitters clearing with the drug",pct:6,tip:"Caffeine-induced restlessness fades as blood levels fall. Your nervous system is coming off high alert."},
+    {time:24*H,label:"Stress hormones settling",pct:14,tip:"Caffeine amplifies cortisol and adrenaline responses. One day off, that amplifier is unplugged."},
+    {time:72*H,label:"Withdrawal irritability passing",pct:24,tip:"Irritability and low mood are documented withdrawal symptoms \u2014 they peak early and resolve within days."},
+    {time:7*D,label:"Baseline calm returning",pct:42,tip:"One week. The background hum of stimulation is gone. Many people notice they feel quieter inside."},
+    {time:14*D,label:"Anxiety measurably lower",pct:58,tip:"Two weeks. Caffeine is a known anxiety amplifier; removing it reliably lowers baseline anxiety for regular users."},
+    {time:30*D,label:"Steadier stress responses",pct:72,tip:"One month. Stressful moments land softer without a stimulant priming your fight-or-flight system."},
+    {time:60*D,label:"Calm becoming your default",pct:84,tip:"Two months. Better sleep and quieter chemistry compound into a genuinely calmer disposition."},
+    {time:90*D,label:"Nervous system rebalanced",pct:93,tip:"Three months. Racing heart, restlessness, and wired-but-tired feelings are no longer part of your daily loop."},
+    {time:Y,label:"A year of unforced calm",pct:98,tip:"A full year without a daily stimulant working against your calm. This steadiness is yours."}
+  ]},
+  { id:"heart", label:"Heart & Blood Pressure", icon:"\u2764\uFE0F", color:"#fb7185", weight:0.15, milestones:[
+    {time:5*H,label:"Acute blood pressure effect fading",pct:6,tip:"Caffeine acutely raises blood pressure for hours after each dose. That pressor effect is wearing off now."},
+    {time:24*H,label:"First day without pressure spikes",pct:15,tip:"No doses means no repeated daily blood pressure bumps. Your cardiovascular system gets a full day off."},
+    {time:72*H,label:"Resting heart rhythm settling",pct:26,tip:"Palpitations and skipped-beat sensations linked to caffeine typically ease within days."},
+    {time:7*D,label:"Blood pressure trending down",pct:42,tip:"One week. Studies show habitual caffeine's blood pressure elevation resolves once intake stops."},
+    {time:14*D,label:"Cardiovascular load reduced",pct:56,tip:"Two weeks. Lower average blood pressure and heart rate mean less daily strain on your heart and vessels."},
+    {time:30*D,label:"Heart benefits consolidating",pct:70,tip:"One month. Improved sleep and lower stress hormones compound the direct cardiovascular gains."},
+    {time:60*D,label:"Steady rhythm, steady pressure",pct:82,tip:"Two months. Your resting heart rate and blood pressure reflect your true baseline now."},
+    {time:90*D,label:"Cardiovascular reset complete",pct:93,tip:"Three months. Your heart runs its natural pace all day, every day \u2014 no stimulant tax."},
+    {time:Y,label:"A year of easier heartbeats",pct:98,tip:"A year of lower cardiovascular load. Small daily differences, compounded across millions of beats."}
+  ]}
+];
+
+const ACHIEVEMENTS = [
+  {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"The last dose is already being metabolized. Your liver is on it."},
+  {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Blood caffeine near its half-life point. The level only drops from here."},
+  {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Most of your last dose is gone. Adenosine receptors are starting to unblock."},
+  {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Withdrawal window opening. Whatever hits next is the exit, not a setback."},
+  {time:18*H,label:"Settling",icon:"\uD83C\uDF19",desc:"The first headache or heaviness may be arriving. It is chemistry, and it is temporary."},
+  {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day caffeine-free \u2014 the drug is essentially out of your system. Everything from here is recovery."},
+  {time:36*H,label:"Into the Peak",icon:"\uD83C\uDF0A",desc:"Withdrawal peaks 24-51 hours in. You are inside the hardest stretch right now \u2014 and it is short."},
+  {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"Peak fatigue and headache day for most people. From here the arc bends downward."},
+  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"The worst window has passed. Receptor rebound is easing, fog lifting."},
+  {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Symptoms fading fast now. Sleep already deepening underneath you."},
+  {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Most people's withdrawal resolves within 2-9 days. You are near the far edge."},
+  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"Adenosine receptors actively normalizing. Deep sleep rebounding. The hard part is essentially done."},
+  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Receptor density approaching baseline. Natural alertness is coming back online."},
+  {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"More slow-wave sleep, lower baseline anxiety, steadier energy. Measurably better."},
+  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"The 3pm crash is disappearing. All-day energy without a single milligram."},
+  {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Brain chemistry rebalanced. Mornings work without a bootstrap."},
+  {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"New routines solidifying. Coffee-shop autopilot has lost its grip."},
+  {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Sleep, energy, and calm have all reset themselves."},
+  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Blood pressure and resting heart rate at your true baseline."},
+  {time:60*D,label:"Two Months",icon:"\uD83E\uDD89",desc:"Cravings rare. Energy honest. Your alertness belongs to you again."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. Full reset \u2014 adenosine, sleep, energy, calm, and heart all recovered."},
+  {time:180*D,label:"Six Months",icon:"\uD83D\uDC51",desc:"Half a year of deep sleep and unforced energy. This is simply who you are now."},
+  {time:Y,label:"One Year Free",icon:"\uD83C\uDF1F",desc:"A year without the daily loan against tomorrow's energy. Fully your own."}
+];
+
+const MOTIVATIONAL = {
+  acute:[
+    "Caffeine's half-life is about 5 hours. With every passing hour, there is measurably less of it in your blood. The exit is automatic.",
+    "The craving is a chemical signal, not a need. It peaks in about 15 minutes and passes whether you drink or not.",
+    "You are not losing energy. Caffeine never created energy \u2014 it borrowed it from your sleep and charged interest.",
+    "By tomorrow the drug will be essentially gone. Everything after that is your brain healing, not you suffering."
+  ],
+  peak:[
+    "The withdrawal headache is receptor rebound \u2014 extra adenosine receptors your brain grew, all firing at once. It peaks between 24 and 51 hours and then it passes.",
+    "This is the best-documented withdrawal in the scientific literature, and it is short: worst by day 2, gone within about a week for most people.",
+    "The fatigue is not weakness. It is your brain running without a stimulant for the first time in years. It recalibrates fast.",
+    "Every hour you sit through the peak is an hour you never have to repeat. The arc only bends downward from here."
+  ],
+  recovery:[
+    "Your deep sleep is rebounding right now. Caffeine suppressed slow-wave sleep even when you did not feel it \u2014 that suppression is over.",
+    "Adenosine receptors normalize in roughly 7-12 days. The tiredness is lifting because the chemistry is finishing, not because you are pushing harder.",
+    "The 3pm crash was never a personality trait. It was a caffeine trough. Watch it disappear over the next two weeks.",
+    "Baseline anxiety drops when you remove a daily stimulant. That quieter feeling in your chest is real and it is yours."
+  ],
+  healing:[
+    "Stable all-day energy, deeper sleep, a calmer nervous system, lower blood pressure. None of this came from a cup. All of it came from stopping.",
+    "There is nothing left to get through. What you are doing now is consolidating \u2014 making mornings without the fix automatic.",
+    "Your alertness now tracks reality: sleep well, feel awake. Simple, honest, and no longer for sale.",
+    "You did not give up energy. You stopped renting it back from a drug that took it in the first place."
+  ],
+  healed:[
+    "Your sleep-pressure system, energy, and calm have fully reset. Caffeine has no lever left to pull.",
+    "A year free. Hundreds of nights of naturally deep sleep, thousands of steady afternoons.",
+    "You broke the most normalized drug dependence in the world. Most people never even notice they have it.",
+    "Nothing was taken from you. Your energy is simply yours again."
+  ]
+};
+
+function getElapsed(qd) { return Math.max(0, Date.now() - new Date(qd).getTime()) }
+function toLocalDateStr(d) { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); }
+function formatDuration(ms) {
+  if (ms < 0) return "0s";
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24),y=Math.floor(d/365);
+  if(y>0)return`${y}y ${d%365}d`;if(d>0)return`${d}d ${h%24}h`;
+  if(h>0)return`${h}h ${m%60}m`;if(m>0)return`${m}m ${s%60}s`;return`${s}s`;
+}
+function formatTime(ms) {
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24);
+  if(d>365){const y=Math.floor(d/365);return`${y} year${y>1?'s':''}`;}
+  if(d>0)return`${d} day${d>1?'s':''}`;if(h>0)return`${h} hour${h>1?'s':''}`;return`${m} min`;
+}
+function formatRelativeTime(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+  if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+  if (diff < 7*86400000) return `${Math.floor(diff/86400000)}d ago`;
+  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+function getPhase(elapsed) {
+  if(elapsed<24*H)return'acute';if(elapsed<72*H)return'peak';
+  if(elapsed<30*D)return'recovery';if(elapsed<180*D)return'healing';return'healed';
+}
+function getDailyMotivation(elapsed) {
+  const phase=getPhase(elapsed),msgs=MOTIVATIONAL[phase];
+  return msgs[Math.floor(elapsed/D)%msgs.length];
+}
+function getContextualTip(elapsed) {
+  if(elapsed<H)return"Your liver is already metabolizing the last dose. Caffeine's half-life is about 5 hours \u2014 the level only drops from here.";
+  if(elapsed<8*H)return"Blood caffeine falling steadily. Drink water; mild fatigue later today is normal and expected.";
+  if(elapsed<24*H)return"Caffeine still clearing \u2014 mostly gone by the 24-hour mark. Withdrawal, if it comes, starts around now. It is short and front-loaded.";
+  if(elapsed<48*H)return"Peak withdrawal window. Headache, fatigue, and fog are receptor rebound, not damage. Hydrate, eat, rest \u2014 it crests and passes.";
+  if(elapsed<72*H)return"Symptoms typically peak at 24-51 hours and ease from here. You are at or past the top of the hill.";
+  if(elapsed<7*D)return"Withdrawal resolving \u2014 most people are symptom-free within 2-9 days. Deep sleep is already rebounding.";
+  if(elapsed<14*D)return"Adenosine receptors normalizing (roughly 7-12 days). Slow-wave sleep increasing. Energy steadier every day.";
+  if(elapsed<30*D)return"The 3pm crash is fading. Baseline anxiety lower. Mornings starting to work without a chemical bootstrap.";
+  if(elapsed<90*D)return"Stable all-day energy consolidating. Blood pressure and resting heart rate at your true baseline.";
+  if(elapsed<180*D)return"Sleep, energy, and calm fully rebalanced. Occasional cravings are habit echoes, not chemistry.";
+  if(elapsed<Y)return"Approaching one year. Your alertness has been entirely your own for months.";
+  return"A full year caffeine-free. Every system \u2014 sleep, energy, calm, heart \u2014 running on its natural rhythm.";
+}
+function getCategoryProgress(cat, elapsed) {
+  let progress=0,currentLabel="Not started",currentTip="",nextLabel=cat.milestones[0]?.label||"",nextTime=cat.milestones[0]?.time||0;
+  for(let i=0;i<cat.milestones.length;i++){
+    const m=cat.milestones[i];
+    if(elapsed>=m.time){
+      progress=m.pct;currentLabel=m.label;currentTip=m.tip||"";
+      if(i+1<cat.milestones.length){
+        const next=cat.milestones[i+1];const segE=elapsed-m.time;const segT=next.time-m.time;
+        const eased=1-Math.pow(1-Math.min(segE/segT,1),2);
+        progress=m.pct+eased*(next.pct-m.pct);nextLabel=next.label;nextTime=next.time;
+      }else{nextLabel="";nextTime=0;}
+    }
+  }
+  if(elapsed<(cat.milestones[0]?.time||0)){
+    const f=cat.milestones[0];progress=(elapsed/f.time)*f.pct;
+    currentLabel="Recovery beginning";currentTip=f.tip||"";
+  }
+  return{progress:Math.min(progress,100),currentLabel,currentTip,nextLabel,nextTime};
+}
+function getWeightedHealth(elapsed) {
+  return HEALTH_CATEGORIES.reduce((t,c)=>t+getCategoryProgress(c,elapsed).progress*c.weight,0);
+}
+
+// COMPONENTS
+function ProgressRing({progress,color,size=100,strokeWidth=8,animated=true,children}) {
+  const r=(size-strokeWidth)/2,circ=2*Math.PI*r,offset=circ-(progress/100)*circ;
+  return <div style={{position:'relative',width:size,height:size}}>
+    <svg width={size} height={size} style={{transform:'rotate(-90deg)'}}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" style={{stroke:'var(--ring-track)'}} strokeWidth={strokeWidth}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={strokeWidth} strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" style={animated?{'--circ':circ,'--offset':offset,animation:'ringDraw 1.2s var(--ease-out) forwards',transition:'stroke-dashoffset 1s var(--ease-out)'}:{transition:'stroke-dashoffset 1s var(--ease-out)'}}/>
+    </svg>
+    <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>{children}</div>
+  </div>;
+}
+
+function BreathingExercise({onClose, onLogCraving}) {
+  const[phase,setPhase]=useState('idle');
+  const[cycle,setCycle]=useState(0);
+  const[seconds,setSeconds]=useState(0);
+  const totalCycles=4;const timerRef=useRef(null);
+  const phases={inhale:4,hold:4,exhale:6};
+  useEffect(()=>{
+    if(phase==='idle'||phase==='done')return;
+    const dur=phases[phase];setSeconds(dur);
+    timerRef.current=setInterval(()=>{
+      setSeconds(prev=>{
+        if(prev<=1){clearInterval(timerRef.current);
+          if(phase==='inhale')setPhase('hold');
+          else if(phase==='hold')setPhase('exhale');
+          else if(phase==='exhale'){if(cycle+1>=totalCycles)setPhase('done');else{setCycle(c=>c+1);setPhase('inhale');}}
+          return 0;}
+        return prev-1;
+      });
+    },1000);
+    return()=>clearInterval(timerRef.current);
+  },[phase,cycle]);
+  const ringP=phase==='idle'?0:phase==='done'?100:((phases[phase]-seconds)/phases[phase])*100;
+  const pc=phase==='inhale'?'#f97316':phase==='hold'?'#fb923c':phase==='exhale'?'#a78bfa':'#f97316';
+  const pl=phase==='idle'?'Ready':phase==='done'?'Complete':phase==='inhale'?'Breathe In':phase==='hold'?'Hold':'Breathe Out';
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.92)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',backdropFilter:'blur(20px)',animation:'fadeIn 0.3s ease-out'}}>
+    <div onClick={e=>e.stopPropagation()} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:32,padding:40,animation:'scaleIn 0.4s var(--ease-spring)'}}>
+      <div style={{textAlign:'center'}}>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:24,color:'var(--text-primary)',marginBottom:4}}>{phase==='done'?'You made it.':'Ride the Craving'}</h2>
+        <p style={{fontSize:13,color:'var(--text-secondary)'}}>{phase==='done'?'The craving has passed. You chose yourself.':'4-4-6 breathing to calm your nervous system'}</p>
+      </div>
+      <div style={{position:'relative'}}>
+        <ProgressRing progress={ringP} color={pc} size={180} strokeWidth={6} animated={false}>
+          <span style={{fontSize:48,fontWeight:300,color:pc,fontFamily:'var(--font-display)',animation:seconds>0?'countPulse 1s ease-in-out infinite':'none'}}>{phase==='idle'?'':phase==='done'?'\u2713':seconds}</span>
+          <span style={{fontSize:14,fontWeight:600,color:'var(--text-secondary)',marginTop:4,letterSpacing:1,textTransform:'uppercase'}}>{pl}</span>
+        </ProgressRing>
+        {phase!=='idle'&&phase!=='done'&&<svg width={180} height={180} style={{position:'absolute',top:0,left:0,transform:'rotate(-90deg)'}}><circle cx={90} cy={90} r={87} fill="none" stroke={pc} strokeWidth={1} opacity={0.15} style={{animation:'breatheRing 4s ease-in-out infinite'}}/></svg>}
+      </div>
+      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#f97316':i===cycle&&phase!=='idle'?pc:'var(--surface-soft)',transition:'all 0.3s'}}/>)}</div>}
+      {phase==='idle'&&<button onClick={()=>setPhase('inhale')} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #f97316, #ea580c)',color:'#fff'}}>Begin</button>}
+      {phase==='done'&&<div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
+        <button onClick={() => { onLogCraving && onLogCraving(true); onClose(); }} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #f97316, #ea580c)',color:'#fff'}}>Log This Craving</button>
+        <button onClick={onClose} style={{padding:'10px 32px',borderRadius:40,border:'1px solid var(--border-medium)',cursor:'pointer',fontSize:13,fontWeight:600,fontFamily:'var(--font-body)',background:'transparent',color:'var(--text-secondary)'}}>I'm Good</button>
+      </div>}
+      <button onClick={onClose} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',padding:8}}>close</button>
+    </div>
+  </div>;
+}
+
+function CravingLogModal({ onClose, onSave, prefillBreathing }) {
+  const [intensity, setIntensity] = useState(5);
+  const [triggers, setTriggers] = useState([]);
+  const [note, setNote] = useState('');
+  const [usedBreathing, setUsedBreathing] = useState(prefillBreathing || false);
+  const [outcome, setOutcome] = useState('surfed');
+  const [saved, setSaved] = useState(false);
+  const toggleTrigger = (id) => setTriggers(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]);
+  const handleSave = () => {
+    onSave({ intensity, triggers, note, usedBreathing, outcome });
+    setSaved(true);
+    setTimeout(onClose, 1200);
+  };
+  if (saved) return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.92)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(20px)', animation:'fadeIn 0.2s ease-out' }}>
+      <div style={{ textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
+        <div style={{ fontSize:64, marginBottom:16 }}>{"\uD83C\uDF3F"}</div>
+        <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'#f97316' }}>
+          {outcome === 'surfed' ? 'That was it leaving.' : 'Logged.'}
+        </h2>
+        <p style={{ fontSize:13, color:'var(--text-secondary)', marginTop:8 }}>
+          {outcome === 'surfed' ? 'That feeling was the dependence fading, not you wanting. Each one is weaker.' : 'Noted, no verdict attached. Nothing you already healed was undone.'}
+        </p>
+      </div>
+    </div>
+  );
+  return (
+    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:100, display:'flex', alignItems:'flex-end', justifyContent:'center', backdropFilter:'blur(12px)', animation:'fadeIn 0.2s ease-out' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background:'var(--bg-card)', borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
+          <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, color:'var(--text-primary)' }}>Log Craving</h3>
+          <button onClick={onClose} style={{ background:'var(--surface-soft)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>{"\u00D7"}</button>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:10 }}>
+            <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase' }}>Intensity</label>
+            <span style={{ fontSize:28, fontWeight:300, color: intensity <= 3 ? '#a3e635' : intensity <= 6 ? '#fbbf24' : '#fb7185', fontFamily:'var(--font-display)' }}>{intensity}</span>
+          </div>
+          <div style={{ display:'flex', gap:4 }}>
+            {[1,2,3,4,5,6,7,8,9,10].map(n => (
+              <button key={n} onClick={() => setIntensity(n)} style={{
+                flex:1, height:36, borderRadius:'var(--radius-sm)', border:'none', cursor:'pointer',
+                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'var(--surface-faint)',
+                color: n <= intensity ? 'var(--text-primary)' : 'var(--text-muted)',
+                fontSize:11, fontWeight:700, fontFamily:'var(--font-body)', transition:'all 0.15s'
+              }}>{n}</button>
+            ))}
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between', marginTop:4 }}>
+            <span style={{ fontSize:9, color:'var(--text-muted)' }}>Mild</span>
+            <span style={{ fontSize:9, color:'var(--text-muted)' }}>Intense</span>
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>What triggered it?</label>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+            {CRAVING_TRIGGERS.map(t => {
+              const active = triggers.includes(t.id);
+              return (
+                <button key={t.id} onClick={() => toggleTrigger(t.id)} style={{
+                  padding:'8px 14px', borderRadius:20,
+                  border: active ? '1px solid #f97316' : '1px solid var(--border-subtle)',
+                  background: active ? 'rgba(249,115,22,0.1)' : 'transparent',
+                  color: active ? '#f97316' : 'var(--text-muted)',
+                  fontSize:12, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)',
+                  transition:'all 0.15s', display:'flex', alignItems:'center', gap:5
+                }}>
+                  <span style={{ fontSize:14 }}>{t.icon}</span> {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Used breathing exercise?</label>
+          <div style={{ display:'flex', gap:8 }}>
+            {[{ val: true, label: 'Yes' }, { val: false, label: 'No' }].map(opt => (
+              <button key={String(opt.val)} onClick={() => setUsedBreathing(opt.val)} style={{
+                flex:1, padding:'12px', borderRadius:'var(--radius-md)',
+                border: usedBreathing === opt.val ? '1px solid #f97316' : '1px solid var(--border-subtle)',
+                background: usedBreathing === opt.val ? 'rgba(249,115,22,0.08)' : 'transparent',
+                color: usedBreathing === opt.val ? '#f97316' : 'var(--text-muted)',
+                fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s'
+              }}>{opt.label}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Outcome</label>
+          <div style={{ display:'flex', gap:8 }}>
+            <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid #f97316' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'rgba(249,115,22,0.08)' : 'transparent', color: outcome === 'surfed' ? '#f97316' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
+              <div style={{ fontSize:20, marginBottom:4 }}>{"\uD83C\uDF3F"}</div>It passed
+            </button>
+            <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'rgba(251,113,133,0.08)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
+              <div style={{ fontSize:20, marginBottom:4 }}>{"\uD83D\uDCDD"}</div>I drank it
+            </button>
+          </div>
+        </div>
+        <div style={{ marginBottom:24 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:8 }}>Note (optional)</label>
+          <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What were you feeling? Where were you?" rows={2}
+            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-faint)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
+        </div>
+        <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #f97316, #ea580c)', color:'#fff' }}>Save</button>
+      </div>
+    </div>
+  );
+}
+
+function CravingsTab({ onOpenLog }) {
+  const stats = getCravingStats();
+  const all = CravingStore.getAll();
+  const triggerMap = {};
+  CRAVING_TRIGGERS.forEach(t => { triggerMap[t.id] = t; });
+  return <div style={{ animation:'fadeIn 0.3s ease-out' }}>
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+      <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)' }}>Craving Journal</h3>
+      <button onClick={onOpenLog} style={{ padding:'8px 16px', borderRadius:20, border:'1px solid var(--border-medium)', background:'rgba(249,115,22,0.06)', color:'#f97316', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-body)' }}>+ Log</button>
+    </div>
+    {stats && <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:16 }}>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#f97316' }}>{stats.total}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Total</div>
+      </div>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#a3e635' }}>{stats.thisWeek}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>This Week</div>
+      </div>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#fbbf24' }}>{stats.weekAvgIntensity}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Avg This Wk</div>
+      </div>
+    </div>}
+    {stats && stats.topTriggers.length > 0 && <div style={{ marginBottom:16, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>Top Triggers</div>
+      <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+        {stats.topTriggers.map(([id, count]) => {
+          const t = triggerMap[id];
+          return t ? <span key={id} style={{ fontSize:12, color:'var(--text-secondary)', display:'flex', alignItems:'center', gap:4 }}>{t.icon} {t.label} <span style={{ color:'#f97316', fontWeight:700 }}>({count})</span></span> : null;
+        })}
+      </div>
+    </div>}
+    {CRAVING_ACHIEVEMENTS.map((ach, i) => {
+      const unlocked = stats && stats.total >= ach.count;
+      return <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 0', opacity: unlocked ? 1 : 0.7 }}>
+        <div style={{ width:32, height:32, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, background: unlocked ? 'rgba(249,115,22,0.1)' : 'var(--bg-card)', border: unlocked ? '1px solid rgba(249,115,22,0.2)' : '1px solid var(--border-subtle)' }}>{unlocked ? "\u2713" : "\u00B7"}</div>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:13, fontWeight:600, color: unlocked ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{ach.label}</div>
+          <div style={{ fontSize:11, color:'var(--text-muted)' }}>{ach.desc}</div>
+        </div>
+        <span style={{ fontSize:10, color:'var(--text-muted)' }}>{ach.count}x</span>
+      </div>;
+    })}
+    {all.length > 0 && <div style={{ marginTop:16, borderTop:'1px solid var(--border-subtle)', paddingTop:16 }}>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:0.5, marginBottom:12 }}>Recent Entries</div>
+      {all.slice(0, 10).map(c => (
+        <div key={c.id} style={{ padding:'10px 0', borderBottom:'1px solid var(--border-subtle)', display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ width:28, height:28, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, background: c.outcome === 'surfed' ? 'rgba(163,230,53,0.1)' : 'rgba(251,113,133,0.1)' }}>{c.outcome === 'surfed' ? "\uD83C\uDF3F" : "\uD83D\uDCDD"}</div>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:12, color:'var(--text-primary)', display:'flex', gap:6 }}>
+              <span style={{ color: c.intensity <= 3 ? '#a3e635' : c.intensity <= 6 ? '#fbbf24' : '#fb7185', fontWeight:700 }}>{c.intensity}/10</span>
+              {(c.triggers || []).slice(0, 2).map(tid => { const t = triggerMap[tid]; return t ? <span key={tid} style={{ color:'var(--text-muted)' }}>{t.icon}</span> : null; })}
+            </div>
+            {c.note && <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>{c.note}</div>}
+          </div>
+          <span style={{ fontSize:10, color:'var(--text-muted)' }}>{formatRelativeTime(c.timestamp)}</span>
+        </div>
+      ))}
+    </div>}
+    {all.length === 0 && <div style={{ textAlign:'center', padding:'40px 20px' }}>
+      <div style={{ fontSize:40, marginBottom:12 }}>{"\uD83C\uDF3F"}</div>
+      <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6 }}>No cravings logged yet.</p>
+      <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>When a craving hits, log it here or use the breathing button.</p>
+    </div>}
+  </div>;
+}
+
+function Onboarding({onComplete}) {
+  const[step,setStep]=useState(0);
+  const slides=[
+    {icon:"\u2728",title:"You are not giving anything up",body:"Caffeine never gave you energy. It blocked the signal telling you that you were tired, then borrowed against tonight's sleep to cover the gap. You are not losing alertness \u2014 you are getting your own energy back.",source:"You are already free. The rest is your brain catching up."},
+    {icon:"\uD83C\uDF31",title:"Recovery starts in hours",body:"Caffeine's half-life is about 5 hours \u2014 it is mostly out of your system within a day. From that point on, everything you feel is your brain resetting, and every hour counts.",source:"Caffeine pharmacokinetics; Juliano & Griffiths 2004"},
+    {icon:"\u26A1",title:"Five dimensions of recovery",body:"Track your adenosine reset, sleep quality, natural energy, anxiety and calm, and heart and blood pressure. All grounded in clinical research \u2014 and the withdrawal is short and front-loaded: worst by day 2, gone within about a week for most people.",source:"Psychopharmacology, J Clin Sleep Med"},
+    {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
+  ];
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
+    <div style={{maxWidth:360,width:'100%',textAlign:'center',animation:'fadeIn 0.6s ease-out'}}>
+      <div key={step} style={{animation:'scaleIn 0.4s var(--ease-spring)'}}>
+        <div style={{fontSize:56,marginBottom:24}}>{slides[step].icon}</div>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:26,color:'var(--text-primary)',marginBottom:12,lineHeight:1.2}}>{slides[step].title}</h2>
+        <p style={{fontSize:15,color:'var(--text-secondary)',lineHeight:1.6,marginBottom:8}}>{slides[step].body}</p>
+        {slides[step].source&&<p style={{fontSize:11,color:'var(--text-muted)',fontStyle:'italic'}}>{slides[step].source}</p>}
+      </div>
+      <div style={{display:'flex',gap:6,justifyContent:'center',margin:'32px 0'}}>
+        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--orange-primary)':'var(--surface-soft)',transition:'all 0.3s var(--ease-out)'}}/>)}
+      </div>
+      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#f97316,#ea580c)':'var(--surface-soft)',color:step===slides.length-1?'#fff':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
+      {step<slides.length-1&&<button onClick={()=>{Store.setOnboarded();onComplete();}} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',marginTop:16,padding:8}}>Skip</button>}
+    </div>
+  </div>;
+}
+
+function SetupScreen({onSave}) {
+  const[quitDate,setQuitDate]=useState('');const[quitTime,setQuitTime]=useState('');
+  const[dailySpend,setDailySpend]=useState('');const[drinksPerDay,setDrinksPerDay]=useState('');
+  const[mgPerDay,setMgPerDay]=useState('');const[motivation,setMotivation]=useState('');
+  const ready=quitDate&&quitTime;
+  const[err,setErr]=useState('');
+  const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,drinksPerDay:parseInt(drinksPerDay)||0,mgPerDay:parseInt(mgPerDay)||0,motivation:motivation||''};Store.save(c);onSave(c);};
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
+    <div style={{maxWidth:380,width:'100%'}}>
+      <div style={{textAlign:'center',marginBottom:40}}>
+        <div style={{fontSize:48,marginBottom:16}}>{"\uD83C\uDF31"}</div>
+        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,color:'var(--text-primary)',marginBottom:8}}>Clear Energy</h1>
+        <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from caffeine</p>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:20}}>
+        <div>
+          <label style={ls}>When did you quit?</label>
+          <div style={{display:'flex',gap:8}}>
+            <input type="date" value={quitDate} max={toLocalDateStr(Date.now())} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
+            <input type="time" value={quitTime} onChange={e=>setQuitTime(e.target.value)} style={{...is,flex:0.8}}/>
+          </div>
+        </div>
+        <div><label style={ls}>Caffeinated drinks per day</label><input type="number" placeholder="e.g. 3" value={drinksPerDay} onChange={e=>setDrinksPerDay(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Daily spend on coffee / energy drinks ($)</label><input type="number" placeholder="e.g. 8" value={dailySpend} onChange={e=>setDailySpend(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Mg caffeine per day, if known (optional)</label><input type="number" placeholder="e.g. 300" value={mgPerDay} onChange={e=>setMgPerDay(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Why are you doing this? (optional)</label><input type="text" placeholder="e.g. Sleep, anxiety, blood pressure, freedom" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/></div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
+        </div>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
+        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'var(--surface-faint)':'linear-gradient(135deg,#f97316,#ea580c)',color:!ready?'var(--text-disabled)':'#fff',transition:'all 0.3s'}}>Begin Tracking</button>
+      </div>
+    </div>
+  </div>;
+}
+
+function DetailModal({category,elapsed,onClose}) {
+  if(!category)return null;
+  const{progress}=getCategoryProgress(category,elapsed);
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)',animation:'fadeIn 0.2s ease-out'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:category.color}}>{category.icon} {category.label}</h3>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+      </div>
+      <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
+        <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
+          <span style={{fontSize:26,fontWeight:800,color:category.color}}>{Math.round(progress)}%</span>
+        </ProgressRing>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:8}}>
+        {category.milestones.map((m,i)=>{
+          const unlocked=elapsed>=m.time;const isCurrent=unlocked&&(i===category.milestones.length-1||elapsed<category.milestones[i+1]?.time);
+          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'var(--surface-faint)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
+            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'var(--surface-soft)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'var(--text-disabled)'}}>{m.label}</div>
+              <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
+              {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
+            </div>
+            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'var(--surface-soft)',flexShrink:0}}>{unlocked?'\u2713':formatTime(m.time)}</span>
+          </div>;
+        })}
+      </div>
+    </div>
+  </div>;
+}
+
+function SettingsModal({config,onSave,onReset,onClose}) {
+  const[qd,setQd]=useState(config.quitDate?toLocalDateStr(config.quitDate):'');
+  const[qt,setQt]=useState(config.quitDate?new Date(config.quitDate).toTimeString().slice(0,5):'');
+  const[ds,setDs]=useState(String(config.dailySpend||''));
+  const[dr,setDr]=useState(String(config.drinksPerDay||''));
+  const[mg,setMg]=useState(String(config.mgPerDay||''));
+  const[mot,setMot]=useState(config.motivation||'');
+  const[confirmReset,setConfirmReset]=useState(false);
+  const[confirmSlip,setConfirmSlip]=useState(false);
+  const[err,setErr]=useState('');
+  const handleExport=()=>{
+    let streaks=[];try{streaks=JSON.parse(localStorage.getItem('clearenergy_streaks')||'[]')}catch{}
+    const data={app:'clearenergy',exportedAt:new Date().toISOString(),config:Store.get(),cravings:CravingStore.getAll(),milestonesSeen:Store.getSeen(),previousStreaks:streaks};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clearenergy-backup-'+toLocalDateStr(Date.now())+'.json';a.click();URL.revokeObjectURL(a.href);
+  };
+  const handleSlip=()=>{
+    try{
+      const streaks=JSON.parse(localStorage.getItem('clearenergy_streaks')||'[]');
+      streaks.push({quitDate:config.quitDate,endedAt:new Date().toISOString(),days:Math.floor(getElapsed(config.quitDate)/86400000)});
+      localStorage.setItem('clearenergy_streaks',JSON.stringify(streaks));
+    }catch{}
+    const n=new Date();
+    onSave({...config,quitDate:toLocalDateStr(n)+'T'+n.toTimeString().slice(0,5)});
+    onClose();
+  };
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,drinksPerDay:parseInt(dr)||0,mgPerDay:parseInt(mg)||0,motivation:mot});onClose();};
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-primary)'}}>Settings</h3>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:20}}>
+        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={toLocalDateStr(Date.now())} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
+        <div><label style={ls}>Caffeinated Drinks Per Day</label><input type="number" value={dr} onChange={e=>setDr(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Mg Caffeine Per Day (optional)</label><input type="number" value={mg} onChange={e=>setMg(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Motivation</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
+        {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
+        <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
+          <a href="tel:988" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:8}}>
+            <strong>988</strong> &mdash; Suicide &amp; Crisis Lifeline (call or text, 24/7)
+          </a>
+          <a href="tel:18006624357" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:10}}>
+            <strong>1-800-662-4357</strong> &mdash; SAMHSA National Helpline (free, confidential, 24/7)
+          </a>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5,margin:0}}>
+            Clear Energy gives you information, not medical advice. It is not a medical device and does not diagnose or treat anything. For anything about your health, talk to a doctor or another qualified professional.
+          </p>
+        </div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Your data stays on this device only.</p>
+        </div>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
+        <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#f97316,#ea580c)',color:'#fff'}}>Save Changes</button>
+        <button onClick={handleExport} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Export My Data (JSON)</button>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped &mdash; restart my clock</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--text-secondary)',fontSize:13,marginBottom:10,lineHeight:1.5}}>A slip is part of recovery, not the end of it. Your craving log and history stay. Restart the clock from now?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmSlip(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Keep going</button>
+              <button onClick={handleSlip} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'linear-gradient(135deg,#f97316,#ea580c)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Restart clock</button>
+            </div>
+          </div>}
+        </div>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid rgba(244,63,94,0.2)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--rose)',fontSize:13,marginBottom:10}}>This will erase everything. Are you sure?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmReset(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Cancel</button>
+              <button onClick={onReset} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'var(--rose)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Erase Everything</button>
+            </div>
+          </div>}
+        </div>
+      </div>
+    </div>
+  </div>;
+}
+
+function HealthRingCard({category,elapsed,onClick,delay=0}) {
+  const{progress,currentLabel}=getCategoryProgress(category,elapsed);
+  return <div onClick={onClick} style={{background:'var(--bg-card)',borderRadius:'var(--radius-lg)',padding:'18px 12px',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer',border:'1px solid var(--border-subtle)',transition:'all 0.25s var(--ease-out)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
+    <ProgressRing progress={progress} color={category.color} size={80} strokeWidth={6}>
+      <span style={{fontSize:22}}>{category.icon}</span>
+      <span style={{fontSize:10,fontWeight:700,color:category.color}}>{Math.round(progress)}%</span>
+    </ProgressRing>
+    <span style={{fontSize:12,fontWeight:600,marginTop:10,color:'var(--text-primary)',textAlign:'center'}}>{category.label}</span>
+    <span style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:3,lineHeight:1.3,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{currentLabel}</span>
+  </div>;
+}
+
+function AchievementBadge({ach,unlocked,isNew}) {
+  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.55,transition:'opacity 0.5s',position:'relative'}}>
+    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:'var(--bg-card)',border:unlocked?'2px solid var(--border-medium)':'2px solid var(--border-subtle)',boxShadow:unlocked&&isNew?'0 0 16px rgba(249,115,22,0.25)':'none'}}>{ach.icon}</div>
+    <span style={{fontSize:9,color:unlocked?'var(--text-primary)':'var(--text-secondary)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
+    <span style={{fontSize:8,color:'var(--text-muted)'}}>{unlocked?'\u2713':formatTime(ach.time)}</span>
+  </div>;
+}
+
+function ThemeToggle({ prefix }) {
+  const [theme, setTheme] = React.useState(() => localStorage.getItem(prefix + '_theme') || 'auto');
+  React.useEffect(() => {
+    const applyTheme = () => {
+      let resolved = theme;
+      if (theme === 'auto') { resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      document.documentElement.setAttribute('data-theme', resolved);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#0c0806' : '#f8fafc');
+    };
+    applyTheme();
+    localStorage.setItem(prefix + '_theme', theme);
+    if (theme === 'auto') {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      mq.addEventListener('change', applyTheme);
+      return () => mq.removeEventListener('change', applyTheme);
+    }
+  }, [theme]);
+  const cycle = () => { const order = ['auto', 'light', 'dark']; setTheme(order[(order.indexOf(theme) + 1) % 3]); };
+  const icons = { auto: '\u25D0', light: '\u2600', dark: '\u263E' };
+  const labels = { auto: 'Auto', light: 'Light', dark: 'Dark' };
+  return (
+    <button onClick={cycle} title={`Theme: ${labels[theme]}`} style={{
+      background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',
+      color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',
+      fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'
+    }}>{icons[theme]}</button>
+  );
+}
+
+function Dashboard({config,onUpdateConfig,onReset}) {
+  const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
+  const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
+  const[showBreathing,setShowBreathing]=useState(false);
+  const [showCravingLog, setShowCravingLog] = useState(false);
+  const [prefillBreathing, setPrefillBreathing] = useState(false);
+  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(null);
+  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+  const elapsed=getElapsed(config.quitDate);
+  const moneySaved=((elapsed/D)*config.dailySpend).toFixed(2);
+  const daysClean=Math.floor(elapsed/D);
+  const drinksAvoided=daysClean*(config.drinksPerDay||0);
+  const mgAvoided=daysClean*(config.mgPerDay||0);
+  const overallHealth=getWeightedHealth(elapsed);
+  const unlockedAchs=ACHIEVEMENTS.filter(a=>elapsed>=a.time);
+  const unlockedCount=unlockedAchs.length;
+  const latestUnlocked=[...ACHIEVEMENTS].reverse().find(a=>elapsed>=a.time);
+  const nextAch=ACHIEVEMENTS.find(a=>elapsed<a.time);
+  const motivation=getDailyMotivation(elapsed);
+  const tip=getContextualTip(elapsed);
+  const seenAchs=Store.getSeen();
+
+  useEffect(()=>{
+    if(prevRef.current===null){prevRef.current=unlockedCount;return;}
+    if(unlockedCount>prevRef.current){
+      const newest=unlockedAchs[unlockedAchs.length-1];
+      if(!seenAchs.includes(newest.label)){
+        setNewAchievement(newest);Store.markSeen(newest.label);
+        setTimeout(()=>{setNewAchievement(null);},4500);
+      }
+    }
+    prevRef.current=unlockedCount;
+  },[unlockedCount]);
+
+  const ts=(a)=>({flex:1,padding:'12px 0',textAlign:'center',fontSize:11,fontWeight:700,color:a?'var(--orange-primary)':'var(--text-muted)',cursor:'pointer',transition:'all 0.2s',letterSpacing:0.8,textTransform:'uppercase',background:'none',border:'none',borderBottom:a?'2px solid var(--orange-primary)':'2px solid transparent',fontFamily:'var(--font-body)'});
+
+  const thirdStat = drinksAvoided > 0 ? {label:'Drinks Skipped',value:drinksAvoided.toLocaleString(),color:'var(--orange-bright)'} : mgAvoided > 0 ? {label:'Mg Avoided',value:mgAvoided.toLocaleString(),color:'var(--orange-bright)'} : {label:'Milestones',value:`${unlockedCount}/${ACHIEVEMENTS.length}`,color:'var(--orange-bright)'};
+
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',maxWidth:440,margin:'0 auto',position:'relative'}}>
+    {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(249,115,22,0.12),rgba(167,139,250,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
+      <span style={{fontSize:36}}>{newAchievement.icon}</span>
+      <div>
+        <div style={{fontSize:10,color:'var(--orange-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Achievement Unlocked</div>
+        <div style={{fontSize:15,fontWeight:700,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
+      </div>
+    </div>}
+
+    <div style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,color:'var(--text-primary)'}}>Clear Energy</h1>
+      <div style={{display:'flex',gap:8}}>
+        <ThemeToggle prefix="clearenergy" />
+        <button onClick={()=>setShowBreathing(true)} style={{background:'rgba(249,115,22,0.08)',border:'1px solid rgba(249,115,22,0.15)',color:'var(--orange-primary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}} title="Craving? Breathe.">{"\uD83C\uDF2C\uFE0F"}</button>
+        <button onClick={()=>setShowSettings(true)} style={{background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
+      </div>
+    </div>
+
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
+      <ProgressRing progress={overallHealth} color="var(--orange-primary)" size={160} strokeWidth={10}>
+        <span style={{fontSize:38,fontWeight:300,color:'var(--orange-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
+        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Repaired</span>
+      </ProgressRing>
+      <div style={{marginTop:14,fontSize:18,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)}</div>
+      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
+      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearenergy_streaks')||'[]');if(!s.length)return null;const prior=s.reduce((t,x)=>t+(x.days||0),0);const total=prior+daysClean;return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>{total.toLocaleString()} free days so far</div>}catch{return null}})()}
+      {config.motivation && <div style={{fontSize:11,color:'var(--orange-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
+    </div>
+
+    <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
+      {[
+        {label:'Saved',value:`$${moneySaved}`,color:'var(--orange-primary)'},
+        {label:'Days',value:daysClean.toLocaleString(),color:'var(--orange-bright)'},
+        thirdStat
+      ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
+        <div style={{fontSize:18,fontWeight:700,color:s.color,letterSpacing:-0.5}}>{s.value}</div>
+        <div style={{fontSize:9,color:'var(--text-muted)',fontWeight:600,marginTop:3,textTransform:'uppercase',letterSpacing:0.5}}>{s.label}</div>
+      </div>)}
+    </div>
+
+    <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'linear-gradient(135deg,rgba(249,115,22,0.04),rgba(167,139,250,0.02))',borderLeft:'3px solid var(--orange-primary)'}}>
+      <p style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6,fontStyle:'italic',fontFamily:'var(--font-display)'}}>&ldquo;{motivation}&rdquo;</p>
+    </div>
+
+    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+      <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{tip}</p>
+    </div>
+
+    {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-medium)',display:'flex',alignItems:'center',gap:14}}>
+      <span style={{fontSize:28}}>{nextAch.icon}</span>
+      <div style={{flex:1}}>
+        <div style={{fontSize:10,color:'var(--orange-primary)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
+        <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
+        <div style={{fontSize:11,color:'var(--text-muted)'}}>{nextAch.time-elapsed>0?`in ${formatDuration(nextAch.time-elapsed)}`:'Almost there...'}</div>
+      </div>
+      <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(249,115,22,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--orange-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
+    </div>}
+
+    <div style={{display:'flex',margin:'20px 20px 0',gap:0}}>
+      <button style={ts(activeTab==='health')} onClick={()=>setActiveTab('health')}>Recovery</button>
+      <button style={ts(activeTab==='badges')} onClick={()=>setActiveTab('badges')}>Milestones</button>
+      <button style={ts(activeTab === 'cravings')} onClick={() => setActiveTab('cravings')}>Cravings</button>
+    </div>
+
+    <div style={{padding:'16px 20px 120px'}}>
+      {activeTab==='health'&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+        {HEALTH_CATEGORIES.map((cat,i)=><HealthRingCard key={cat.id} category={cat} elapsed={elapsed} onClick={()=>setDetailCat(cat)} delay={i*60}/>)}
+      </div>}
+      {activeTab==='badges'&&<>
+        {latestUnlocked&&<div style={{padding:24,borderRadius:'var(--radius-lg)',marginBottom:16,textAlign:'center',background:'linear-gradient(135deg,rgba(249,115,22,0.06),rgba(249,115,22,0.02))',border:'1px solid var(--border-medium)',animation:'scaleIn 0.4s var(--ease-spring)'}}>
+          <span style={{fontSize:44}}>{latestUnlocked.icon}</span>
+          <div style={{fontFamily:'var(--font-display)',fontSize:18,color:'var(--orange-primary)',marginTop:10}}>{latestUnlocked.label}</div>
+          <div style={{fontSize:13,color:'var(--text-secondary)',marginTop:6,lineHeight:1.5}}>{latestUnlocked.desc}</div>
+        </div>}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4, 1fr)',gap:14}}>
+          {ACHIEVEMENTS.map((ach,i)=>{const unlocked=elapsed>=ach.time;const isNew=unlocked&&!seenAchs.includes(ach.label);return <AchievementBadge key={i} ach={ach} unlocked={unlocked} isNew={isNew}/>;
+          })}
+        </div>
+      </>}
+      {activeTab === 'cravings' && <CravingsTab onOpenLog={() => { setPrefillBreathing(false); setShowCravingLog(true); }} />}
+    </div>
+
+    <DetailModal category={detailCat} elapsed={elapsed} onClose={()=>setDetailCat(null)}/>
+    {showSettings&&<SettingsModal config={config} onSave={c=>{Store.save(c);onUpdateConfig(c);}} onReset={onReset} onClose={()=>setShowSettings(false)}/>}
+    {showBreathing&&<BreathingExercise onClose={()=>setShowBreathing(false)} onLogCraving={(fromBreathing)=>{setPrefillBreathing(fromBreathing);setShowCravingLog(true);}}/>}
+    {showCravingLog && <CravingLogModal onClose={() => setShowCravingLog(false)} prefillBreathing={prefillBreathing} onSave={(entry) => { CravingStore.add(entry); }} />}
+  </div>;
+}
+
+// One-time cleanup: this suite is free forever. Remove the monetization keys
+// that older builds wrote, so nobody is left mid-"trial".
+(function(){
+  try {
+    ['clearenergy_first_opened','clearenergy_paywall_snooze','clear_suite_unlocked',
+     'clear_suite_unlock_method','clear_suite_promo_code']
+      .forEach(function(k){ localStorage.removeItem(k); });
+  } catch (e) {}
+})();
+
+function App() {
+  const[config,setConfig]=useState(()=>Store.get());
+  const[showOnboarding,setShowOnboarding]=useState(()=>!Store.hasOnboarded()&&!Store.get());
+  const handleSetup=(c)=>{Store.save(c);setConfig(c);};
+  const handleUpdate=(c)=>{Store.save(c);setConfig(c);};
+  const handleReset=()=>{Store.clear();CravingStore.clear();['clearenergy_seen','clearenergy_onboarded','clearenergy_streaks'].forEach(k=>localStorage.removeItem(k));setConfig(null);setShowOnboarding(true);};
+  if(showOnboarding)return<Onboarding onComplete={()=>setShowOnboarding(false)}/>;
+  if(!config||!config.quitDate)return<SetupScreen onSave={handleSetup}/>;
+  return <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script>
+/* Clear Suite update channel.
+   Deliberately plain JS in its own script tag, NOT a React component: this
+   must keep working when React/Babel fail to load, because that is exactly
+   the deploy an update needs to repair. */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+
+  var MIN_INTERVAL  = 30 * 1000;
+  var POLL_INTERVAL = 30 * 60 * 1000;
+  var hadController = !!navigator.serviceWorker.controller;
+  var lastCheck     = Date.now();
+  var reg           = null;
+
+  window.__CS_VERSION = null;
+
+  function show() {
+    if (document.getElementById('cs-update')) return;
+    var el = document.createElement('div');
+    el.id = 'cs-update';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    /* zIndex 90 sits BELOW the app's modals (zIndex 100), so an open craving
+       log or breathing overlay hides this automatically. */
+    el.style.cssText =
+      'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:90;' +
+      'width:calc(100% - 32px);max-width:380px;box-sizing:border-box;' +
+      'padding:14px 16px;border-radius:var(--radius-lg);' +
+      'background:linear-gradient(135deg,var(--accent-glow),var(--surface-faint)),var(--bg-card);' +
+      'border:1px solid var(--border-medium);backdrop-filter:blur(16px);' +
+      '-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.4);' +
+      'display:flex;align-items:center;gap:12px;animation:slideDown 0.5s var(--ease-spring);' +
+      'font-family:var(--font-body);letter-spacing:-0.01em';
+
+    var txt = document.createElement('div');
+    txt.style.cssText = 'flex:1;min-width:0';
+    txt.innerHTML =
+      '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;' +
+      'color:var(--accent-primary)">Update ready</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-top:2px">' +
+      'A new version is ready</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px">' +
+      'Your progress is saved either way.</div>';
+
+    var reload = document.createElement('button');
+    reload.textContent = 'Reload';
+    reload.style.cssText =
+      'flex:none;background:var(--accent-primary);border:none;color:var(--bg-deep);' +
+      'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.3px;' +
+      'padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer';
+    reload.onclick = function () { window.location.reload(); };
+
+    var later = document.createElement('button');
+    later.setAttribute('aria-label', 'Dismiss');
+    later.innerHTML = '×';
+    later.style.cssText =
+      'flex:none;background:var(--surface-soft);border:none;color:var(--text-secondary);' +
+      'width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1';
+    /* Dismiss only hides it. The update is already in Cache Storage, so the
+       user gets it on their next cold launch regardless. */
+    later.onclick = function () { el.remove(); };
+
+    el.appendChild(txt); el.appendChild(reload); el.appendChild(later);
+    document.body.appendChild(el);
+  }
+
+  function check() {
+    var now = Date.now();
+    if (now - lastCheck < MIN_INTERVAL) return;
+    lastCheck = now;
+    if (reg) { try { reg.update(); } catch (_) {} }
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
+    }
+  }
+
+  function askVersion() {
+    if (!navigator.serviceWorker.controller || !window.MessageChannel) return;
+    var ch = new MessageChannel();
+    ch.port1.onmessage = function (ev) {
+      if (ev.data && ev.data.type === 'VERSION') {
+        window.__CS_VERSION = ev.data.version;
+        window.dispatchEvent(new CustomEvent('cs-version', { detail: ev.data }));
+      }
+    };
+    navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [ch.port2]);
+  }
+
+  navigator.serviceWorker.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.type === 'UPDATE_READY') show();
+    else if (d.type === 'HTML_REPLACED') { window.__CS_VERSION = d.version; }
+  });
+
+  /* Do NOT reload here — the classic footgun that reloads a user mid-session. */
+  navigator.serviceWorker.addEventListener('controllerchange', askVersion);
+
+  /* iOS has no Periodic Background Sync, so every check is user-driven:
+     resume, focus, regained network. iOS also often restores a frozen page
+     instead of reloading, which is why pageshow/visibilitychange matter most. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') check();
+  });
+  window.addEventListener('focus', check);
+  window.addEventListener('online', check);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+  setInterval(function () { if (document.visibilityState === 'visible') check(); }, POLL_INTERVAL);
+
+  navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none' })
+    .then(function (r) {
+      reg = r;
+      askVersion();
+      r.addEventListener('updatefound', function () {
+        var nw = r.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', function () {
+          if (nw.state === 'activated' && hadController) show();
+        });
+      });
+    })
+    .catch(function () { /* SW unavailable: app still works, just no offline */ });
+})();
+</script>
+</body>
+</html>

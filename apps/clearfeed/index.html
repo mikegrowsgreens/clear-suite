@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0810">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Clear Feed">
+<meta name="description" content="Track your brain's recovery from social media and doomscrolling with research-based milestones and real-time progress.">
+<meta property="og:title" content="Clear Feed — Social Media & Doomscrolling Recovery Tracker">
+<meta property="og:description" content="Track your brain's recovery from social media and doomscrolling with research-based milestones. No ads, no accounts, no tracking.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://clearfeed.mikegrowsgreens.com">
+<meta property="og:image" content="https://clearfeed.mikegrowsgreens.com/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clear Feed — Social Media & Doomscrolling Recovery Tracker">
+<meta name="twitter:description" content="Track your brain's recovery from social media and doomscrolling with research-based milestones. No ads, no accounts, no tracking.">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<title>Clear Feed - Social Media & Doomscrolling Recovery Tracker</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+[data-theme="dark"] {
+  --bg-deep:#0a0810;--bg-surface:#0f0d13;--bg-card:#141118;--bg-card-hover:#1a161f;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
+  --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
+  --input-bg:#0f1618;--modal-bg:#0a0e10;
+  --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
+  --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
+}
+[data-theme="light"] {
+  --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
+  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
+  --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
+  --input-bg:#f1f5f9;--modal-bg:#ffffff;
+  --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
+  --ring-track:rgba(0,0,0,0.08);--text-disabled:rgba(0,0,0,0.3);
+}
+:root{
+  --border-accent:rgba(139,92,246,0.25);
+  --violet-primary:#8b5cf6;--violet-bright:#a78bfa;--violet-muted:#7c3aed;--violet-dark:#4c1d95;
+  --purple:#a78bfa;--blue:#60a5fa;--amber:#fbbf24;--green:#a3e635;--rose:#fb7185;--orange:#fb923c;
+  --font-body:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --accent-primary:var(--violet-primary);--accent-glow:rgba(139,92,246,0.12);
+}
+html[data-theme="light"]{--violet-primary:#6d28d9;--violet-bright:#5b21b6;}
+body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type="number"]{-moz-appearance:textfield}
+::-webkit-scrollbar{width:0}
+button{font-family:var(--font-body)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 16px rgba(139,92,246,0.2)}50%{box-shadow:0 0 32px rgba(139,92,246,0.5),0 0 48px rgba(139,92,246,0.15)}}
+@keyframes breatheRing{0%{r:42;opacity:0.3}50%{r:56;opacity:0.8}100%{r:42;opacity:0.3}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg) scale(1);opacity:1}80%{opacity:1}100%{transform:translateY(130px) rotate(720deg) scale(0.5);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes ringDraw{from{stroke-dashoffset:var(--circ)}to{stroke-dashoffset:var(--offset)}}
+.milestone-new{animation:pulseGlow 2s ease-in-out 3}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="/vendor/react-18.2.0.production.min.js"></script>
+<script src="/vendor/react-dom-18.2.0.production.min.js"></script>
+<script src="/vendor/babel-7.23.9.min.js"></script>
+<script>
+(function() {
+  var theme = localStorage.getItem('clearfeed_theme') || 'auto';
+  var resolved = theme;
+  if (theme === 'auto') {
+    resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', resolved);
+})();
+</script>
+<script type="text/babel" data-type="module">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+const Store = {
+  _key: 'clearfeed_data',
+  get() { try { const d = localStorage.getItem(this._key); return d ? JSON.parse(d) : null } catch { return null } },
+  save(data) { try { localStorage.setItem(this._key, JSON.stringify({ ...data, updatedAt: Date.now() })) } catch {} },
+  clear() { localStorage.removeItem(this._key) },
+  getSeen() { try { const d = localStorage.getItem('clearfeed_seen'); return d ? JSON.parse(d) : [] } catch { return [] } },
+  markSeen(label) { try { const s = this.getSeen(); if (!s.includes(label)) { s.push(label); localStorage.setItem('clearfeed_seen', JSON.stringify(s)) } } catch {} },
+  hasOnboarded() { return localStorage.getItem('clearfeed_onboarded') === 'true' },
+  setOnboarded() { localStorage.setItem('clearfeed_onboarded', 'true') }
+};
+
+const CravingStore = {
+  _key: 'clearfeed_cravings',
+  getAll() { try { const d = localStorage.getItem(this._key); return d ? JSON.parse(d) : []; } catch { return []; } },
+  add(entry) { try { const all = this.getAll(); all.unshift({ ...entry, id: Date.now(), timestamp: Date.now() }); localStorage.setItem(this._key, JSON.stringify(all)); } catch {} },
+  clear() { localStorage.removeItem(this._key); }
+};
+function getCravingStats() {
+  const all = CravingStore.getAll();
+  if (all.length === 0) return null;
+  const now = Date.now();
+  const week = all.filter(c => now - c.timestamp < 7 * 86400000);
+  const surfed = all.filter(c => c.outcome === 'surfed');
+  const triggers = {};
+  all.forEach(c => { (c.triggers || []).forEach(t => { triggers[t] = (triggers[t] || 0) + 1; }); });
+  const topTriggers = Object.entries(triggers).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const weekAvg = week.length > 0 ? Math.round((week.reduce((s, c) => s + (c.intensity || 5), 0) / week.length) * 10) / 10 : 0;
+  return { total: all.length, thisWeek: week.length, surfedCount: surfed.length, surfedRate: all.length > 0 ? Math.round((surfed.length / all.length) * 100) : 0, topTriggers, weekAvgIntensity: weekAvg };
+}
+
+const H = 3600000, D = 86400000, Y = 365 * D;
+
+const CRAVING_TRIGGERS = [
+  { id:'boredom', label:'Boredom', icon:"\uD83D\uDE11" },
+  { id:'waiting', label:'Waiting in Line', icon:"\u23F3" },
+  { id:'inbed', label:'In Bed', icon:"\uD83D\uDECF\uFE0F" },
+  { id:'bathroom', label:'Bathroom', icon:"\uD83D\uDEBD" },
+  { id:'fomo', label:'FOMO', icon:"\uD83D\uDC40" },
+  { id:'notification', label:'Notification', icon:"\uD83D\uDD14" },
+  { id:'procrastination', label:'Procrastination', icon:"\uD83D\uDCDA" },
+  { id:'loneliness', label:'Loneliness', icon:"\uD83C\uDF27\uFE0F" },
+  { id:'anxiety', label:'Anxious', icon:"\uD83D\uDE30" },
+  { id:'autopilot', label:'Autopilot', icon:"\uD83E\uDD33" }
+];
+
+const CRAVING_ACHIEVEMENTS = [
+  { count: 1, label: "First Impulse", desc: "You logged your first urge to scroll. Awareness changes everything." },
+  { count: 5, label: "Pattern Spotter", desc: "5 urges logged. You are seeing your checking triggers clearly now." },
+  { count: 10, label: "Self-Aware", desc: "10 urges tracked. You know your reach-for-the-phone moments better than most." },
+  { count: 25, label: "Urge Surfer", desc: "25 urges to scroll surfed and documented." },
+  { count: 50, label: "Pattern Clear", desc: "50 logged. You can see the pattern clearly now \u2014 and a pattern you can see has lost its grip." }
+];
+
+/*
+ * CLEAR FEED v1.0 -- Social Media / Doomscrolling Cessation Recovery
+ * Sources:
+ *  Lambert et al. 2022, Cyberpsychology, Behavior & Social Networking:
+ *    one-week social media abstinence RCT (wellbeing, depression, anxiety)
+ *  Hunt et al. 2018, Journal of Social & Clinical Psychology (Penn):
+ *    limiting social media to 30 min/day reduced loneliness and depression
+ *  Gloria Mark, UC Irvine: attention switching, fragmentation, and refocus costs
+ *  Sleep research: pre-bed screen use, sleep onset latency, and sleep quality
+ *  Reviews of dopamine reward-prediction and variable-reward (slot machine) design
+ * Last audited: August 2026
+ */
+
+const HEALTH_CATEGORIES = [
+  { id:"attention", label:"Attention Span", icon:"\uD83C\uDFAF", color:"#8b5cf6", weight:0.25, milestones:[
+    {time:6*H,label:"First long feed-free stretch",pct:4,tip:"A few hours without checking is already the longest unbroken stretch many scrollers get all day."},
+    {time:24*H,label:"Fewer mid-task interruptions",pct:10,tip:"Every check costs minutes of refocus time. Today your tasks got more of your full attention."},
+    {time:72*H,label:"Attention residue clearing",pct:18,tip:"The mental tab the feed kept open is closing. Thoughts are completing instead of fragmenting."},
+    {time:7*D,label:"Focus stretches lengthening",pct:32,tip:"One week. Reading, working, and conversations hold your attention noticeably longer."},
+    {time:14*D,label:"Reading without drifting",pct:46,tip:"Two weeks. Long articles and books feel doable again. Your attention span is stretching back out."},
+    {time:21*D,label:"Sustained focus feels easier",pct:56,tip:"Three weeks. Entering focus takes less effort, and interruption urges arrive further apart."},
+    {time:30*D,label:"Deep-work sessions returning",pct:68,tip:"One month. Ninety-minute blocks of real concentration are back within reach."},
+    {time:60*D,label:"Task-switching urge much weaker",pct:80,tip:"Two months. The reflex to flick away from hard things has largely faded."},
+    {time:90*D,label:"Deep-work capacity rebuilt",pct:90,tip:"Three months. Sustained, single-task attention is your working norm again."},
+    {time:Y,label:"Sustained attention is your default",pct:97,tip:"A year of owning your attention. Long-form thinking is simply how your mind works now."}
+  ]},
+  { id:"dopamine", label:"Dopamine Reset", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.25, milestones:[
+    {time:6*H,label:"First urges to check hitting",pct:3,tip:"The feed trained your brain with unpredictable rewards, like a slot machine. The pull is chemical, not weakness."},
+    {time:24*H,label:"Urge spikes at their peak",pct:8,tip:"The first 24-72 hours bring the strongest urges. Each one peaks and passes in minutes."},
+    {time:72*H,label:"Peak urge window passing",pct:18,tip:"Days 1-3 are typically the hardest. The reflex to reach for the phone starts weakening from here."},
+    {time:7*D,label:"Phantom-check reflex fading",pct:32,tip:"One week. Unlocking your phone with no destination in mind is happening less and less."},
+    {time:14*D,label:"Reaching for the phone rarer",pct:46,tip:"Two weeks. Phantom checking fades noticeably over the first fortnight. Idle hands stay idle."},
+    {time:21*D,label:"Novelty-seeking loop quieting",pct:58,tip:"Three weeks. Your brain is asking for new content less often. Silence is comfortable again."},
+    {time:30*D,label:"Slow pleasures rewarding again",pct:70,tip:"One month. Walks, meals, music, and conversation register as genuinely satisfying without a screen chaser."},
+    {time:60*D,label:"Urges rare and brief",pct:84,tip:"Two months. Urges still visit occasionally but leave quickly. The loop is broken."},
+    {time:90*D,label:"Reward system recalibrated",pct:93,tip:"Three months. Everyday life produces enough dopamine on its own. The feed lost its leverage."},
+    {time:Y,label:"The feed holds no pull",pct:98,tip:"A year out. Infinite scroll reads as noise, not reward. Your reward system answers to you."}
+  ]},
+  { id:"sleep", label:"Sleep", icon:"\uD83D\uDE34", color:"#a78bfa", weight:0.15, milestones:[
+    {time:24*H,label:"First night without pre-bed scrolling",pct:6,tip:"No blue light or arousing content before sleep. Your brain got to wind down the way it was built to."},
+    {time:72*H,label:"Falling asleep a little faster",pct:15,tip:"Pre-bed screen use is linked to longer sleep onset. Three nights clean and the gap is already closing."},
+    {time:7*D,label:"Bedtime drifting earlier",pct:30,tip:"One week without revenge-scrolling past midnight. You are recovering the sleep the feed was stealing."},
+    {time:14*D,label:"Sleep onset improving",pct:45,tip:"Two weeks. Falling asleep is faster and the 2am wake-and-check habit is fading."},
+    {time:30*D,label:"Deeper, less fragmented sleep",pct:62,tip:"One month. Fewer night wakings and less morning grogginess. Sleep debt is being repaid."},
+    {time:60*D,label:"Waking without reaching for the phone",pct:78,tip:"Two months. Mornings start with your own thoughts instead of everyone else's."},
+    {time:90*D,label:"Sleep routine rebuilt",pct:90,tip:"Three months. A consistent wind-down and wake cycle with no feed at either end."},
+    {time:Y,label:"Healthy sleep locked in",pct:97,tip:"A year of screen-free nights. Your sleep no longer competes with an algorithm."}
+  ]},
+  { id:"mood", label:"Mood & Anxiety", icon:"\uD83C\uDF24\uFE0F", color:"#fbbf24", weight:0.20, milestones:[
+    {time:12*H,label:"FOMO spikes beginning",pct:3,tip:"Worrying you are missing something is the withdrawal talking. Almost nothing in the feed was for you."},
+    {time:24*H,label:"Comparison inputs cut off",pct:8,tip:"One day without curated highlight reels to measure yourself against. The comparison engine is starved."},
+    {time:72*H,label:"Restlessness peaking, then easing",pct:16,tip:"The anxious itch to check peaks in the first few days, then genuinely eases."},
+    {time:7*D,label:"Measurable wellbeing gains",pct:34,tip:"One week. A randomized trial (Lambert et al. 2022) found significant improvements in wellbeing, depression, and anxiety after just one week off."},
+    {time:14*D,label:"FOMO subsiding",pct:48,tip:"Two weeks. What felt like missing out now feels like being spared. The urgency was manufactured."},
+    {time:30*D,label:"Baseline anxiety lower",pct:64,tip:"One month. No doomscroll cortisol drip. Your nervous system runs on your life, not the news cycle."},
+    {time:60*D,label:"Mood steadier day to day",pct:80,tip:"Two months. Your mood no longer swings with strangers' opinions and engagement bait."},
+    {time:90*D,label:"Comparison habit largely broken",pct:91,tip:"Three months. You measure your life against your own yardstick again."},
+    {time:Y,label:"Mood no longer tied to a feed",pct:97,tip:"A year free. Your emotional baseline belongs to you, not to an engagement algorithm."}
+  ]},
+  { id:"connection", label:"Real-World Connection", icon:"\uD83E\uDD1D", color:"#a3e635", weight:0.15, milestones:[
+    {time:24*H,label:"Idle moments returning to you",pct:5,tip:"Queues, elevators, red lights. Today those moments were yours, not the feed's."},
+    {time:72*H,label:"Noticing your surroundings more",pct:14,tip:"Eyes up. People, weather, rooms. The world has been running this whole time."},
+    {time:7*D,label:"More present in conversations",pct:30,tip:"One week. No half-listening while a thumb scrolls. People can tell the difference."},
+    {time:14*D,label:"Reclaimed hours finding new uses",pct:45,tip:"Two weeks. The average heavy scroller reclaims 2+ hours a day. Yours are going somewhere real."},
+    {time:30*D,label:"Real interactions replacing parasocial ones",pct:62,tip:"One month. Actual friends over influencer feeds. Hunt et al. found less loneliness with less social media."},
+    {time:60*D,label:"Boredom breeding ideas again",pct:78,tip:"Two months. Unstimulated time is where plans, memories, and creativity come from. Yours is back."},
+    {time:90*D,label:"Offline life feels full",pct:90,tip:"Three months. Hobbies, people, and places fill the space the feed used to occupy."},
+    {time:Y,label:"Connection built on presence",pct:96,tip:"A year of showing up in person. Your relationships run on attention you actually have."}
+  ]}
+];
+
+const ACHIEVEMENTS = [
+  {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"One hour without the feed. The refresh reflex is already sitting idle."},
+  {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Possibly your longest feed-free stretch in months. Notice the quiet."},
+  {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day of your attention, unsold. Nobody monetized this morning."},
+  {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Phantom reaches for the phone are normal. Each one you notice loses power."},
+  {time:18*H,label:"Settling",icon:"\uD83D\uDD25",desc:"Urges to check may be building. They peak and pass in a few minutes."},
+  {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without the feed. Your dopamine system noticed."},
+  {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You fell asleep without scrolling. Your sleep got its bedtime back."},
+  {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"The novelty-seeking loop is quieting. Urges are starting to space out."},
+  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"The hardest urge window is passing. Restlessness fades from here."},
+  {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Idle moments feel less itchy. Your attention is knitting back together."},
+  {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Boredom is turning back into daydreaming. That is your mind healing."},
+  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"One week. Trials show measurable mood and wellbeing gains right at this mark."},
+  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Phantom checking fading fast. Your hands are learning new defaults."},
+  {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"FOMO subsiding. Focus stretches lengthening. Sleep deepening."},
+  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Reward pathways resetting. Slow, real pleasures feel good again."},
+  {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Checking is no longer your default idle state."},
+  {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"New habits consolidating. People notice you are more present."},
+  {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Your mornings and evenings belong to you again."},
+  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Deep focus comes easier. Baseline anxiety noticeably lower."},
+  {time:60*D,label:"Two Months",icon:"\uD83E\uDD89",desc:"Urges rare. Presence normal. Your relationship with your phone has changed."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. Deep-work capacity rebuilt. Your attention is fundamentally yours again."},
+  {time:180*D,label:"Six Months",icon:"\uD83D\uDC51",desc:"Half a year of reclaimed attention. Hundreds of hours redirected into a real life."},
+  {time:Y,label:"One Year Free",icon:"\uD83C\uDF1F",desc:"A year of your own attention. A full transformation, online and off."}
+];
+
+const MOTIVATIONAL = {
+  acute:[
+    "Your attention is coming back right now. Not in a week. Not tomorrow. Right now. Every hour off the feed counts.",
+    "The urge to check is a trained reflex, not a need. It will peak in a few minutes and pass whether you scroll or not.",
+    "The feed was engineered with variable rewards, the same mechanism as a slot machine. Stepping away is not deprivation. It is unhooking.",
+    "Nothing in the feed is decaying while you are gone. There was never anything to miss. The urgency was the product."
+  ],
+  peak:[
+    "Days 1-3 are the hardest. The restlessness, the phantom reaches, the itch. They are withdrawal, and they pass.",
+    "Every urge you ride out without checking physically weakens the neural loop that drives the next one.",
+    "Your attention span is already lengthening. Every uninterrupted task is a repetition that rebuilds it.",
+    "The boredom feels loud because your brain forgot what quiet is. Underneath it, your own thoughts are coming back online."
+  ],
+  recovery:[
+    "One week off social media measurably improves wellbeing and lowers anxiety in randomized trials. You are living the data.",
+    "Reading is getting easier. Conversations are landing deeper. This is attention restoration, and it is real.",
+    "Each week that passes, the pull of the feed gets a little quieter. You are literally rewiring your reward system.",
+    "Sleep deeper. Mornings yours. Hours back. These are not coincidences. This is what happens when you stop renting out your attention."
+  ],
+  healing:[
+    "Your idle moments belong to you again. Queues, walks, red lights. That is where thinking actually happens.",
+    "There is nothing left to get through. What you are doing now is consolidating. Making presence automatic. Permanent.",
+    "Focus, mood, sleep, real relationships. All trending up. Your brain is doing this by itself now.",
+    "You did not give up connection. You stopped feeding an engagement machine that sold your attention and called it community."
+  ],
+  healed:[
+    "Your attention has fundamentally recovered. Focus, sleep, mood, presence. All restored.",
+    "A year free. Thousands of reclaimed hours. An attention span that reads books and finishes thoughts.",
+    "You did not just delete an app. You opted out of a system designed to keep you anxious, comparing, and scrolling.",
+    "Nothing was taken from you. Your attention is simply yours again."
+  ]
+};
+
+function getElapsed(qd) { return Math.max(0, Date.now() - new Date(qd).getTime()) }
+function toLocalDateStr(d) { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); }
+function formatDuration(ms) {
+  if (ms < 0) return "0s";
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24),y=Math.floor(d/365);
+  if(y>0)return`${y}y ${d%365}d`;if(d>0)return`${d}d ${h%24}h`;
+  if(h>0)return`${h}h ${m%60}m`;if(m>0)return`${m}m ${s%60}s`;return`${s}s`;
+}
+function formatTime(ms) {
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24);
+  if(d>365){const y=Math.floor(d/365);return`${y} year${y>1?'s':''}`;}
+  if(d>0)return`${d} day${d>1?'s':''}`;if(h>0)return`${h} hour${h>1?'s':''}`;return`${m} min`;
+}
+function formatRelativeTime(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+  if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+  if (diff < 7*86400000) return `${Math.floor(diff/86400000)}d ago`;
+  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+function getPhase(elapsed) {
+  if(elapsed<24*H)return'acute';if(elapsed<72*H)return'peak';
+  if(elapsed<30*D)return'recovery';if(elapsed<180*D)return'healing';return'healed';
+}
+function getDailyMotivation(elapsed) {
+  const phase=getPhase(elapsed),msgs=MOTIVATIONAL[phase];
+  return msgs[Math.floor(elapsed/D)%msgs.length];
+}
+function getContextualTip(elapsed) {
+  if(elapsed<H)return"Your attention is already yours again. Expect reflexive reaches for the phone. Notice them, let them pass.";
+  if(elapsed<8*H)return"First urges to check arriving. Each one peaks and passes in a few minutes whether you scroll or not.";
+  if(elapsed<24*H)return"The refresh reflex is firing into nothing. Keep the phone out of reach during idle moments today.";
+  if(elapsed<48*H)return"Restlessness and phantom checking are normal withdrawal. Boredom is your brain relearning quiet.";
+  if(elapsed<72*H)return"Peak urge window. Days 1-3 are typically the hardest. You are almost through it.";
+  if(elapsed<7*D)return"Urges spacing out. Sleep onset improving. Idle moments starting to feel like yours again.";
+  if(elapsed<14*D)return"Approaching the one-week mark where trials show measurable mood and wellbeing gains. Phantom checking fading.";
+  if(elapsed<30*D)return"FOMO subsiding. Focus stretches lengthening. Reclaimed hours looking for new homes. Give them one.";
+  if(elapsed<90*D)return"Deep attention rebuilding. Reward system recalibrating. Presence becoming your default, not your effort.";
+  if(elapsed<180*D)return"Baseline anxiety lower. Deep-work capacity back. Urges rare and weak.";
+  if(elapsed<Y)return"Approaching the one-year mark. Your attention span, sleep, and mood run on your life, not a feed.";
+  return"Full recovery. Your attention, your time, and your mood answer to you, not to an algorithm.";
+}
+function getCategoryProgress(cat, elapsed) {
+  let progress=0,currentLabel="Not started",currentTip="",nextLabel=cat.milestones[0]?.label||"",nextTime=cat.milestones[0]?.time||0;
+  for(let i=0;i<cat.milestones.length;i++){
+    const m=cat.milestones[i];
+    if(elapsed>=m.time){
+      progress=m.pct;currentLabel=m.label;currentTip=m.tip||"";
+      if(i+1<cat.milestones.length){
+        const next=cat.milestones[i+1];const segE=elapsed-m.time;const segT=next.time-m.time;
+        const eased=1-Math.pow(1-Math.min(segE/segT,1),2);
+        progress=m.pct+eased*(next.pct-m.pct);nextLabel=next.label;nextTime=next.time;
+      }else{nextLabel="";nextTime=0;}
+    }
+  }
+  if(elapsed<(cat.milestones[0]?.time||0)){
+    const f=cat.milestones[0];progress=(elapsed/f.time)*f.pct;
+    currentLabel="Recovery beginning";currentTip=f.tip||"";
+  }
+  return{progress:Math.min(progress,100),currentLabel,currentTip,nextLabel,nextTime};
+}
+function getWeightedHealth(elapsed) {
+  return HEALTH_CATEGORIES.reduce((t,c)=>t+getCategoryProgress(c,elapsed).progress*c.weight,0);
+}
+
+// COMPONENTS
+function ProgressRing({progress,color,size=100,strokeWidth=8,animated=true,children}) {
+  const r=(size-strokeWidth)/2,circ=2*Math.PI*r,offset=circ-(progress/100)*circ;
+  return <div style={{position:'relative',width:size,height:size}}>
+    <svg width={size} height={size} style={{transform:'rotate(-90deg)'}}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" style={{stroke:'var(--ring-track)'}} strokeWidth={strokeWidth}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={strokeWidth} strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" style={animated?{'--circ':circ,'--offset':offset,animation:'ringDraw 1.2s var(--ease-out) forwards',transition:'stroke-dashoffset 1s var(--ease-out)'}:{transition:'stroke-dashoffset 1s var(--ease-out)'}}/>
+    </svg>
+    <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>{children}</div>
+  </div>;
+}
+
+function BreathingExercise({onClose, onLogCraving}) {
+  const[phase,setPhase]=useState('idle');
+  const[cycle,setCycle]=useState(0);
+  const[seconds,setSeconds]=useState(0);
+  const totalCycles=4;const timerRef=useRef(null);
+  const phases={inhale:4,hold:4,exhale:6};
+  useEffect(()=>{
+    if(phase==='idle'||phase==='done')return;
+    const dur=phases[phase];setSeconds(dur);
+    timerRef.current=setInterval(()=>{
+      setSeconds(prev=>{
+        if(prev<=1){clearInterval(timerRef.current);
+          if(phase==='inhale')setPhase('hold');
+          else if(phase==='hold')setPhase('exhale');
+          else if(phase==='exhale'){if(cycle+1>=totalCycles)setPhase('done');else{setCycle(c=>c+1);setPhase('inhale');}}
+          return 0;}
+        return prev-1;
+      });
+    },1000);
+    return()=>clearInterval(timerRef.current);
+  },[phase,cycle]);
+  const ringP=phase==='idle'?0:phase==='done'?100:((phases[phase]-seconds)/phases[phase])*100;
+  const pc=phase==='inhale'?'#8b5cf6':phase==='hold'?'#a78bfa':phase==='exhale'?'#a78bfa':'#8b5cf6';
+  const pl=phase==='idle'?'Ready':phase==='done'?'Complete':phase==='inhale'?'Breathe In':phase==='hold'?'Hold':'Breathe Out';
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.92)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',backdropFilter:'blur(20px)',animation:'fadeIn 0.3s ease-out'}}>
+    <div onClick={e=>e.stopPropagation()} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:32,padding:40,animation:'scaleIn 0.4s var(--ease-spring)'}}>
+      <div style={{textAlign:'center'}}>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:24,color:'var(--text-primary)',marginBottom:4}}>{phase==='done'?'You made it.':'Ride the Urge'}</h2>
+        <p style={{fontSize:13,color:'var(--text-secondary)'}}>{phase==='done'?'The urge to scroll has passed. You chose yourself.':'4-4-6 breathing to calm your nervous system'}</p>
+      </div>
+      <div style={{position:'relative'}}>
+        <ProgressRing progress={ringP} color={pc} size={180} strokeWidth={6} animated={false}>
+          <span style={{fontSize:48,fontWeight:300,color:pc,fontFamily:'var(--font-display)',animation:seconds>0?'countPulse 1s ease-in-out infinite':'none'}}>{phase==='idle'?'':phase==='done'?'\u2713':seconds}</span>
+          <span style={{fontSize:14,fontWeight:600,color:'var(--text-secondary)',marginTop:4,letterSpacing:1,textTransform:'uppercase'}}>{pl}</span>
+        </ProgressRing>
+        {phase!=='idle'&&phase!=='done'&&<svg width={180} height={180} style={{position:'absolute',top:0,left:0,transform:'rotate(-90deg)'}}><circle cx={90} cy={90} r={87} fill="none" stroke={pc} strokeWidth={1} opacity={0.15} style={{animation:'breatheRing 4s ease-in-out infinite'}}/></svg>}
+      </div>
+      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#8b5cf6':i===cycle&&phase!=='idle'?pc:'var(--surface-soft)',transition:'all 0.3s'}}/>)}</div>}
+      {phase==='idle'&&<button onClick={()=>setPhase('inhale')} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #8b5cf6, #7c3aed)',color:'#fff'}}>Begin</button>}
+      {phase==='done'&&<div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
+        <button onClick={() => { onLogCraving && onLogCraving(true); onClose(); }} style={{padding:'14px 48px',borderRadius:40,border:'none',cursor:'pointer',fontSize:15,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg, #8b5cf6, #7c3aed)',color:'#fff'}}>Log This Urge</button>
+        <button onClick={onClose} style={{padding:'10px 32px',borderRadius:40,border:'1px solid var(--border-medium)',cursor:'pointer',fontSize:13,fontWeight:600,fontFamily:'var(--font-body)',background:'transparent',color:'var(--text-secondary)'}}>I'm Good</button>
+      </div>}
+      <button onClick={onClose} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',padding:8}}>close</button>
+    </div>
+  </div>;
+}
+
+function CravingLogModal({ onClose, onSave, prefillBreathing }) {
+  const [intensity, setIntensity] = useState(5);
+  const [triggers, setTriggers] = useState([]);
+  const [note, setNote] = useState('');
+  const [usedBreathing, setUsedBreathing] = useState(prefillBreathing || false);
+  const [outcome, setOutcome] = useState('surfed');
+  const [saved, setSaved] = useState(false);
+  const toggleTrigger = (id) => setTriggers(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]);
+  const handleSave = () => {
+    onSave({ intensity, triggers, note, usedBreathing, outcome });
+    setSaved(true);
+    setTimeout(onClose, 1200);
+  };
+  if (saved) return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.92)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(20px)', animation:'fadeIn 0.2s ease-out' }}>
+      <div style={{ textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
+        <div style={{ fontSize:64, marginBottom:16 }}>{"\uD83C\uDF3F"}</div>
+        <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'#8b5cf6' }}>
+          {outcome === 'surfed' ? 'That was it leaving.' : 'Logged.'}
+        </h2>
+        <p style={{ fontSize:13, color:'var(--text-secondary)', marginTop:8 }}>
+          {outcome === 'surfed' ? 'That pull was the habit fading, not real need. Each urge you ride out is weaker.' : 'Noted, no verdict attached. Nothing you already rebuilt was undone.'}
+        </p>
+      </div>
+    </div>
+  );
+  return (
+    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:100, display:'flex', alignItems:'flex-end', justifyContent:'center', backdropFilter:'blur(12px)', animation:'fadeIn 0.2s ease-out' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background:'var(--bg-card)', borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
+          <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, color:'var(--text-primary)' }}>Log Urge to Scroll</h3>
+          <button onClick={onClose} style={{ background:'var(--surface-soft)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>{"\u00D7"}</button>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:10 }}>
+            <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase' }}>Intensity</label>
+            <span style={{ fontSize:28, fontWeight:300, color: intensity <= 3 ? '#a3e635' : intensity <= 6 ? '#fbbf24' : '#fb7185', fontFamily:'var(--font-display)' }}>{intensity}</span>
+          </div>
+          <div style={{ display:'flex', gap:4 }}>
+            {[1,2,3,4,5,6,7,8,9,10].map(n => (
+              <button key={n} onClick={() => setIntensity(n)} style={{
+                flex:1, height:36, borderRadius:'var(--radius-sm)', border:'none', cursor:'pointer',
+                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'var(--surface-faint)',
+                color: n <= intensity ? 'var(--text-primary)' : 'var(--text-muted)',
+                fontSize:11, fontWeight:700, fontFamily:'var(--font-body)', transition:'all 0.15s'
+              }}>{n}</button>
+            ))}
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between', marginTop:4 }}>
+            <span style={{ fontSize:9, color:'var(--text-muted)' }}>Mild</span>
+            <span style={{ fontSize:9, color:'var(--text-muted)' }}>Intense</span>
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>What triggered it?</label>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+            {CRAVING_TRIGGERS.map(t => {
+              const active = triggers.includes(t.id);
+              return (
+                <button key={t.id} onClick={() => toggleTrigger(t.id)} style={{
+                  padding:'8px 14px', borderRadius:20,
+                  border: active ? '1px solid #8b5cf6' : '1px solid var(--border-subtle)',
+                  background: active ? 'rgba(139,92,246,0.1)' : 'transparent',
+                  color: active ? '#8b5cf6' : 'var(--text-muted)',
+                  fontSize:12, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)',
+                  transition:'all 0.15s', display:'flex', alignItems:'center', gap:5
+                }}>
+                  <span style={{ fontSize:14 }}>{t.icon}</span> {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Used breathing exercise?</label>
+          <div style={{ display:'flex', gap:8 }}>
+            {[{ val: true, label: 'Yes' }, { val: false, label: 'No' }].map(opt => (
+              <button key={String(opt.val)} onClick={() => setUsedBreathing(opt.val)} style={{
+                flex:1, padding:'12px', borderRadius:'var(--radius-md)',
+                border: usedBreathing === opt.val ? '1px solid #8b5cf6' : '1px solid var(--border-subtle)',
+                background: usedBreathing === opt.val ? 'rgba(139,92,246,0.08)' : 'transparent',
+                color: usedBreathing === opt.val ? '#8b5cf6' : 'var(--text-muted)',
+                fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s'
+              }}>{opt.label}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom:20 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Outcome</label>
+          <div style={{ display:'flex', gap:8 }}>
+            <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid #8b5cf6' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'rgba(139,92,246,0.08)' : 'transparent', color: outcome === 'surfed' ? '#8b5cf6' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
+              <div style={{ fontSize:20, marginBottom:4 }}>{"\uD83C\uDF3F"}</div>It passed
+            </button>
+            <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'rgba(251,113,133,0.08)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
+              <div style={{ fontSize:20, marginBottom:4 }}>{"\uD83D\uDCDD"}</div>I scrolled
+            </button>
+          </div>
+        </div>
+        <div style={{ marginBottom:24 }}>
+          <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:8 }}>Note (optional)</label>
+          <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What were you feeling? Where were you?" rows={2}
+            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-faint)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
+        </div>
+        <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #8b5cf6, #7c3aed)', color:'#fff' }}>Save</button>
+      </div>
+    </div>
+  );
+}
+
+function CravingsTab({ onOpenLog }) {
+  const stats = getCravingStats();
+  const all = CravingStore.getAll();
+  const triggerMap = {};
+  CRAVING_TRIGGERS.forEach(t => { triggerMap[t.id] = t; });
+  return <div style={{ animation:'fadeIn 0.3s ease-out' }}>
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+      <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)' }}>Urge Journal</h3>
+      <button onClick={onOpenLog} style={{ padding:'8px 16px', borderRadius:20, border:'1px solid var(--border-medium)', background:'rgba(139,92,246,0.06)', color:'#8b5cf6', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'var(--font-body)' }}>+ Log</button>
+    </div>
+    {stats && <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:16 }}>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#8b5cf6' }}>{stats.total}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Total</div>
+      </div>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#a3e635' }}>{stats.thisWeek}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>This Week</div>
+      </div>
+      <div style={{ textAlign:'center', padding:'12px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize:20, fontWeight:700, color:'#fbbf24' }}>{stats.weekAvgIntensity}</div>
+        <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', marginTop:2 }}>Avg This Wk</div>
+      </div>
+    </div>}
+    {stats && stats.topTriggers.length > 0 && <div style={{ marginBottom:16, padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>Top Triggers</div>
+      <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+        {stats.topTriggers.map(([id, count]) => {
+          const t = triggerMap[id];
+          return t ? <span key={id} style={{ fontSize:12, color:'var(--text-secondary)', display:'flex', alignItems:'center', gap:4 }}>{t.icon} {t.label} <span style={{ color:'#8b5cf6', fontWeight:700 }}>({count})</span></span> : null;
+        })}
+      </div>
+    </div>}
+    {CRAVING_ACHIEVEMENTS.map((ach, i) => {
+      const unlocked = stats && stats.total >= ach.count;
+      return <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 0', opacity: unlocked ? 1 : 0.7 }}>
+        <div style={{ width:32, height:32, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, background: unlocked ? 'rgba(139,92,246,0.1)' : 'var(--bg-card)', border: unlocked ? '1px solid rgba(139,92,246,0.2)' : '1px solid var(--border-subtle)' }}>{unlocked ? "\u2713" : "\u00B7"}</div>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:13, fontWeight:600, color: unlocked ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{ach.label}</div>
+          <div style={{ fontSize:11, color:'var(--text-muted)' }}>{ach.desc}</div>
+        </div>
+        <span style={{ fontSize:10, color:'var(--text-muted)' }}>{ach.count}x</span>
+      </div>;
+    })}
+    {all.length > 0 && <div style={{ marginTop:16, borderTop:'1px solid var(--border-subtle)', paddingTop:16 }}>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:0.5, marginBottom:12 }}>Recent Entries</div>
+      {all.slice(0, 10).map(c => (
+        <div key={c.id} style={{ padding:'10px 0', borderBottom:'1px solid var(--border-subtle)', display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ width:28, height:28, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, background: c.outcome === 'surfed' ? 'rgba(163,230,53,0.1)' : 'rgba(251,113,133,0.1)' }}>{c.outcome === 'surfed' ? "\uD83C\uDF3F" : "\uD83D\uDCDD"}</div>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:12, color:'var(--text-primary)', display:'flex', gap:6 }}>
+              <span style={{ color: c.intensity <= 3 ? '#a3e635' : c.intensity <= 6 ? '#fbbf24' : '#fb7185', fontWeight:700 }}>{c.intensity}/10</span>
+              {(c.triggers || []).slice(0, 2).map(tid => { const t = triggerMap[tid]; return t ? <span key={tid} style={{ color:'var(--text-muted)' }}>{t.icon}</span> : null; })}
+            </div>
+            {c.note && <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>{c.note}</div>}
+          </div>
+          <span style={{ fontSize:10, color:'var(--text-muted)' }}>{formatRelativeTime(c.timestamp)}</span>
+        </div>
+      ))}
+    </div>}
+    {all.length === 0 && <div style={{ textAlign:'center', padding:'40px 20px' }}>
+      <div style={{ fontSize:40, marginBottom:12 }}>{"\uD83C\uDF3F"}</div>
+      <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6 }}>No urges logged yet.</p>
+      <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>When the urge to scroll hits, log it here or use the breathing button.</p>
+    </div>}
+  </div>;
+}
+
+function Onboarding({onComplete}) {
+  const[step,setStep]=useState(0);
+  const slides=[
+    {icon:"\u2728",title:"You are not giving anything up",body:"The feed never satisfied you. It created the itch it then scratched, and sold your attention while you scrolled. Your curiosity worked fine before it was trained. You are not losing connection \u2014 you are getting your own attention back.",source:"You are already free. The rest is your brain catching up."},
+    {icon:"\uD83C\uDF31",title:"Your brain starts recovering immediately",body:"Within days of stepping away, urges to check start fading, sleep improves, and mood measurably lifts. A single week off social media improved wellbeing and reduced anxiety in a randomized trial.",source:"Lambert et al. 2022; Hunt et al. 2018"},
+    {icon:"\u26A1",title:"Five dimensions of recovery",body:"Track attention span, dopamine reset, sleep, mood and anxiety, and real-world connection. All grounded in published research on social media abstinence.",source:"Cyberpsychology; J. of Social & Clinical Psychology"},
+    {icon:"\uD83D\uDD12",title:"An app that doesn't want your attention",body:"Everything stays on your device. No ads, no accounts, no tracking, no feed. Check it as rarely as you like \u2014 it will never ping you. Clear your browser data to erase everything.",source:""}
+  ];
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
+    <div style={{maxWidth:360,width:'100%',textAlign:'center',animation:'fadeIn 0.6s ease-out'}}>
+      <div key={step} style={{animation:'scaleIn 0.4s var(--ease-spring)'}}>
+        <div style={{fontSize:56,marginBottom:24}}>{slides[step].icon}</div>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:26,color:'var(--text-primary)',marginBottom:12,lineHeight:1.2}}>{slides[step].title}</h2>
+        <p style={{fontSize:15,color:'var(--text-secondary)',lineHeight:1.6,marginBottom:8}}>{slides[step].body}</p>
+        {slides[step].source&&<p style={{fontSize:11,color:'var(--text-muted)',fontStyle:'italic'}}>{slides[step].source}</p>}
+      </div>
+      <div style={{display:'flex',gap:6,justifyContent:'center',margin:'32px 0'}}>
+        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--violet-primary)':'var(--surface-soft)',transition:'all 0.3s var(--ease-out)'}}/>)}
+      </div>
+      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#8b5cf6,#7c3aed)':'var(--surface-soft)',color:step===slides.length-1?'#fff':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
+      {step<slides.length-1&&<button onClick={()=>{Store.setOnboarded();onComplete();}} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',marginTop:16,padding:8}}>Skip</button>}
+    </div>
+  </div>;
+}
+
+function SetupScreen({onSave}) {
+  const[quitDate,setQuitDate]=useState('');const[quitTime,setQuitTime]=useState('');
+  const[hoursPerDay,setHoursPerDay]=useState('');const[checksPerDay,setChecksPerDay]=useState('');
+  const[monthlySpend,setMonthlySpend]=useState('');const[motivation,setMotivation]=useState('');
+  const ready=quitDate&&quitTime;
+  const[err,setErr]=useState('');
+  const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,hoursPerDay:parseFloat(hoursPerDay)||0,checksPerDay:parseInt(checksPerDay)||0,monthlySpend:parseFloat(monthlySpend)||0,motivation:motivation||''};Store.save(c);onSave(c);};
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
+    <div style={{maxWidth:380,width:'100%'}}>
+      <div style={{textAlign:'center',marginBottom:40}}>
+        <div style={{fontSize:48,marginBottom:16}}>{"\uD83C\uDF31"}</div>
+        <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,color:'var(--text-primary)',marginBottom:8}}>Clear Feed</h1>
+        <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your brain's recovery from social media and doomscrolling</p>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:20}}>
+        <div>
+          <label style={ls}>When did you quit?</label>
+          <div style={{display:'flex',gap:8}}>
+            <input type="date" value={quitDate} max={toLocalDateStr(Date.now())} onChange={e=>setQuitDate(e.target.value)} style={{...is,flex:1.2}}/>
+            <input type="time" value={quitTime} onChange={e=>setQuitTime(e.target.value)} style={{...is,flex:0.8}}/>
+          </div>
+        </div>
+        <div><label style={ls}>Hours per day on social media</label><input type="number" placeholder="e.g. 3" value={hoursPerDay} onChange={e=>setHoursPerDay(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Feed checks per day (phone pickups to scroll)</label><input type="number" placeholder="e.g. 40" value={checksPerDay} onChange={e=>setChecksPerDay(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Monthly spend on impulse buys from ads / creator subs ($, optional)</label><input type="number" placeholder="e.g. 50" value={monthlySpend} onChange={e=>setMonthlySpend(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Why are you doing this? (optional)</label><input type="text" placeholder="e.g. Focus, sleep, anxiety, presence" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/></div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
+        </div>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
+        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'var(--surface-faint)':'linear-gradient(135deg,#8b5cf6,#7c3aed)',color:!ready?'var(--text-disabled)':'#fff',transition:'all 0.3s'}}>Begin Tracking</button>
+      </div>
+    </div>
+  </div>;
+}
+
+function DetailModal({category,elapsed,onClose}) {
+  if(!category)return null;
+  const{progress}=getCategoryProgress(category,elapsed);
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)',animation:'fadeIn 0.2s ease-out'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:category.color}}>{category.icon} {category.label}</h3>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+      </div>
+      <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
+        <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
+          <span style={{fontSize:26,fontWeight:800,color:category.color}}>{Math.round(progress)}%</span>
+        </ProgressRing>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:8}}>
+        {category.milestones.map((m,i)=>{
+          const unlocked=elapsed>=m.time;const isCurrent=unlocked&&(i===category.milestones.length-1||elapsed<category.milestones[i+1]?.time);
+          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'var(--surface-faint)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
+            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'var(--surface-soft)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'var(--text-disabled)'}}>{m.label}</div>
+              <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
+              {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
+            </div>
+            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'var(--surface-soft)',flexShrink:0}}>{unlocked?'\u2713':formatTime(m.time)}</span>
+          </div>;
+        })}
+      </div>
+    </div>
+  </div>;
+}
+
+function SettingsModal({config,onSave,onReset,onClose}) {
+  const[qd,setQd]=useState(config.quitDate?toLocalDateStr(config.quitDate):'');
+  const[qt,setQt]=useState(config.quitDate?new Date(config.quitDate).toTimeString().slice(0,5):'');
+  const[hp,setHp]=useState(String(config.hoursPerDay||''));
+  const[cp,setCp]=useState(String(config.checksPerDay||''));
+  const[ms,setMs]=useState(String(config.monthlySpend||''));
+  const[mot,setMot]=useState(config.motivation||'');
+  const[confirmReset,setConfirmReset]=useState(false);
+  const[confirmSlip,setConfirmSlip]=useState(false);
+  const[err,setErr]=useState('');
+  const handleExport=()=>{
+    let streaks=[];try{streaks=JSON.parse(localStorage.getItem('clearfeed_streaks')||'[]')}catch{}
+    const data={app:'clearfeed',exportedAt:new Date().toISOString(),config:Store.get(),cravings:CravingStore.getAll(),milestonesSeen:Store.getSeen(),previousStreaks:streaks};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clearfeed-backup-'+toLocalDateStr(Date.now())+'.json';a.click();URL.revokeObjectURL(a.href);
+  };
+  const handleSlip=()=>{
+    try{
+      const streaks=JSON.parse(localStorage.getItem('clearfeed_streaks')||'[]');
+      streaks.push({quitDate:config.quitDate,endedAt:new Date().toISOString(),days:Math.floor(getElapsed(config.quitDate)/86400000)});
+      localStorage.setItem('clearfeed_streaks',JSON.stringify(streaks));
+    }catch{}
+    const n=new Date();
+    onSave({...config,quitDate:toLocalDateStr(n)+'T'+n.toTimeString().slice(0,5)});
+    onClose();
+  };
+  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,hoursPerDay:parseFloat(hp)||0,checksPerDay:parseInt(cp)||0,monthlySpend:parseFloat(ms)||0,motivation:mot});onClose();};
+  return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-primary)'}}>Settings</h3>
+        <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:20}}>
+        <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={toLocalDateStr(Date.now())} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
+        <div><label style={ls}>Hours Per Day on Social Media</label><input type="number" value={hp} onChange={e=>setHp(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Feed Checks Per Day</label><input type="number" value={cp} onChange={e=>setCp(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Monthly Impulse-Buy Spend ($)</label><input type="number" value={ms} onChange={e=>setMs(e.target.value)} style={is}/></div>
+        <div><label style={ls}>Motivation</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
+        {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
+        <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
+          <a href="tel:988" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:8}}>
+            <strong>988</strong> &mdash; Suicide &amp; Crisis Lifeline (call or text, 24/7)
+          </a>
+          <a href="tel:18006624357" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:10}}>
+            <strong>1-800-662-4357</strong> &mdash; SAMHSA National Helpline (free, confidential, 24/7)
+          </a>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5,margin:0}}>
+            Clear Feed gives you information, not medical advice. It is not a medical device and does not diagnose or treat anything. For anything about your mental health, talk to a doctor or another qualified professional.
+          </p>
+        </div>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Your data stays on this device only.</p>
+        </div>
+        {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
+        <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#8b5cf6,#7c3aed)',color:'#fff'}}>Save Changes</button>
+        <button onClick={handleExport} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Export My Data (JSON)</button>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped &mdash; restart my clock</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--text-secondary)',fontSize:13,marginBottom:10,lineHeight:1.5}}>A slip is part of recovery, not the end of it. Your urge log and history stay. Restart the clock from now?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmSlip(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Keep going</button>
+              <button onClick={handleSlip} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'linear-gradient(135deg,#8b5cf6,#7c3aed)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Restart clock</button>
+            </div>
+          </div>}
+        </div>
+        <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
+          {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid rgba(244,63,94,0.2)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
+          <div style={{textAlign:'center'}}>
+            <p style={{color:'var(--rose)',fontSize:13,marginBottom:10}}>This will erase everything. Are you sure?</p>
+            <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setConfirmReset(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Cancel</button>
+              <button onClick={onReset} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'var(--rose)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Erase Everything</button>
+            </div>
+          </div>}
+        </div>
+      </div>
+    </div>
+  </div>;
+}
+
+function HealthRingCard({category,elapsed,onClick,delay=0}) {
+  const{progress,currentLabel}=getCategoryProgress(category,elapsed);
+  return <div onClick={onClick} style={{background:'var(--bg-card)',borderRadius:'var(--radius-lg)',padding:'18px 12px',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer',border:'1px solid var(--border-subtle)',transition:'all 0.25s var(--ease-out)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
+    <ProgressRing progress={progress} color={category.color} size={80} strokeWidth={6}>
+      <span style={{fontSize:22}}>{category.icon}</span>
+      <span style={{fontSize:10,fontWeight:700,color:category.color}}>{Math.round(progress)}%</span>
+    </ProgressRing>
+    <span style={{fontSize:12,fontWeight:600,marginTop:10,color:'var(--text-primary)',textAlign:'center'}}>{category.label}</span>
+    <span style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:3,lineHeight:1.3,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{currentLabel}</span>
+  </div>;
+}
+
+function AchievementBadge({ach,unlocked,isNew}) {
+  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.55,transition:'opacity 0.5s',position:'relative'}}>
+    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:'var(--bg-card)',border:unlocked?'2px solid var(--border-medium)':'2px solid var(--border-subtle)',boxShadow:unlocked&&isNew?'0 0 16px rgba(139,92,246,0.25)':'none'}}>{ach.icon}</div>
+    <span style={{fontSize:9,color:unlocked?'var(--text-primary)':'var(--text-secondary)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
+    <span style={{fontSize:8,color:'var(--text-muted)'}}>{unlocked?'\u2713':formatTime(ach.time)}</span>
+  </div>;
+}
+
+function ThemeToggle({ prefix }) {
+  const [theme, setTheme] = React.useState(() => localStorage.getItem(prefix + '_theme') || 'auto');
+  React.useEffect(() => {
+    const applyTheme = () => {
+      let resolved = theme;
+      if (theme === 'auto') { resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      document.documentElement.setAttribute('data-theme', resolved);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#0a0810' : '#f8fafc');
+    };
+    applyTheme();
+    localStorage.setItem(prefix + '_theme', theme);
+    if (theme === 'auto') {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      mq.addEventListener('change', applyTheme);
+      return () => mq.removeEventListener('change', applyTheme);
+    }
+  }, [theme]);
+  const cycle = () => { const order = ['auto', 'light', 'dark']; setTheme(order[(order.indexOf(theme) + 1) % 3]); };
+  const icons = { auto: '\u25D0', light: '\u2600', dark: '\u263E' };
+  const labels = { auto: 'Auto', light: 'Light', dark: 'Dark' };
+  return (
+    <button onClick={cycle} title={`Theme: ${labels[theme]}`} style={{
+      background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',
+      color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',
+      fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'
+    }}>{icons[theme]}</button>
+  );
+}
+
+function Dashboard({config,onUpdateConfig,onReset}) {
+  const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
+  const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
+  const[showBreathing,setShowBreathing]=useState(false);
+  const [showCravingLog, setShowCravingLog] = useState(false);
+  const [prefillBreathing, setPrefillBreathing] = useState(false);
+  const[newAchievement,setNewAchievement]=useState(null);const prevRef=useRef(null);
+  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+  const elapsed=getElapsed(config.quitDate);
+  const moneySaved=((elapsed/D)*((config.monthlySpend||0)/30)).toFixed(2);
+  const daysClean=Math.floor(elapsed/D);
+  const hoursReclaimed=Math.round((elapsed/D)*(config.hoursPerDay||0));
+  const checksAvoided=daysClean*(config.checksPerDay||0);
+  const overallHealth=getWeightedHealth(elapsed);
+  const unlockedAchs=ACHIEVEMENTS.filter(a=>elapsed>=a.time);
+  const unlockedCount=unlockedAchs.length;
+  const latestUnlocked=[...ACHIEVEMENTS].reverse().find(a=>elapsed>=a.time);
+  const nextAch=ACHIEVEMENTS.find(a=>elapsed<a.time);
+  const motivation=getDailyMotivation(elapsed);
+  const tip=getContextualTip(elapsed);
+  const seenAchs=Store.getSeen();
+
+  useEffect(()=>{
+    if(prevRef.current===null){prevRef.current=unlockedCount;return;}
+    if(unlockedCount>prevRef.current){
+      const newest=unlockedAchs[unlockedAchs.length-1];
+      if(!seenAchs.includes(newest.label)){
+        setNewAchievement(newest);Store.markSeen(newest.label);
+        setTimeout(()=>{setNewAchievement(null);},4500);
+      }
+    }
+    prevRef.current=unlockedCount;
+  },[unlockedCount]);
+
+  const ts=(a)=>({flex:1,padding:'12px 0',textAlign:'center',fontSize:11,fontWeight:700,color:a?'var(--violet-primary)':'var(--text-muted)',cursor:'pointer',transition:'all 0.2s',letterSpacing:0.8,textTransform:'uppercase',background:'none',border:'none',borderBottom:a?'2px solid var(--violet-primary)':'2px solid transparent',fontFamily:'var(--font-body)'});
+
+  const thirdStat = hoursReclaimed > 0 ? {label:'Hours Reclaimed',value:hoursReclaimed.toLocaleString(),color:'var(--violet-bright)'} : checksAvoided > 0 ? {label:'Checks Skipped',value:checksAvoided.toLocaleString(),color:'var(--violet-bright)'} : {label:'Milestones',value:`${unlockedCount}/${ACHIEVEMENTS.length}`,color:'var(--violet-bright)'};
+
+  return <div style={{minHeight:'100vh',minHeight:'100dvh',maxWidth:440,margin:'0 auto',position:'relative'}}>
+    {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(139,92,246,0.12),rgba(167,139,250,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
+      <span style={{fontSize:36}}>{newAchievement.icon}</span>
+      <div>
+        <div style={{fontSize:10,color:'var(--violet-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Achievement Unlocked</div>
+        <div style={{fontSize:15,fontWeight:700,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
+      </div>
+    </div>}
+
+    <div style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,color:'var(--text-primary)'}}>Clear Feed</h1>
+      <div style={{display:'flex',gap:8}}>
+        <ThemeToggle prefix="clearfeed" />
+        <button onClick={()=>setShowBreathing(true)} style={{background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.15)',color:'var(--violet-primary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}} title="Urge to scroll? Breathe.">{"\uD83C\uDF2C\uFE0F"}</button>
+        <button onClick={()=>setShowSettings(true)} style={{background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
+      </div>
+    </div>
+
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
+      <ProgressRing progress={overallHealth} color="var(--violet-primary)" size={160} strokeWidth={10}>
+        <span style={{fontSize:38,fontWeight:300,color:'var(--violet-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
+        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Recovered</span>
+      </ProgressRing>
+      <div style={{marginTop:14,fontSize:18,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)}</div>
+      <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
+      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearfeed_streaks')||'[]');if(!s.length)return null;const prior=s.reduce((t,x)=>t+(x.days||0),0);const total=prior+daysClean;return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>{total.toLocaleString()} free days so far</div>}catch{return null}})()}
+      {config.motivation && <div style={{fontSize:11,color:'var(--violet-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
+    </div>
+
+    <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
+      {[
+        {label:'Saved',value:`$${moneySaved}`,color:'var(--violet-primary)'},
+        {label:'Days',value:daysClean.toLocaleString(),color:'var(--violet-bright)'},
+        thirdStat
+      ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
+        <div style={{fontSize:18,fontWeight:700,color:s.color,letterSpacing:-0.5}}>{s.value}</div>
+        <div style={{fontSize:9,color:'var(--text-muted)',fontWeight:600,marginTop:3,textTransform:'uppercase',letterSpacing:0.5}}>{s.label}</div>
+      </div>)}
+    </div>
+
+    <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'linear-gradient(135deg,rgba(139,92,246,0.04),rgba(167,139,250,0.02))',borderLeft:'3px solid var(--violet-primary)'}}>
+      <p style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6,fontStyle:'italic',fontFamily:'var(--font-display)'}}>&ldquo;{motivation}&rdquo;</p>
+    </div>
+
+    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+      <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{tip}</p>
+    </div>
+
+    {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-medium)',display:'flex',alignItems:'center',gap:14}}>
+      <span style={{fontSize:28}}>{nextAch.icon}</span>
+      <div style={{flex:1}}>
+        <div style={{fontSize:10,color:'var(--violet-primary)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
+        <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
+        <div style={{fontSize:11,color:'var(--text-muted)'}}>{nextAch.time-elapsed>0?`in ${formatDuration(nextAch.time-elapsed)}`:'Almost there...'}</div>
+      </div>
+      <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(139,92,246,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--violet-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
+    </div>}
+
+    <div style={{display:'flex',margin:'20px 20px 0',gap:0}}>
+      <button style={ts(activeTab==='health')} onClick={()=>setActiveTab('health')}>Recovery</button>
+      <button style={ts(activeTab==='badges')} onClick={()=>setActiveTab('badges')}>Milestones</button>
+      <button style={ts(activeTab === 'cravings')} onClick={() => setActiveTab('cravings')}>Urges</button>
+    </div>
+
+    <div style={{padding:'16px 20px 120px'}}>
+      {activeTab==='health'&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+        {HEALTH_CATEGORIES.map((cat,i)=><HealthRingCard key={cat.id} category={cat} elapsed={elapsed} onClick={()=>setDetailCat(cat)} delay={i*60}/>)}
+      </div>}
+      {activeTab==='badges'&&<>
+        {latestUnlocked&&<div style={{padding:24,borderRadius:'var(--radius-lg)',marginBottom:16,textAlign:'center',background:'linear-gradient(135deg,rgba(139,92,246,0.06),rgba(139,92,246,0.02))',border:'1px solid var(--border-medium)',animation:'scaleIn 0.4s var(--ease-spring)'}}>
+          <span style={{fontSize:44}}>{latestUnlocked.icon}</span>
+          <div style={{fontFamily:'var(--font-display)',fontSize:18,color:'var(--violet-primary)',marginTop:10}}>{latestUnlocked.label}</div>
+          <div style={{fontSize:13,color:'var(--text-secondary)',marginTop:6,lineHeight:1.5}}>{latestUnlocked.desc}</div>
+        </div>}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4, 1fr)',gap:14}}>
+          {ACHIEVEMENTS.map((ach,i)=>{const unlocked=elapsed>=ach.time;const isNew=unlocked&&!seenAchs.includes(ach.label);return <AchievementBadge key={i} ach={ach} unlocked={unlocked} isNew={isNew}/>;
+          })}
+        </div>
+      </>}
+      {activeTab === 'cravings' && <CravingsTab onOpenLog={() => { setPrefillBreathing(false); setShowCravingLog(true); }} />}
+    </div>
+
+    <DetailModal category={detailCat} elapsed={elapsed} onClose={()=>setDetailCat(null)}/>
+    {showSettings&&<SettingsModal config={config} onSave={c=>{Store.save(c);onUpdateConfig(c);}} onReset={onReset} onClose={()=>setShowSettings(false)}/>}
+    {showBreathing&&<BreathingExercise onClose={()=>setShowBreathing(false)} onLogCraving={(fromBreathing)=>{setPrefillBreathing(fromBreathing);setShowCravingLog(true);}}/>}
+    {showCravingLog && <CravingLogModal onClose={() => setShowCravingLog(false)} prefillBreathing={prefillBreathing} onSave={(entry) => { CravingStore.add(entry); }} />}
+  </div>;
+}
+
+// One-time cleanup: this suite is free forever. Remove the monetization keys
+// that older builds wrote, so nobody is left mid-"trial".
+(function(){
+  try {
+    ['clearfeed_first_opened','clearfeed_paywall_snooze','clear_suite_unlocked',
+     'clear_suite_unlock_method','clear_suite_promo_code']
+      .forEach(function(k){ localStorage.removeItem(k); });
+  } catch (e) {}
+})();
+
+function App() {
+  const[config,setConfig]=useState(()=>Store.get());
+  const[showOnboarding,setShowOnboarding]=useState(()=>!Store.hasOnboarded()&&!Store.get());
+  const handleSetup=(c)=>{Store.save(c);setConfig(c);};
+  const handleUpdate=(c)=>{Store.save(c);setConfig(c);};
+  const handleReset=()=>{Store.clear();CravingStore.clear();['clearfeed_seen','clearfeed_onboarded','clearfeed_streaks'].forEach(k=>localStorage.removeItem(k));setConfig(null);setShowOnboarding(true);};
+  if(showOnboarding)return<Onboarding onComplete={()=>setShowOnboarding(false)}/>;
+  if(!config||!config.quitDate)return<SetupScreen onSave={handleSetup}/>;
+  return <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script>
+/* Clear Suite update channel.
+   Deliberately plain JS in its own script tag, NOT a React component: this
+   must keep working when React/Babel fail to load, because that is exactly
+   the deploy an update needs to repair. */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+
+  var MIN_INTERVAL  = 30 * 1000;
+  var POLL_INTERVAL = 30 * 60 * 1000;
+  var hadController = !!navigator.serviceWorker.controller;
+  var lastCheck     = Date.now();
+  var reg           = null;
+
+  window.__CS_VERSION = null;
+
+  function show() {
+    if (document.getElementById('cs-update')) return;
+    var el = document.createElement('div');
+    el.id = 'cs-update';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    /* zIndex 90 sits BELOW the app's modals (zIndex 100), so an open urge
+       log or breathing overlay hides this automatically. */
+    el.style.cssText =
+      'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:90;' +
+      'width:calc(100% - 32px);max-width:380px;box-sizing:border-box;' +
+      'padding:14px 16px;border-radius:var(--radius-lg);' +
+      'background:linear-gradient(135deg,var(--accent-glow),var(--surface-faint)),var(--bg-card);' +
+      'border:1px solid var(--border-medium);backdrop-filter:blur(16px);' +
+      '-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.4);' +
+      'display:flex;align-items:center;gap:12px;animation:slideDown 0.5s var(--ease-spring);' +
+      'font-family:var(--font-body);letter-spacing:-0.01em';
+
+    var txt = document.createElement('div');
+    txt.style.cssText = 'flex:1;min-width:0';
+    txt.innerHTML =
+      '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;' +
+      'color:var(--accent-primary)">Update ready</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-top:2px">' +
+      'A new version is ready</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px">' +
+      'Your progress is saved either way.</div>';
+
+    var reload = document.createElement('button');
+    reload.textContent = 'Reload';
+    reload.style.cssText =
+      'flex:none;background:var(--accent-primary);border:none;color:var(--bg-deep);' +
+      'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.3px;' +
+      'padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer';
+    reload.onclick = function () { window.location.reload(); };
+
+    var later = document.createElement('button');
+    later.setAttribute('aria-label', 'Dismiss');
+    later.innerHTML = '×';
+    later.style.cssText =
+      'flex:none;background:var(--surface-soft);border:none;color:var(--text-secondary);' +
+      'width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1';
+    /* Dismiss only hides it. The update is already in Cache Storage, so the
+       user gets it on their next cold launch regardless. */
+    later.onclick = function () { el.remove(); };
+
+    el.appendChild(txt); el.appendChild(reload); el.appendChild(later);
+    document.body.appendChild(el);
+  }
+
+  function check() {
+    var now = Date.now();
+    if (now - lastCheck < MIN_INTERVAL) return;
+    lastCheck = now;
+    if (reg) { try { reg.update(); } catch (_) {} }
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
+    }
+  }
+
+  function askVersion() {
+    if (!navigator.serviceWorker.controller || !window.MessageChannel) return;
+    var ch = new MessageChannel();
+    ch.port1.onmessage = function (ev) {
+      if (ev.data && ev.data.type === 'VERSION') {
+        window.__CS_VERSION = ev.data.version;
+        window.dispatchEvent(new CustomEvent('cs-version', { detail: ev.data }));
+      }
+    };
+    navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [ch.port2]);
+  }
+
+  navigator.serviceWorker.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.type === 'UPDATE_READY') show();
+    else if (d.type === 'HTML_REPLACED') { window.__CS_VERSION = d.version; }
+  });
+
+  /* Do NOT reload here — the classic footgun that reloads a user mid-session. */
+  navigator.serviceWorker.addEventListener('controllerchange', askVersion);
+
+  /* iOS has no Periodic Background Sync, so every check is user-driven:
+     resume, focus, regained network. iOS also often restores a frozen page
+     instead of reloading, which is why pageshow/visibilitychange matter most. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') check();
+  });
+  window.addEventListener('focus', check);
+  window.addEventListener('online', check);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+  setInterval(function () { if (document.visibilityState === 'visible') check(); }, POLL_INTERVAL);
+
+  navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none' })
+    .then(function (r) {
+      reg = r;
+      askVersion();
+      r.addEventListener('updatefound', function () {
+        var nw = r.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', function () {
+          if (nw.state === 'activated' && hadController) show();
+        });
+      });
+    })
+    .catch(function () { /* SW unavailable: app still works, just no offline */ });
+})();
+</script>
+</body>
+</html>

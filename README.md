@@ -1,6 +1,6 @@
 # Clear Suite
 
-Four free, private quit trackers. No account, no ads, no analytics, no server.
+Eight free, private quit trackers. No account, no ads, no analytics, no server.
 
 | App | For | Live |
 |-----|-----|------|
@@ -8,6 +8,10 @@ Four free, private quit trackers. No account, no ads, no analytics, no server.
 | **Clear Air** | Nicotine / vaping | [clearair.mikegrowsgreens.com](https://clearair.mikegrowsgreens.com) |
 | **Clear Mind** | Cannabis | [clearmind.mikegrowsgreens.com](https://clearmind.mikegrowsgreens.com) |
 | **Clear Body** | Fast food & added sugar | [clearbody.mikegrowsgreens.com](https://clearbody.mikegrowsgreens.com) |
+| **Clear Feed** | Social media / doomscrolling | [clearfeed.mikegrowsgreens.com](https://clearfeed.mikegrowsgreens.com) |
+| **Clear Odds** | Gambling / sports betting | [clearodds.mikegrowsgreens.com](https://clearodds.mikegrowsgreens.com) |
+| **Clear Sight** | Porn | [clearsight.mikegrowsgreens.com](https://clearsight.mikegrowsgreens.com) |
+| **Clear Energy** | Caffeine | [clearenergy.mikegrowsgreens.com](https://clearenergy.mikegrowsgreens.com) |
 
 Add any of them to your home screen and it works offline, forever, for free.
 
@@ -23,7 +27,7 @@ These apps show physiological recovery timelines drawn from published cessation 
 
 **If you drink heavily, read this before using Clear Flow.** People who are physically dependent on alcohol can become seriously ill — or die — if they suddenly stop completely. If you get shaking hands, sweating, anxiety, trouble sleeping, or see things that aren't there while sobering up, talk to a doctor or a local alcohol service before stopping. Clear Flow says this during onboarding, before it will count a single day.
 
-Crisis support, in every app: **988** (Suicide & Crisis Lifeline) and **1-800-662-4357** (SAMHSA National Helpline).
+Crisis support, in every app: **988** (Suicide & Crisis Lifeline) and **1-800-662-4357** (SAMHSA National Helpline). Clear Odds additionally shows **1-800-GAMBLER** (National Problem Gambling Helpline, 24/7) during onboarding and in settings — gambling losses can be an acute financial crisis, not just a habit.
 
 ## What the evidence actually says
 

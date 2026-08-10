@@ -1,0 +1,14 @@
+{
+  "name": "Clear Sight - Porn Recovery",
+  "short_name": "Clear Sight",
+  "description": "Track your brain's recovery from pornography with research-based milestones.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06080f",
+  "theme_color": "#06080f",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

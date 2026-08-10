@@ -16,7 +16,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 VERIFY_ONLY=0
 [ "${1:-}" = "--verify-only" ] && { VERIFY_ONLY=1; shift; }
-APPS=("${@:-}"); [ -z "${APPS[0]:-}" ] && APPS=(clearair clearflow clearmind clearbody)
+APPS=("${@:-}"); [ -z "${APPS[0]:-}" ] && APPS=(clearair clearflow clearmind clearbody clearfeed clearodds clearsight clearenergy)
 
 hdr()    { curl -fsSI "$1" | tr -d '\r' | awk 'tolower($1)=="cache-control:"{sub(/^[^ ]+ /,"");print}'; }
 served() { curl -fsS "$1" 2>/dev/null | shasum -a 256 | cut -c1-12; }
@@ -68,7 +68,9 @@ for app in "${APPS[@]}"; do
   done
 
   # The poison case: a missing vendor file must 404, never return the document.
-  nf="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/__missing__.js" || echo 404)"
+  # No -f here: we WANT the status code of an error response, and -f makes
+  # curl exit nonzero on 404 so the || fallback used to append a second "404".
+  nf="$(curl -sS -o /dev/null -w '%{http_code}' "$url/vendor/__missing__.js" || echo 000)"
   printf '   %-34s %s (want 404)\n' "/vendor/__missing__.js" "$nf"
   [ "$nf" = "404" ] || { echo "   FAIL missing vendor file does not 404"; fail=1; }
 done
