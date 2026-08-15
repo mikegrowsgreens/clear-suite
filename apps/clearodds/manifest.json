@@ -1,5 +1,5 @@
 {
-  "name": "Clear Odds - Gambling Recovery",
+  "name": "Clear Odds - Gambling & Sports Betting Recovery Tracker",
   "short_name": "Clear Odds",
   "description": "Track your recovery from gambling and sports betting with research-based milestones.",
   "start_url": "/",
@@ -8,7 +8,15 @@
   "theme_color": "#060a10",
   "orientation": "portrait",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

@@ -14,9 +14,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Clear Suite — Eight Free, Private Recovery Trackers">
 <meta name="twitter:description" content="Free, private recovery trackers for alcohol, cannabis, nicotine, diet, social media, gambling, porn, and caffeine. No account, no ads, no tracking, no catch.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Clear Suite">
+<link rel="stylesheet" href="/vendor/fonts/fonts.css">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   [data-theme="dark"] {
@@ -29,13 +30,13 @@
     --text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--text-dim:#cbd5e1;
     --border:rgba(0,0,0,0.08);--border-hover:rgba(0,0,0,0.15);
   }
-  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+  body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
 
   .theme-toggle { position:fixed; top:20px; right:20px; z-index:50; width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); color:var(--text-muted); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
   .theme-toggle:hover { border-color:var(--border-hover); }
 
   .hero { text-align:center; padding:80px 24px 32px; max-width:680px; margin:0 auto; }
-  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#f59e0b,#2dd4bf,#4ade80,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#f59e0b,#2dd4bf,#a3e635,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
   .hero p { font-size:18px; color:var(--text-secondary); line-height:1.6; max-width:520px; margin:0 auto; }
   .hero .subtitle { font-size:14px; color:var(--text-muted); margin-top:12px; }
 
@@ -76,8 +77,8 @@
 
   .card.flow h2 { color:#f59e0b; }
   .card.flow .substance { color:#d97706; }
-  .card.mind h2 { color:#4ade80; }
-  .card.mind .substance { color:#22c55e; }
+  .card.mind h2 { color:#a3e635; }
+  .card.mind .substance { color:#65a30d; }
   .card.air h2 { color:#2dd4bf; }
   .card.air .substance { color:#14b8a6; }
   .card.body h2 { color:#ec4899; }
@@ -178,16 +179,16 @@
       <div class="card-icon"><img src="/clearbody-icon.png" alt="Clear Body"></div>
       <h2>Clear Body</h2>
       <div class="substance">Fast Food / Sugar</div>
-      <p>Track blood sugar stabilization, inflammation reduction, gut healing, dopamine reset, and skin recovery.</p>
-      <div class="categories">Blood Sugar, Inflammation, Gut Health, Dopamine, Energy, Skin</div>
+      <p>Track blood sugar stabilization, inflammation reduction, gut healing, how food tastes, and skin recovery.</p>
+      <div class="categories">Blood Sugar, Inflammation, Gut Health, Cravings, Energy, Skin</div>
     </a>
 
     <a href="https://clearfeed.mikegrowsgreens.com" class="card feed">
       <div class="card-icon"><img src="/clearfeed-icon.png" alt="Clear Feed"></div>
       <h2>Clear Feed</h2>
       <div class="substance">Social Media</div>
-      <p>Track attention span restoration, dopamine reset, deeper sleep, calmer mood, and real-world reconnection.</p>
-      <div class="categories">Attention, Dopamine, Sleep, Mood, Self-Image, Connection</div>
+      <p>Track attention span restoration, interest in slower things, deeper sleep, calmer mood, and real-world reconnection.</p>
+      <div class="categories">Attention, Everyday Reward, Sleep, Mood, Self-Image, Connection</div>
     </a>
 
     <a href="https://clearodds.mikegrowsgreens.com" class="card odds">
@@ -202,16 +203,16 @@
       <div class="card-icon"><img src="/clearsight-icon.png" alt="Clear Sight"></div>
       <h2>Clear Sight</h2>
       <div class="substance">Porn</div>
-      <p>Track dopamine resensitization, returning motivation, sexual health recovery, mood, and relationship repair.</p>
-      <div class="categories">Dopamine, Motivation, Sexual Health, Mood, Sleep, Relationships</div>
+      <p>Track everyday reward returning, motivation, sexual health recovery, mood, and relationship repair.</p>
+      <div class="categories">Everyday Reward, Motivation, Sexual Health, Mood, Sleep, Relationships</div>
     </a>
 
     <a href="https://clearenergy.mikegrowsgreens.com" class="card energy">
       <div class="card-icon"><img src="/clearenergy-icon.png" alt="Clear Energy"></div>
       <h2>Clear Energy</h2>
       <div class="substance">Caffeine</div>
-      <p>Track adenosine receptor reset, deeper sleep, stable natural energy, lower anxiety, and heart recovery.</p>
-      <div class="categories">Adenosine, Sleep, Energy, Anxiety, Heart, Digestion</div>
+      <p>Track caffeine tolerance fading, deeper sleep, stable natural energy, lower anxiety, and heart recovery.</p>
+      <div class="categories">Caffeine Tolerance, Sleep, Energy, Anxiety, Heart, Digestion</div>
     </a>
   </div>
 
@@ -220,7 +221,7 @@
     <div class="feature-grid">
       <div class="feature">
         <div class="label">Research-based milestones</div>
-        <div class="desc">Every milestone traces to published cessation research, cited in each app. Where long-term data doesn't exist yet, we say so instead of guessing.</div>
+        <div class="desc">Milestones are drawn from published cessation research, and each app names what it relied on. Where the timing isn't established, or the evidence is thin, we say so instead of inventing a number.</div>
       </div>
       <div class="feature">
         <div class="label">Privacy first</div>

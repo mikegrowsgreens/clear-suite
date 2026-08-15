@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Ship to the DigitalOcean box and PROVE the bytes changed.
 #
-#   scripts/deploy.sh                 -> all four apps
+#   scripts/deploy.sh                 -> all eight apps
 #   scripts/deploy.sh clearair        -> one app
 #   scripts/deploy.sh --verify-only   -> check what is live (use after a git push/Railway build)
 #

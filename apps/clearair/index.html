@@ -16,26 +16,26 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clear Air — Vaping Recovery Tracker">
 <meta name="twitter:description" content="Track your body's recovery from vaping with research-based milestones. No ads, no accounts, no tracking.">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<title>Clear Air - Vaping Recovery Tracker</title>
+<link rel="stylesheet" href="/vendor/fonts/fonts.css">
+<title>Clear Air — Vaping Recovery Tracker</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text}
 [data-theme="dark"] {
   --bg-deep:#060a0a;--bg-surface:#0c1214;--bg-card:#111819;--bg-card-hover:#162120;
-  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#7c8ba1;
   --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
-  --input-bg:#0f1618;--modal-bg:#0a0e10;
+  --input-bg:#101414;--modal-bg:#0a0e0e;
   --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
   --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
 }
 [data-theme="light"] {
   --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
-  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
+  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#5b6a7d;
   --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
   --input-bg:#f1f5f9;--modal-bg:#ffffff;
   --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
@@ -62,11 +62,13 @@ button{font-family:var(--font-body)}
 @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 16px rgba(45,212,191,0.2)}50%{box-shadow:0 0 32px rgba(45,212,191,0.5),0 0 48px rgba(45,212,191,0.15)}}
 @keyframes breatheRing{0%{r:42;opacity:0.3}50%{r:56;opacity:0.8}100%{r:42;opacity:0.3}}
-@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg) scale(1);opacity:1}80%{opacity:1}100%{transform:translateY(130px) rotate(720deg) scale(0.5);opacity:0}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes ringDraw{from{stroke-dashoffset:var(--circ)}to{stroke-dashoffset:var(--offset)}}
 .milestone-new{animation:pulseGlow 2s ease-in-out 3}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+  .milestone-new{animation:none}
+}
 </style>
 </head>
 <body>
@@ -145,9 +147,22 @@ const CRAVING_ACHIEVEMENTS = [
  * CLEAR AIR v3.1 -- Vaping/Nicotine Cessation Recovery
  * Evidence basis:
  *  NIDA: nicotine half-life (~2h), cotinine clearance (~2-4 days)
+ *  US Surgeon General 2020, Smoking Cessation: A Report of the Surgeon General
+ *  CDC, Benefits of Quitting (rev. May 2024). NOTE: CDC now publishes BANDED
+ *    timings -- "several days" for carbon monoxide, "3 to 6 years" for halved
+ *    coronary risk. The granular minute-by-minute timeline still shipped by
+ *    most quit apps is an older version CDC, ACS and NCI have all walked back;
+ *    it is deliberately not used here.
  *  American Heart Association: acute cardiovascular effects of nicotine
- *  PMC: e-cigarette cessation and airway irritation/inflammation
- *  Sleep Foundation / clinical reviews: withdrawal timeline
+ *  Cormac et al. 2010, Acta Psychiatr Scand 121(5):393-7 -- CYP1A2 de-induction
+ *    on cessation; patients with clozapine >=1000 ug/L went 4.2% -> 41.7% after
+ *    a hospital smoking ban. Basis for the medication slide in onboarding.
+ *  Lowe & Ackman 2010, Ann Pharmacother 44(4):727-32 -- 30-40% dose reductions
+ *    typically required post-cessation for CYP1A2 substrates
+ *  Anthenelli et al. 2016 (EAGLES), Lancet 387:2507-20, N=8144 -- no excess
+ *    neuropsychiatric risk from varenicline/bupropion vs patch or placebo
+ *  Bedi et al. 2011 -- cue-induced craving can INCREASE over months 1-3
+ *    (incubation). Milestone copy no longer promises a monotonic decline.
  * HONESTY NOTE: long-term milestones (1y+) are extrapolated from
  * smoking-cessation research (CDC/WHO). Vaping-specific long-term outcome
  * data does not exist yet. Milestone tips say so where it applies.
@@ -214,7 +229,7 @@ const ACHIEVEMENTS = [
   {time:4*H,label:"Four Hours Free",icon:"\uD83D\uDCAA",desc:"That noise is nicotine leaving, not you wanting. It is the sound of it losing."},
   {time:8*H,label:"Eight Hours",icon:"\uD83C\uDF19",desc:"Nicotine fading fast. Blood vessels starting to relax."},
   {time:12*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day free. Airways getting their first real break."},
-  {time:18*H,label:"Eighteen Hours",icon:"\uD83E\uDDE0",desc:"Every craving you ride through rewires your brain."},
+  {time:18*H,label:"Eighteen Hours",icon:"\uD83E\uDDE0",desc:"Every craving you ride through is one you now know you can sit with."},
   {time:24*H,label:"Day One Complete",icon:"\uD83C\uDF1F",desc:"A full day nicotine-free. Heart working under less strain."},
   {time:36*H,label:"Thirty-Six Hours",icon:"\u2728",desc:"Taste buds starting to regenerate. Food will change."},
   {time:48*H,label:"Two Days",icon:"\uD83D\uDC45",desc:"Taste and smell sharpening. Nerve endings healing."},
@@ -249,7 +264,7 @@ const MOTIVATIONAL = {
   recovery:[
     "The chemical dependency is broken. What you are building now are new patterns, new responses, a new default.",
     "Your lungs are cleaning themselves. The cilia are waking up and sweeping out months of accumulated damage.",
-    "Each week that passes, the craving pathways in your brain get a little quieter. You are literally rewiring.",
+    "Cravings do not fade on a fixed schedule, and some cues get stronger before they go quiet. What changes reliably is what you do when one arrives.",
     "Notice your breathing. Deeper. Easier. That is not imagination. Your bronchial tubes have relaxed."
   ],
   healing:[
@@ -261,7 +276,7 @@ const MOTIVATIONAL = {
   healed:[
     "Your cardiovascular system has had a full year to re-adapt. Time is doing its work.",
     "A year free. Your lungs, your heart, your immune system, all fundamentally transformed.",
-    "You did not just quit vaping. You reclaimed your autonomy from a chemical that was designed to keep you.",
+    "You did not just quit vaping. You reclaimed your autonomy from a chemical that was engineered to keep you needing it.",
     "Nothing was taken from you. What is left is what was always underneath."
   ]
 };
@@ -329,9 +344,6 @@ function getCategoryProgress(cat, elapsed) {
     currentLabel="Recovery beginning";currentTip=f.tip||"";
   }
   return{progress:Math.min(progress,100),currentLabel,currentTip,nextLabel,nextTime};
-}
-function getWeightedHealth(elapsed) {
-  return HEALTH_CATEGORIES.reduce((t,c)=>t+getCategoryProgress(c,elapsed).progress*c.weight,0);
 }
 
 // ── COMPONENTS ──
@@ -613,6 +625,7 @@ function Onboarding({onComplete}) {
     {icon:"\u2728",title:"You are not giving anything up",body:"Nicotine never gave you a lift. Each hit only ended the withdrawal the last one caused, and relief got mistaken for pleasure. Non-vapers feel that way all day, for free. You are not losing a pleasure \u2014 you are stopping paying for a discomfort.",source:"You are already free. The rest is your body catching up."},
     {icon:"\uD83E\uDEC1",title:"Healing starts in minutes",body:"Your heart rate starts dropping within 20 minutes of your last puff. Within about 72 hours, nicotine is essentially cleared from your bloodstream.",source:"Based on nicotine-cessation research (NIDA, AHA)"},
     {icon:"\u26A1",title:"Progress you can feel",body:"Clear Air weights your recovery score toward the rapid healing of your first weeks, not just calendar time. Long-term milestones are extrapolated from smoking-cessation research and labeled as such.",source:""},
+    {icon:"\u26A0\uFE0F",title:"One note if you take medication",body:"Tobacco smoke speeds up how your liver clears certain medicines. Stopping reverses that, so blood levels can rise within days. This matters most for clozapine, olanzapine and theophylline, and can also affect some antidepressants and caffeine. If you take any of them, tell your prescriber you have stopped so they can check your dose. This is about smoking, not nicotine \u2014 patches and gum do not do it.",source:"Nicotine withdrawal itself is not dangerous. This one interaction is worth a phone call."},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
@@ -676,8 +689,8 @@ function DetailModal({category,elapsed,onClose}) {
         <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
       </div>
       <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
-        <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
-          <span style={{fontSize:26,fontWeight:800,color:category.color}}>{Math.round(progress)}%</span>
+        <ProgressRing progress={progress>0?100:0} color={category.color} size={120} strokeWidth={8}>
+          <span style={{fontSize:34}}>{category.icon}</span>
         </ProgressRing>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
@@ -753,6 +766,11 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         </div>
         {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
         <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#2dd4bf,#0d9488)',color:'#042f2e'}}>Save Changes</button>
+        {(()=>{const K='clearair_hidecount';const hidden=localStorage.getItem(K)==='1';
+          return <button onClick={()=>{localStorage.setItem(K,hidden?'0':'1');window.location.reload()}} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',marginBottom:10,fontFamily:'var(--font-body)',textAlign:'left'}}>
+            {hidden?'Show the day count':'Hide the day count'}
+            <span style={{display:'block',fontSize:10,color:'var(--text-muted)',marginTop:3,lineHeight:1.4}}>Everything keeps counting either way. Some people do better without a number to check.</span>
+          </button>;})()}
         <button onClick={handleExport} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Export My Data (JSON)</button>
         <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
           {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped — restart my clock</button>:
@@ -782,10 +800,9 @@ function SettingsModal({config,onSave,onReset,onClose}) {
 function HealthRingCard({category,elapsed,onClick,delay=0}) {
   const{progress,currentLabel}=getCategoryProgress(category,elapsed);
   return <div onClick={onClick} style={{background:'var(--bg-card)',borderRadius:'var(--radius-lg)',padding:'18px 12px',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer',border:'1px solid var(--border-subtle)',transition:'all 0.25s var(--ease-out)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
-    <ProgressRing progress={progress} color={category.color} size={80} strokeWidth={6}>
-      <span style={{fontSize:22}}>{category.icon}</span>
-      <span style={{fontSize:10,fontWeight:700,color:category.color}}>{Math.round(progress)}%</span>
-    </ProgressRing>
+    <div style={{width:80,height:80,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--surface-faint)',border:`1px solid ${progress>0?category.color+'55':'var(--border-subtle)'}`}}>
+      <span style={{fontSize:26,opacity:progress>0?1:0.45}}>{category.icon}</span>
+    </div>
     <span style={{fontSize:12,fontWeight:600,marginTop:10,color:'var(--text-primary)',textAlign:'center'}}>{category.label}</span>
     <span style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:3,lineHeight:1.3,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{currentLabel}</span>
   </div>;
@@ -828,6 +845,72 @@ function ThemeToggle({ prefix }) {
   );
 }
 
+// IDENTITY CHECK-IN
+// BCT 13.5 "identity associated with changed behaviour" was the strongest individual
+// technique in Black et al. 2020 (113 trials, 235 groups, N=43,992, biochemically
+// verified abstinence): OR 1.34 (1.08-1.67). In the best prospective study of the
+// mechanism (Dingle et al. 2015, N=132), the CHANGE IN THE GAP between using-identity
+// and recovery-identity accounted for 34% of variance in drinking quantity, 41% in
+// frequency and 49% in life satisfaction, controlling for baseline severity.
+// Two sliders and a subtraction. Unlike a day counter, the number is the user's own.
+function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
+  const KEY = prefix + '_identity';
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]') } catch { return [] } };
+  const [log, setLog] = useState(read);
+  const last = log.length ? log[log.length - 1] : null;
+  const due = !last || (Date.now() - last.t) > 7 * 86400000;
+  const [open, setOpen] = useState(false);
+  const [u, setU] = useState(last ? last.using : 5);
+  const [r, setR] = useState(last ? last.recovery : 5);
+  const save = () => {
+    const next = [...log, { t: Date.now(), using: u, recovery: r }];
+    try { localStorage.setItem(KEY, JSON.stringify(next)) } catch {}
+    setLog(next); setOpen(false);
+  };
+  const box = { margin: '8px 20px', padding: '14px 18px', borderRadius: 'var(--radius-md)',
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' };
+  const eyebrow = { fontSize: 9, color: accent, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' };
+
+  if (open || (due && !last)) {
+    return <div style={box}>
+      <div style={eyebrow}>How you see yourself</div>
+      {[[usingLabel, u, setU], [freeLabel, r, setR]].map(([lab, val, set], i) =>
+        <div key={i} style={{ marginTop: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-secondary)' }}>
+            <span>Right now, how much do you feel like {lab}?</span><span style={{ color: accent, fontWeight: 700 }}>{val}</span>
+          </div>
+          <input type="range" min="0" max="10" value={val} onChange={e => set(Number(e.target.value))}
+            style={{ width: '100%', marginTop: 6, accentColor: accent }} />
+        </div>)}
+      <button onClick={save} style={{ width: '100%', marginTop: 14, padding: 11, borderRadius: 40, border: 'none',
+        background: accent, color: 'var(--bg-deep)', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+        fontFamily: 'var(--font-body)' }}>Save how it feels today</button>
+      <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+        Only you see this. It is the one number here that comes from you rather than the clock.</p>
+    </div>;
+  }
+
+  const gap = last.recovery - last.using;
+  const first = log[0];
+  const moved = log.length > 1 ? gap - (first.recovery - first.using) : null;
+  return <div style={box}>
+    <div style={eyebrow}>How you see yourself</div>
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 6 }}>
+      <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--text-primary)' }}>
+        {gap > 0 ? '+' : ''}{gap}</span>
+      <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+        {gap > 0 ? 'more the person who does not, than the one who did' :
+         gap < 0 ? 'still more the person who did, than the one who does not' :
+         'evenly split between the two'}</span>
+    </div>
+    {moved !== null && moved !== 0 && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
+      {moved > 0 ? 'up ' + moved : 'down ' + Math.abs(moved)} since your first check-in{log.length > 1 ? ', ' + log.length + ' readings' : ''}</div>}
+    <button onClick={() => setOpen(true)} style={{ marginTop: 10, background: 'none', border: 'none', padding: 0,
+      color: accent, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+      {due ? 'Check in again' : 'Update'}</button>
+  </div>;
+}
+
 function Dashboard({config,onUpdateConfig,onReset}) {
   const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
   const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
@@ -840,7 +923,6 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   const moneySaved=((elapsed/D)*config.dailySpend).toFixed(2);
   const daysClean=Math.floor(elapsed/D);
   const puffsAvoided=daysClean*(config.puffsPerDay||0);
-  const overallHealth=getWeightedHealth(elapsed);
   const unlockedAchs=ACHIEVEMENTS.filter(a=>elapsed>=a.time);
   const unlockedCount=unlockedAchs.length;
   const latestUnlocked=[...ACHIEVEMENTS].reverse().find(a=>elapsed>=a.time);
@@ -867,7 +949,7 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(45,212,191,0.12),rgba(13,148,136,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
       <span style={{fontSize:36}}>{newAchievement.icon}</span>
       <div>
-        <div style={{fontSize:10,color:'var(--teal-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Achievement Unlocked</div>
+        <div style={{fontSize:10,color:'var(--teal-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Milestone Reached</div>
         <div style={{fontSize:15,fontWeight:700,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
       </div>
     </div>}
@@ -882,19 +964,22 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     </div>
 
     <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
-      <ProgressRing progress={overallHealth} color="var(--teal-primary)" size={160} strokeWidth={10}>
-        <span style={{fontSize:38,fontWeight:300,color:'var(--teal-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
-        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Repaired</span>
-      </ProgressRing>
-      <div style={{marginTop:14,fontSize:18,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)}</div>
+      {(()=>{const prior=(()=>{try{return JSON.parse(localStorage.getItem('clearair_streaks')||'[]').reduce((t,x)=>t+(x.days||0),0)}catch{return 0}})();
+        const total=prior+daysClean;
+        if(localStorage.getItem('clearair_hidecount')==='1') return <div style={{textAlign:'center',fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-secondary)'}}>You are free, and it is counting.</div>;
+        return <div style={{textAlign:'center'}}>
+          <div style={{fontFamily:'var(--font-display)',fontSize:64,lineHeight:1,letterSpacing:-1,color:'var(--text-primary)'}}>{total.toLocaleString()}</div>
+          <div style={{fontSize:11,color:'var(--teal-primary)',fontWeight:700,letterSpacing:1.6,textTransform:'uppercase',marginTop:6}}>{total===1?'day free':'days free'}</div>
+          {prior>0&&<div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>across every run, including this one</div>}
+        </div>;})()}
+      <div style={{marginTop:12,fontSize:16,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)} this run</div>
       <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
-      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearair_streaks')||'[]');if(!s.length)return null;const prior=s.reduce((t,x)=>t+(x.days||0),0);const total=prior+daysClean;return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>{total.toLocaleString()} free days so far</div>}catch{return null}})()}
     </div>
 
     <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
       {[
         {label:'Saved',value:`$${moneySaved}`,color:'var(--teal-primary)'},
-        {label:'Days',value:daysClean.toLocaleString(),color:'var(--teal-bright)'},
+        {label:'Cravings Met',value:(()=>{const st=getCravingStats();return st?String(st.surfedCount):'\u2014'})(),color:'var(--teal-bright)'},
         {label:puffsAvoided>0?'Puffs Avoided':'Milestones',value:puffsAvoided>0?puffsAvoided.toLocaleString():`${unlockedCount}/${ACHIEVEMENTS.length}`,color:'var(--amber)'}
       ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
         <div style={{fontSize:18,fontWeight:700,color:s.color,letterSpacing:-0.5}}>{s.value}</div>
@@ -919,6 +1004,20 @@ function Dashboard({config,onUpdateConfig,onReset}) {
       </div>
       <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(45,212,191,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--teal-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
     </div>}
+
+    <IdentityCheck prefix="clearair" accent="var(--teal-primary)" usingLabel="someone who vapes" freeLabel="someone who does not" />
+
+    {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
+      if(!all.length)return null;
+      const survived=all.filter(c=>c.outcome==='surfed');
+      const pool=survived.length?survived:all;
+      const pick=pool[Math.floor(Date.now()/86400000)%pool.length];
+      const days=Math.max(0,Math.floor((Date.now()-pick.timestamp)/86400000));
+      return <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)'}}>
+        <div style={{fontSize:9,color:'var(--teal-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>You wrote this</div>
+        <p style={{fontSize:13,color:'var(--text-primary)',lineHeight:1.55,marginTop:6}}>{pick.note}</p>
+        <div style={{fontSize:10,color:'var(--text-muted)',marginTop:8}}>{new Date(pick.timestamp).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}{' \u00b7 '}{days===0?'today':days===1?'yesterday':days+' days ago'}{pick.outcome==='surfed'?' \u00b7 you got through it':''}</div>
+      </div>;})()}
 
     <div style={{display:'flex',margin:'20px 20px 0',gap:0}}>
       <button style={ts(activeTab==='health')} onClick={()=>setActiveTab('health')}>Recovery</button>

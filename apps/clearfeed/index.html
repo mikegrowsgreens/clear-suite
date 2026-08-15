@@ -16,26 +16,26 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clear Feed — Social Media & Doomscrolling Recovery Tracker">
 <meta name="twitter:description" content="Track your brain's recovery from social media and doomscrolling with research-based milestones. No ads, no accounts, no tracking.">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<title>Clear Feed - Social Media & Doomscrolling Recovery Tracker</title>
+<link rel="stylesheet" href="/vendor/fonts/fonts.css">
+<title>Clear Feed — Social Media & Doomscrolling Recovery Tracker</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text}
 [data-theme="dark"] {
   --bg-deep:#0a0810;--bg-surface:#0f0d13;--bg-card:#141118;--bg-card-hover:#1a161f;
-  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#475569;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#7c8ba1;
   --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
-  --input-bg:#0f1618;--modal-bg:#0a0e10;
+  --input-bg:#14121a;--modal-bg:#0e0c14;
   --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
   --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
 }
 [data-theme="light"] {
   --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
-  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
+  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#5b6a7d;
   --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
   --input-bg:#f1f5f9;--modal-bg:#ffffff;
   --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
@@ -62,11 +62,13 @@ button{font-family:var(--font-body)}
 @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 16px rgba(139,92,246,0.2)}50%{box-shadow:0 0 32px rgba(139,92,246,0.5),0 0 48px rgba(139,92,246,0.15)}}
 @keyframes breatheRing{0%{r:42;opacity:0.3}50%{r:56;opacity:0.8}100%{r:42;opacity:0.3}}
-@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg) scale(1);opacity:1}80%{opacity:1}100%{transform:translateY(130px) rotate(720deg) scale(0.5);opacity:0}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes ringDraw{from{stroke-dashoffset:var(--circ)}to{stroke-dashoffset:var(--offset)}}
 .milestone-new{animation:pulseGlow 2s ease-in-out 3}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+  .milestone-new{animation:none}
+}
 </style>
 </head>
 <body>
@@ -169,7 +171,7 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Deep-work capacity rebuilt",pct:90,tip:"Three months. Sustained, single-task attention is your working norm again."},
     {time:Y,label:"Sustained attention is your default",pct:97,tip:"A year of owning your attention. Long-form thinking is simply how your mind works now."}
   ]},
-  { id:"dopamine", label:"Dopamine Reset", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.20, milestones:[
+  { id:"dopamine", label:"Everyday Reward", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.20, milestones:[
     {time:6*H,label:"First urges to check hitting",pct:3,tip:"The feed trained your brain with unpredictable rewards, like a slot machine. The pull is chemical, not weakness."},
     {time:24*H,label:"Urge spikes at their peak",pct:8,tip:"The first 24-72 hours bring the strongest urges. Each one peaks and passes in minutes."},
     {time:72*H,label:"Peak urge window passing",pct:18,tip:"Days 1-3 are typically the hardest. The reflex to reach for the phone starts weakening from here."},
@@ -267,7 +269,7 @@ const MOTIVATIONAL = {
   recovery:[
     "One week off social media measurably improves wellbeing and lowers anxiety in randomized trials. You are living the data.",
     "Reading is getting easier. Conversations are landing deeper. This is attention restoration, and it is real.",
-    "Each week that passes, the pull of the feed gets a little quieter. You are literally rewiring your reward system.",
+    "Slower things start holding your attention again — a page, a conversation, a walk without a phone in it.",
     "Sleep deeper. Mornings yours. Hours back. These are not coincidences. This is what happens when you stop renting out your attention."
   ],
   healing:[
@@ -345,9 +347,6 @@ function getCategoryProgress(cat, elapsed) {
     currentLabel="Recovery beginning";currentTip=f.tip||"";
   }
   return{progress:Math.min(progress,100),currentLabel,currentTip,nextLabel,nextTime};
-}
-function getWeightedHealth(elapsed) {
-  return HEALTH_CATEGORIES.reduce((t,c)=>t+getCategoryProgress(c,elapsed).progress*c.weight,0);
 }
 
 // COMPONENTS
@@ -592,7 +591,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"The feed never satisfied you. It created the itch it then scratched, and sold your attention while you scrolled. Your curiosity worked fine before it was trained. You are not losing connection \u2014 you are getting your own attention back.",source:"You are already free. The rest is your brain catching up."},
     {icon:"\uD83C\uDF31",title:"Your brain starts recovering immediately",body:"Within days of stepping away, urges to check start fading, sleep improves, and mood measurably lifts. A single week off social media improved wellbeing and reduced anxiety in a randomized trial.",source:"Lambert et al. 2022; Hunt et al. 2018"},
-    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track attention span, dopamine reset, sleep, mood and anxiety, self-image and comparison, and real-world connection. All grounded in published research on social media abstinence.",source:"Cyberpsychology; J. of Social & Clinical Psychology"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track attention span, how ordinary things feel, sleep, mood and anxiety, self-image and comparison, and real-world connection. All grounded in published research on social media abstinence.",source:"Cyberpsychology; J. of Social & Clinical Psychology"},
     {icon:"\uD83D\uDD12",title:"An app that doesn't want your attention",body:"Everything stays on your device. No ads, no accounts, no tracking, no feed. Check it as rarely as you like \u2014 it will never ping you. Clear your browser data to erase everything.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
@@ -660,8 +659,8 @@ function DetailModal({category,elapsed,onClose}) {
         <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>{"\u00D7"}</button>
       </div>
       <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
-        <ProgressRing progress={progress} color={category.color} size={120} strokeWidth={8}>
-          <span style={{fontSize:26,fontWeight:800,color:category.color}}>{Math.round(progress)}%</span>
+        <ProgressRing progress={progress>0?100:0} color={category.color} size={120} strokeWidth={8}>
+          <span style={{fontSize:34}}>{category.icon}</span>
         </ProgressRing>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
@@ -741,6 +740,11 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         </div>
         {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
         <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#8b5cf6,#7c3aed)',color:'#fff'}}>Save Changes</button>
+        {(()=>{const K='clearfeed_hidecount';const hidden=localStorage.getItem(K)==='1';
+          return <button onClick={()=>{localStorage.setItem(K,hidden?'0':'1');window.location.reload()}} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',marginBottom:10,fontFamily:'var(--font-body)',textAlign:'left'}}>
+            {hidden?'Show the day count':'Hide the day count'}
+            <span style={{display:'block',fontSize:10,color:'var(--text-muted)',marginTop:3,lineHeight:1.4}}>Everything keeps counting either way. Some people do better without a number to check.</span>
+          </button>;})()}
         <button onClick={handleExport} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Export My Data (JSON)</button>
         <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
           {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped &mdash; restart my clock</button>:
@@ -770,10 +774,9 @@ function SettingsModal({config,onSave,onReset,onClose}) {
 function HealthRingCard({category,elapsed,onClick,delay=0}) {
   const{progress,currentLabel}=getCategoryProgress(category,elapsed);
   return <div onClick={onClick} style={{background:'var(--bg-card)',borderRadius:'var(--radius-lg)',padding:'18px 12px',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer',border:'1px solid var(--border-subtle)',transition:'all 0.25s var(--ease-out)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
-    <ProgressRing progress={progress} color={category.color} size={80} strokeWidth={6}>
-      <span style={{fontSize:22}}>{category.icon}</span>
-      <span style={{fontSize:10,fontWeight:700,color:category.color}}>{Math.round(progress)}%</span>
-    </ProgressRing>
+    <div style={{width:80,height:80,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--surface-faint)',border:`1px solid ${progress>0?category.color+'55':'var(--border-subtle)'}`}}>
+      <span style={{fontSize:26,opacity:progress>0?1:0.45}}>{category.icon}</span>
+    </div>
     <span style={{fontSize:12,fontWeight:600,marginTop:10,color:'var(--text-primary)',textAlign:'center'}}>{category.label}</span>
     <span style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:3,lineHeight:1.3,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{currentLabel}</span>
   </div>;
@@ -816,6 +819,72 @@ function ThemeToggle({ prefix }) {
   );
 }
 
+// IDENTITY CHECK-IN
+// BCT 13.5 "identity associated with changed behaviour" was the strongest individual
+// technique in Black et al. 2020 (113 trials, 235 groups, N=43,992, biochemically
+// verified abstinence): OR 1.34 (1.08-1.67). In the best prospective study of the
+// mechanism (Dingle et al. 2015, N=132), the CHANGE IN THE GAP between using-identity
+// and recovery-identity accounted for 34% of variance in drinking quantity, 41% in
+// frequency and 49% in life satisfaction, controlling for baseline severity.
+// Two sliders and a subtraction. Unlike a day counter, the number is the user's own.
+function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
+  const KEY = prefix + '_identity';
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]') } catch { return [] } };
+  const [log, setLog] = useState(read);
+  const last = log.length ? log[log.length - 1] : null;
+  const due = !last || (Date.now() - last.t) > 7 * 86400000;
+  const [open, setOpen] = useState(false);
+  const [u, setU] = useState(last ? last.using : 5);
+  const [r, setR] = useState(last ? last.recovery : 5);
+  const save = () => {
+    const next = [...log, { t: Date.now(), using: u, recovery: r }];
+    try { localStorage.setItem(KEY, JSON.stringify(next)) } catch {}
+    setLog(next); setOpen(false);
+  };
+  const box = { margin: '8px 20px', padding: '14px 18px', borderRadius: 'var(--radius-md)',
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' };
+  const eyebrow = { fontSize: 9, color: accent, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' };
+
+  if (open || (due && !last)) {
+    return <div style={box}>
+      <div style={eyebrow}>How you see yourself</div>
+      {[[usingLabel, u, setU], [freeLabel, r, setR]].map(([lab, val, set], i) =>
+        <div key={i} style={{ marginTop: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-secondary)' }}>
+            <span>Right now, how much do you feel like {lab}?</span><span style={{ color: accent, fontWeight: 700 }}>{val}</span>
+          </div>
+          <input type="range" min="0" max="10" value={val} onChange={e => set(Number(e.target.value))}
+            style={{ width: '100%', marginTop: 6, accentColor: accent }} />
+        </div>)}
+      <button onClick={save} style={{ width: '100%', marginTop: 14, padding: 11, borderRadius: 40, border: 'none',
+        background: accent, color: 'var(--bg-deep)', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+        fontFamily: 'var(--font-body)' }}>Save how it feels today</button>
+      <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+        Only you see this. It is the one number here that comes from you rather than the clock.</p>
+    </div>;
+  }
+
+  const gap = last.recovery - last.using;
+  const first = log[0];
+  const moved = log.length > 1 ? gap - (first.recovery - first.using) : null;
+  return <div style={box}>
+    <div style={eyebrow}>How you see yourself</div>
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 6 }}>
+      <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--text-primary)' }}>
+        {gap > 0 ? '+' : ''}{gap}</span>
+      <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+        {gap > 0 ? 'more the person who does not, than the one who did' :
+         gap < 0 ? 'still more the person who did, than the one who does not' :
+         'evenly split between the two'}</span>
+    </div>
+    {moved !== null && moved !== 0 && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
+      {moved > 0 ? 'up ' + moved : 'down ' + Math.abs(moved)} since your first check-in{log.length > 1 ? ', ' + log.length + ' readings' : ''}</div>}
+    <button onClick={() => setOpen(true)} style={{ marginTop: 10, background: 'none', border: 'none', padding: 0,
+      color: accent, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+      {due ? 'Check in again' : 'Update'}</button>
+  </div>;
+}
+
 function Dashboard({config,onUpdateConfig,onReset}) {
   const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
   const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
@@ -829,7 +898,6 @@ function Dashboard({config,onUpdateConfig,onReset}) {
   const daysClean=Math.floor(elapsed/D);
   const hoursReclaimed=Math.round((elapsed/D)*(config.hoursPerDay||0));
   const checksAvoided=daysClean*(config.checksPerDay||0);
-  const overallHealth=getWeightedHealth(elapsed);
   const unlockedAchs=ACHIEVEMENTS.filter(a=>elapsed>=a.time);
   const unlockedCount=unlockedAchs.length;
   const latestUnlocked=[...ACHIEVEMENTS].reverse().find(a=>elapsed>=a.time);
@@ -858,7 +926,7 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(139,92,246,0.12),rgba(167,139,250,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
       <span style={{fontSize:36}}>{newAchievement.icon}</span>
       <div>
-        <div style={{fontSize:10,color:'var(--violet-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Achievement Unlocked</div>
+        <div style={{fontSize:10,color:'var(--violet-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Milestone Reached</div>
         <div style={{fontSize:15,fontWeight:700,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
       </div>
     </div>}
@@ -873,20 +941,23 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     </div>
 
     <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
-      <ProgressRing progress={overallHealth} color="var(--violet-primary)" size={160} strokeWidth={10}>
-        <span style={{fontSize:38,fontWeight:300,color:'var(--violet-primary)',fontFamily:'var(--font-display)'}}>{Math.round(overallHealth)}%</span>
-        <span style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginTop:2}}>Recovered</span>
-      </ProgressRing>
-      <div style={{marginTop:14,fontSize:18,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)}</div>
+      {(()=>{const prior=(()=>{try{return JSON.parse(localStorage.getItem('clearfeed_streaks')||'[]').reduce((t,x)=>t+(x.days||0),0)}catch{return 0}})();
+        const total=prior+daysClean;
+        if(localStorage.getItem('clearfeed_hidecount')==='1') return <div style={{textAlign:'center',fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-secondary)'}}>You are free, and it is counting.</div>;
+        return <div style={{textAlign:'center'}}>
+          <div style={{fontFamily:'var(--font-display)',fontSize:64,lineHeight:1,letterSpacing:-1,color:'var(--text-primary)'}}>{total.toLocaleString()}</div>
+          <div style={{fontSize:11,color:'var(--violet-primary)',fontWeight:700,letterSpacing:1.6,textTransform:'uppercase',marginTop:6}}>{total===1?'day free':'days free'}</div>
+          {prior>0&&<div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>across every run, including this one</div>}
+        </div>;})()}
+      <div style={{marginTop:12,fontSize:16,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)} this run</div>
       <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
-      {(()=>{try{const s=JSON.parse(localStorage.getItem('clearfeed_streaks')||'[]');if(!s.length)return null;const prior=s.reduce((t,x)=>t+(x.days||0),0);const total=prior+daysClean;return <div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>{total.toLocaleString()} free days so far</div>}catch{return null}})()}
       {config.motivation && <div style={{fontSize:11,color:'var(--violet-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
     </div>
 
     <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
       {[
-        {label:'Saved',value:`$${moneySaved}`,color:'var(--violet-primary)'},
-        {label:'Days',value:daysClean.toLocaleString(),color:'var(--violet-bright)'},
+        {label:'Hours Back',value:`${hoursReclaimed}h`,color:'var(--violet-primary)'},
+        {label:'Urges Met',value:(()=>{const st=getCravingStats();return st?String(st.surfedCount):'\u2014'})(),color:'var(--violet-bright)'},
         thirdStat
       ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
         <div style={{fontSize:18,fontWeight:700,color:s.color,letterSpacing:-0.5}}>{s.value}</div>
@@ -911,6 +982,20 @@ function Dashboard({config,onUpdateConfig,onReset}) {
       </div>
       <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(139,92,246,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--violet-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
     </div>}
+
+    <IdentityCheck prefix="clearfeed" accent="var(--violet-primary)" usingLabel="someone who scrolls" freeLabel="someone who does not" />
+
+    {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
+      if(!all.length)return null;
+      const survived=all.filter(c=>c.outcome==='surfed');
+      const pool=survived.length?survived:all;
+      const pick=pool[Math.floor(Date.now()/86400000)%pool.length];
+      const days=Math.max(0,Math.floor((Date.now()-pick.timestamp)/86400000));
+      return <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)'}}>
+        <div style={{fontSize:9,color:'var(--violet-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>You wrote this</div>
+        <p style={{fontSize:13,color:'var(--text-primary)',lineHeight:1.55,marginTop:6}}>{pick.note}</p>
+        <div style={{fontSize:10,color:'var(--text-muted)',marginTop:8}}>{new Date(pick.timestamp).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}{' \u00b7 '}{days===0?'today':days===1?'yesterday':days+' days ago'}{pick.outcome==='surfed'?' \u00b7 you got through it':''}</div>
+      </div>;})()}
 
     <div style={{display:'flex',margin:'20px 20px 0',gap:0}}>
       <button style={ts(activeTab==='health')} onClick={()=>setActiveTab('health')}>Recovery</button>
