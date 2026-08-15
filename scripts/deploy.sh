@@ -59,13 +59,20 @@ for app in "${APPS[@]}"; do
     esac
   done
 
-  for v in react-18.2.0.production.min.js react-dom-18.2.0.production.min.js babel-7.23.9.min.js; do
+  for v in react-18.2.0.production.min.js react-dom-18.2.0.production.min.js babel-7.23.9.min.js \
+           fonts/fonts.css fonts/dmsans-latin.woff2 fonts/dmserif-latin.woff2; do
     code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v" || echo 000)"
     ct="$(curl -fsSI "$url/vendor/$v" | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2}')"
     printf '   %-34s %s %s\n' "/vendor/$v" "$code" "$ct"
     [ "$code" = "200" ] || { echo "   FAIL vendor missing"; fail=1; }
     case "$ct" in text/html*) echo "   FAIL vendor served as HTML - try_files is swallowing the 404"; fail=1;; esac
   done
+
+  # The fonts are the privacy guarantee: if they 404, the page still renders on a
+  # fallback face and nobody notices, so this has to be checked, not assumed.
+  if curl -fsS "$url/index.html" 2>/dev/null | grep -q 'fonts\.googleapis\.com'; then
+    echo "   FAIL live HTML still references Google Fonts - third-party request restored"; fail=1
+  fi
 
   # The poison case: a missing vendor file must 404, never return the document.
   # No -f here: we WANT the status code of an error response, and -f makes
@@ -74,4 +81,30 @@ for app in "${APPS[@]}"; do
   printf '   %-34s %s (want 404)\n' "/vendor/__missing__.js" "$nf"
   [ "$nf" = "404" ] || { echo "   FAIL missing vendor file does not 404"; fail=1; }
 done
+
+# The hub. It was never in this script, so it silently stayed a release behind —
+# which mattered the moment the hub started carrying its own vendored fonts.
+# Different docroot (/var/www/clearsuite), different host, and no service worker.
+if [ -z "${SKIP_LANDING:-}" ]; then
+  src="$ROOT/apps/landing"; url="https://clearsuite.$DOMAIN_SUFFIX"
+  local_html="$(shasum -a 256 "$src/index.html" | cut -c1-12)"
+  before_html="$(served "$url/index.html" || echo none)"
+  if [ "$VERIFY_ONLY" -eq 0 ]; then
+    rsync -av --exclude Caddyfile --exclude Dockerfile --exclude .dockerignore \
+      --exclude .DS_Store "$src/" "$HOST:/var/www/clearsuite/"
+  fi
+  after_html="$(served "$url/index.html" || echo none)"
+  echo "-- landing (clearsuite)"
+  printf '   index.html  local %s  live %s  (was %s)\n' "$local_html" "$after_html" "$before_html"
+  [ "$after_html" = "$local_html" ] || { echo "   FAIL index.html live != local"; fail=1; }
+  for v in fonts/fonts.css fonts/dmsans-latin.woff2; do
+    code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v" || echo 000)"
+    printf '   %-34s %s\n' "/vendor/$v" "$code"
+    [ "$code" = "200" ] || { echo "   FAIL vendor missing"; fail=1; }
+  done
+  if curl -fsS "$url/index.html" 2>/dev/null | grep -q 'fonts\.googleapis\.com'; then
+    echo "   FAIL live HTML still references Google Fonts"; fail=1
+  fi
+fi
+
 exit $fail
