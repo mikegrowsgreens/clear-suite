@@ -1,0 +1,205 @@
+<meta charset="utf-8">
+<title>Clear Suite — warm directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Karla:wght@300;400;500;700&family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700&family=Caveat:wght@400;600&family=Sora:wght@200;300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{ --page:#e8e4dc; --ink:#1b1a17; --dim:#6f6a60; --line:#cdc7bb; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --page:#141310; --ink:#ece7dd; --dim:#948c7e; --line:#302c25; } }
+:root[data-theme="dark"]{ --page:#141310; --ink:#ece7dd; --dim:#948c7e; --line:#302c25; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:'Karla',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:44px 24px 90px}
+h1.t{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(26px,4vw,40px);letter-spacing:-0.02em;margin:0 0 12px;line-height:1.08}
+.lede{font-size:15px;line-height:1.62;color:var(--dim);max-width:660px;margin:0 0 8px}
+hr.r{border:0;border-top:1px solid var(--line);margin:26px 0 34px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:36px 26px}
+.slot-head{display:flex;align-items:baseline;gap:9px;margin-bottom:3px}
+.n{font-family:'Karla',monospace;font-size:11px;color:var(--dim);font-weight:700}
+.nm{font-family:'Fraunces',serif;font-size:19px;font-weight:600;letter-spacing:-0.01em}
+.th{font-size:12.5px;line-height:1.5;color:var(--dim);margin:0 0 12px;min-height:56px}
+.frame{width:100%;aspect-ratio:390/650;border-radius:16px;overflow:hidden;border:1px solid var(--line);position:relative}
+.frame>.s{position:absolute;inset:0;width:390px;height:650px;transform-origin:top left;overflow:hidden;padding:26px 22px;display:flex;flex-direction:column}
+.sp{font-family:'Karla',monospace;font-size:10.5px;line-height:1.65;color:var(--dim);margin-top:9px}
+.sp b{color:var(--ink);font-weight:700}
+.brand{display:flex;justify-content:space-between;align-items:center}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.cat{display:flex;align-items:baseline;justify-content:space-between}
+</style>
+
+<div class="wrap">
+<h1 class="t">Warm directions — round two</h1>
+<p class="lede">The first nine were refined serif on white. That combination is the clinical
+look; it put you in a hospital and made the user a patient, which is the opposite of what the
+copy argues. Warmth here comes from saturated hue, soft light and texture — not from paper.</p>
+<p class="lede">Adult warm, not childish warm. Finch and Bears Gratitude are the warmest things
+in this category and neither would survive a gambling or porn recovery user.</p>
+<hr class="r">
+<div class="grid" id="g"></div>
+</div>
+
+<script>
+const C={app:'Clear Odds',total:'233',run:'104d 20h',since:'free since May 2, 2026',
+ quote:'Urges are visitors now, not residents. They knock around paydays and big games, and they leave.',
+ note:'Sunday slate. Watched the whole thing, did not open the app once.',
+ noteMeta:'Aug 13 · 2 days ago · you got through it',
+ stats:[['$2,695','kept'],['21','urges met'],['134','not placed']],
+ cats:[['Urge intensity','near-miss pull largely gone'],['Financial recovery','a quarter of compounding'],['Sleep & clarity','holding steady']]};
+
+const D=[
+{n:'W1',name:'Hearth',
+ th:'Warm dark, lit from within. Ember and umber instead of black and neon — built for the 2am open without feeling like a casino or a ward.',
+ sp:'<b>Fraunces</b> + Karla · umber #17120E · ember #E0783C',
+ css:`.s{background:radial-gradient(120% 90% at 50% 0%, #2A1E15 0%, #17120E 62%);color:#F3E7DA;font-family:'Karla',sans-serif}
+ .wm{font-family:'Fraunces',serif;font-weight:600;font-size:21px;color:#F6EDE3}
+ .tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8A7461}
+ .fig{font-family:'Fraunces',serif;font-weight:300;font-size:82px;line-height:.94;margin-top:26px;color:#FFF3E6;text-shadow:0 0 44px rgba(224,120,60,.30)}
+ .lab{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#E0783C;margin-top:8px;font-weight:700}
+ .sub{font-size:12px;color:#9C8975;margin-top:4px}
+ .stats{margin-top:22px}
+ .stats>div{background:rgba(255,235,215,.045);border:1px solid rgba(224,120,60,.16);border-radius:14px;padding:12px 8px;text-align:center}
+ .stats b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:#FFF3E6}
+ .stats span{font-size:9px;color:#9C8975;letter-spacing:.05em}
+ .q{font-family:'Fraunces',serif;font-weight:300;font-size:15.5px;line-height:1.5;margin-top:20px;color:#DCC9B4;border-left:2px solid #E0783C;padding-left:13px}
+ .note{margin-top:18px;background:rgba(255,235,215,.05);border-radius:14px;padding:14px 16px}
+ .note .e{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#E0783C;font-weight:700}
+ .note p{font-size:13px;line-height:1.55;margin:6px 0 0;color:#F3E7DA}
+ .note .m{font-size:10px;color:#8A7461;margin-top:8px}
+ .cats{margin-top:20px}.cat{padding:10px 0;border-bottom:1px solid rgba(255,235,215,.07)}
+ .cat b{font-weight:700;font-size:12.5px}.cat span{font-size:10.5px;color:#9C8975;text-align:right;max-width:52%}`},
+
+{n:'W2',name:'First Light',
+ th:'A dawn wash rather than a page. Almost no chrome, no cards, no rules — the screen is a place, not a document. Closest to Liven of anything here.',
+ sp:'<b>Instrument Serif</b> + Instrument Sans · dawn #FFF1E6 → #F0E4F2',
+ css:`.s{background:linear-gradient(168deg,#FFF3E8 0%,#FDE8DC 42%,#EFE2F0 100%);color:#33262B;font-family:'Instrument Sans',sans-serif}
+ .wm{font-family:'Instrument Serif',serif;font-size:24px;color:#33262B}
+ .tag{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#9A8189}
+ .fig{font-family:'Instrument Serif',serif;font-size:92px;line-height:.9;margin-top:28px;color:#B4543F}
+ .lab{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#9A8189;margin-top:8px}
+ .sub{font-size:12px;color:#9A8189;margin-top:4px}
+ .stats{margin-top:26px}
+ .stats>div{text-align:center}
+ .stats b{display:block;font-family:'Instrument Serif',serif;font-size:26px;color:#33262B}
+ .stats span{font-size:10px;color:#9A8189}
+ .q{font-family:'Instrument Serif',serif;font-size:17px;line-height:1.42;margin-top:24px;color:#5A4048}
+ .note{margin-top:22px}
+ .note .e{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#B4543F;font-weight:600}
+ .note p{font-size:13.5px;line-height:1.6;margin:6px 0 0;color:#33262B}
+ .note .m{font-size:10px;color:#9A8189;margin-top:7px}
+ .cats{margin-top:22px}.cat{padding:11px 0;border-bottom:1px solid rgba(51,38,43,.09)}
+ .cat b{font-weight:600;font-size:13px}.cat span{font-size:11px;color:#9A8189;text-align:right;max-width:52%}`},
+
+{n:'W3',name:'Terracotta',
+ th:'Earthenware. A saturated clay ground instead of white, chunky grotesque, everything sitting on colour. Grounded and adult — the least precious option.',
+ sp:'<b>Bricolage Grotesque</b> + Karla · clay #C96F4A · bone #F6EDE4',
+ css:`.s{background:#C96F4A;color:#2B1710;font-family:'Karla',sans-serif}
+ .wm{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.02em;color:#2B1710}
+ .tag{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#7C3E28;font-weight:700}
+ .fig{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:88px;line-height:.86;letter-spacing:-.05em;margin-top:22px;color:#F9F1E8}
+ .lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#2B1710;margin-top:8px;font-weight:700}
+ .sub{font-size:12px;color:#7C3E28;margin-top:5px;font-weight:500}
+ .stats{margin-top:22px}
+ .stats>div{background:#F6EDE4;border-radius:16px;padding:13px 8px;text-align:center}
+ .stats b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;color:#2B1710;letter-spacing:-.03em}
+ .stats span{font-size:9px;color:#8A5238;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+ .q{font-size:15px;line-height:1.5;margin-top:20px;color:#F9F1E8;font-weight:500}
+ .note{margin-top:20px;background:#F6EDE4;border-radius:16px;padding:15px 17px}
+ .note .e{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#8A5238;font-weight:700}
+ .note p{font-size:13.5px;line-height:1.55;margin:6px 0 0;color:#2B1710}
+ .note .m{font-size:10px;color:#8A5238;margin-top:8px}
+ .cats{margin-top:20px}.cat{padding:10px 0;border-bottom:1px solid rgba(43,23,16,.16)}
+ .cat b{font-weight:700;font-size:12.5px;color:#2B1710}.cat span{font-size:10.5px;color:#7C3E28;text-align:right;max-width:52%}`},
+
+{n:'W4',name:'Field Guide',
+ th:'Sage and ink with painterly spot marks. The natural-world register done for adults — closer to a botanical plate than a wellness app.',
+ sp:'<b>Fraunces</b> + Nunito Sans · sage #DDE3D2 · moss #47603C',
+ css:`.s{background:
+   radial-gradient(70% 45% at 88% 4%, rgba(71,96,60,.10) 0%, rgba(71,96,60,0) 70%),
+   radial-gradient(55% 35% at 6% 96%, rgba(190,120,60,.12) 0%, rgba(190,120,60,0) 70%), #DEE4D3;
+   color:#22301D;font-family:'Nunito Sans',sans-serif}
+ .wm{font-family:'Fraunces',serif;font-weight:600;font-size:21px;color:#22301D}
+ .tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#71805F;font-weight:700}
+ .fig{font-family:'Fraunces',serif;font-weight:300;font-size:84px;line-height:.94;margin-top:26px;color:#47603C}
+ .lab{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#71805F;margin-top:8px;font-weight:700}
+ .sub{font-size:12px;color:#71805F;margin-top:4px}
+ .stats{margin-top:22px}
+ .stats>div{text-align:center;background:rgba(255,253,246,.62);border-radius:3px;padding:12px 8px;border:1px solid rgba(71,96,60,.14)}
+ .stats b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:21px;color:#22301D}
+ .stats span{font-size:9px;color:#71805F;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+ .q{font-family:'Fraunces',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.46;margin-top:20px;color:#3A4A33}
+ .note{margin-top:20px;background:rgba(255,253,246,.7);border-radius:3px;padding:15px 17px;border:1px solid rgba(71,96,60,.14)}
+ .note .e{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#7A5A2E;font-weight:700}
+ .note p{font-size:13.5px;line-height:1.55;margin:6px 0 0}
+ .note .m{font-size:10px;color:#71805F;margin-top:8px}
+ .cats{margin-top:20px}.cat{padding:10px 0;border-bottom:1px dotted rgba(71,96,60,.3)}
+ .cat b{font-weight:700;font-size:12.5px}.cat span{font-size:10.5px;color:#71805F;text-align:right;max-width:52%}`},
+
+{n:'W5',name:'Kitchen Table',
+ th:'Where people actually do this. Warm paper with grain, and your own words set in a hand — the only direction where your writing looks like writing.',
+ sp:'<b>Caveat</b> + Bricolage Grotesque · paper #F2E9D8 · ink #2A2620',
+ css:`.s{background:
+   repeating-linear-gradient(101deg, rgba(160,140,105,.045) 0 2px, rgba(0,0,0,0) 2px 5px), #F3EADA;
+   color:#2A2620;font-family:'Bricolage Grotesque',sans-serif}
+ .wm{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.02em}
+ .tag{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#93866D;font-weight:600}
+ .fig{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:84px;line-height:.88;letter-spacing:-.05em;margin-top:22px;color:#2A2620}
+ .lab{font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:#B0552F;margin-top:7px;font-weight:700}
+ .sub{font-size:12px;color:#93866D;margin-top:5px;font-weight:400}
+ .stats{margin-top:22px}
+ .stats>div{text-align:center;border-top:2px solid #2A2620;padding:10px 6px 0}
+ .stats b{display:block;font-weight:800;font-size:21px;letter-spacing:-.03em}
+ .stats span{font-size:9px;color:#93866D;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+ .q{font-family:'Caveat',cursive;font-size:22px;line-height:1.3;margin-top:22px;color:#4A4238}
+ .note{margin-top:18px;background:#FBF6EC;border:1px solid rgba(42,38,32,.13);border-radius:2px;padding:15px 17px;box-shadow:2px 3px 0 rgba(42,38,32,.07)}
+ .note .e{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#B0552F;font-weight:700}
+ .note p{font-family:'Caveat',cursive;font-size:21px;line-height:1.32;margin:5px 0 0;color:#2A2620}
+ .note .m{font-size:10px;color:#93866D;margin-top:8px}
+ .cats{margin-top:20px}.cat{padding:10px 0;border-bottom:1px solid rgba(42,38,32,.13)}
+ .cat b{font-weight:700;font-size:12.5px}.cat span{font-size:10.5px;color:#93866D;text-align:right;max-width:52%}`},
+
+{n:'W6',name:'Long Evening',
+ th:'Keeps the energy the current app has, drops the casino. Deep plum dusk with one warm rose glow — dark and alive rather than dark and clinical.',
+ sp:'<b>Sora</b> + Fraunces · dusk #1A1420 · rose #F2887B',
+ css:`.s{background:linear-gradient(178deg,#241A2C 0%,#1A1420 55%,#150F1A 100%);color:#EFE4E6;font-family:'Sora',sans-serif}
+ .wm{font-family:'Fraunces',serif;font-weight:600;font-size:21px;color:#F7ECEE}
+ .tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8B7A8C}
+ .fig{font-family:'Sora',sans-serif;font-weight:200;font-size:80px;line-height:.96;letter-spacing:-.04em;margin-top:26px;color:#FBF0F1}
+ .lab{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#F2887B;margin-top:9px;font-weight:400}
+ .sub{font-size:12px;color:#8B7A8C;margin-top:5px;font-weight:300}
+ .stats{margin-top:24px}
+ .stats>div{text-align:center;background:rgba(242,136,123,.07);border-radius:18px;padding:13px 8px}
+ .stats b{display:block;font-weight:300;font-size:21px;color:#FBF0F1;letter-spacing:-.02em}
+ .stats span{font-size:9px;color:#8B7A8C;letter-spacing:.05em}
+ .q{font-family:'Fraunces',serif;font-weight:300;font-size:16px;line-height:1.5;margin-top:22px;color:#D6C4C8}
+ .note{margin-top:20px;background:rgba(242,136,123,.06);border-radius:18px;padding:15px 17px}
+ .note .e{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#F2887B;font-weight:600}
+ .note p{font-size:13px;line-height:1.6;margin:6px 0 0;color:#EFE4E6;font-weight:300}
+ .note .m{font-size:10px;color:#8B7A8C;margin-top:8px}
+ .cats{margin-top:20px}.cat{padding:11px 0;border-bottom:1px solid rgba(239,228,230,.08)}
+ .cat b{font-weight:400;font-size:13px}.cat span{font-size:10.5px;color:#8B7A8C;text-align:right;max-width:52%}`},
+];
+
+function screen(){return `
+ <div class="brand"><div class="wm">${C.app}</div><div class="tag">gambling</div></div>
+ <div class="fig">${C.total}</div>
+ <div class="lab">days free</div>
+ <div class="sub">${C.run} this run · ${C.since}</div>
+ <div class="stats">${C.stats.map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+ <div class="q">${C.quote}</div>
+ <div class="note"><div class="e">You wrote this</div><p>${C.note}</p><div class="m">${C.noteMeta}</div></div>
+ <div class="cats">${C.cats.map(([n,s])=>`<div class="cat"><b>${n}</b><span>${s}</span></div>`).join('')}</div>`;}
+
+const g=document.getElementById('g');
+D.forEach(d=>{
+  const el=document.createElement('div'); el.id='d-'+d.n;
+  el.innerHTML=`<div class="slot-head"><span class="n">${d.n}</span><span class="nm">${d.name}</span></div>
+    <p class="th">${d.th}</p><div class="frame"><div class="s">${screen()}</div></div>
+    <div class="sp">${d.sp}</div>`;
+  const st=document.createElement('style');
+  st.textContent=d.css.replace(/\.s\b/g,`#d-${d.n} .s`).replace(/(^|\s)\.(wm|tag|fig|lab|sub|stats|q|note|cats|cat)\b/g,`$1#d-${d.n} .$2`);
+  document.head.appendChild(st); g.appendChild(el);
+});
+function fit(){document.querySelectorAll('.frame').forEach(f=>{f.querySelector('.s').style.transform=`scale(${f.clientWidth/390})`})}
+fit();addEventListener('resize',fit);document.fonts&&document.fonts.ready.then(fit);
+</script>

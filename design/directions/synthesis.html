@@ -1,0 +1,143 @@
+<meta charset="utf-8">
+<title>Clear Suite — Long Evening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Sora:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--page:#e8e4dc;--ink:#1b1a17;--dim:#6f6a60;--line:#cdc7bb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#141310;--ink:#ece7dd;--dim:#948c7e;--line:#302c25}}
+:root[data-theme="dark"]{--page:#141310;--ink:#ece7dd;--dim:#948c7e;--line:#302c25}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:'Sora',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1300px;margin:0 auto;padding:44px 24px 90px}
+h1{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(26px,4vw,40px);letter-spacing:-.02em;margin:0 0 12px}
+h2{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:40px 0 4px}
+.lede{font-size:14.5px;line-height:1.62;color:var(--dim);max-width:690px;margin:0 0 8px;font-weight:300}
+hr{border:0;border-top:1px solid var(--line);margin:24px 0 30px}
+.pair{display:flex;gap:26px;flex-wrap:wrap;margin-top:18px}
+.col{flex:0 0 auto}
+.cap{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;font-weight:600}
+.ph{width:390px;height:720px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+.wide{width:100%;max-width:1180px;height:560px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.sw{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.sw div{width:132px}
+.sw i{display:block;height:44px;border-radius:10px;margin-bottom:6px}
+.sw b{font-size:11.5px;font-weight:600;display:block}
+.sw span{font-family:'Sora',monospace;font-size:10px;color:var(--dim)}
+
+/* ============ LONG EVENING — the system ============ */
+.s{height:100%;padding:26px 22px;display:flex;flex-direction:column;font-family:'Sora',sans-serif}
+
+/* Hearth = dark theme */
+.s.dark{background:radial-gradient(120% 85% at 50% 0%,#2A1E15 0%,#17120E 60%);color:#F3E7DA;
+  --acc:#C89B4A;--sub:#9C8975;--surf:rgba(255,235,215,.05);--edge:rgba(255,235,215,.08);--hi:#FFF3E6}
+/* Field Guide = light theme */
+.s.light{background:radial-gradient(60% 38% at 6% 97%,rgba(184,138,66,.20) 0%,rgba(184,138,66,0) 72%),#D8DFCB;color:#1E2A19;
+  --acc:#6E4E24;--sub:#66765A;--surf:rgba(252,250,242,.58);--edge:rgba(30,42,25,.13);--hi:#141F0E}
+
+.s .brand{display:flex;justify-content:space-between;align-items:center}
+.s .wm{font-family:'Fraunces',serif;font-weight:600;font-size:21px}
+.s .tag{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:var(--sub)}
+.s .fig{font-weight:200;font-size:86px;line-height:.95;letter-spacing:-.045em;margin-top:30px;color:var(--hi)}
+.s .lab{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-top:10px;font-weight:400}
+.s .sub{font-size:11.5px;color:var(--sub);margin-top:5px;font-weight:300}
+.s .why{font-family:'Fraunces',serif;font-style:italic;font-size:12.5px;color:var(--acc);margin-top:8px;opacity:.9}
+.s .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:24px}
+.s .stats>div{background:var(--surf);border-radius:18px;padding:14px 8px;text-align:center}
+.s .stats b{display:block;font-weight:300;font-size:21px;color:var(--hi);letter-spacing:-.02em}
+.s .stats span{font-size:8.5px;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin-top:2px;display:block}
+.s .q{font-family:'Fraunces',serif;font-weight:300;font-size:15.5px;line-height:1.5;margin-top:22px;color:var(--hi);opacity:.86}
+.s .note{margin-top:20px;background:var(--surf);border-radius:18px;padding:15px 17px}
+.s .note .e{font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--acc);font-weight:600}
+.s .note p{font-size:13px;line-height:1.6;margin:7px 0 0;font-weight:300}
+.s .note .m{font-size:9.5px;color:var(--sub);margin-top:9px}
+.s .idg{margin-top:14px;background:var(--surf);border-radius:18px;padding:15px 17px;display:flex;align-items:baseline;gap:11px}
+.s .idg b{font-family:'Fraunces',serif;font-weight:400;font-size:27px;color:var(--hi)}
+.s .idg span{font-size:11.5px;color:var(--sub);line-height:1.4;font-weight:300}
+.s .cats{margin-top:18px}
+.s .cat{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--edge)}
+.s .cat b{font-weight:400;font-size:12.5px}
+.s .cat span{font-size:10.5px;color:var(--sub);text-align:right;max-width:54%;font-weight:300}
+
+/* wide: the desktop void, fixed */
+.w{height:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:0;font-family:'Sora',sans-serif}
+.w .l{padding:42px 44px;display:flex;flex-direction:column;justify-content:center}
+.w .r{padding:42px 40px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-left:1px solid var(--edge)}
+.w .fig{font-weight:200;font-size:132px;line-height:.9;letter-spacing:-.05em;margin:0;color:var(--hi)}
+</style>
+
+<div class="wrap">
+<h1>Long Evening — with Hearth and Field Guide as the two themes</h1>
+<p class="lede">Your pick, resolved: Long Evening's structure and type carry the system; Hearth's
+umber and ember become the dark theme; Field Guide's sage and moss become the light theme. The
+apps already ship a light/dark toggle and light mode is currently undesigned Tailwind slate, so
+this fills a real hole rather than making one.</p>
+<hr>
+
+<h2>The two themes</h2>
+<p class="lede">Clear Odds, day 233. Same structure, same type, same spacing — only the ground changes.</p>
+<div class="pair">
+  <div class="col"><div class="cap">Dark — Hearth</div><div class="ph"><div class="s dark" id="d"></div></div></div>
+  <div class="col"><div class="cap">Light — Field Guide</div><div class="ph"><div class="s light" id="l"></div></div></div>
+  <div class="col"><div class="cap">Dark — Clear Flow, in Hearth ember</div><div class="ph"><div class="s dark" id="e" style="--acc:#E0783C"></div></div></div>
+</div>
+
+<h2>Desktop, which currently does not exist</h2>
+<p class="lede">At 1440 every app is a 400px column in a void. The look-back and the identity gap
+are the two things worth reading side by side, so the width finally does something.</p>
+<div class="wide"><div class="s dark" style="padding:0"><div class="w" id="w"></div></div></div>
+
+<h2>Per-app accents — custom-mixed, no Tailwind</h2>
+<p class="lede">All 32 current accents are stock Tailwind swatches, which is why the hub squints
+down to eight coloured dots. These are mixed to sit inside the Hearth/Field Guide family, so the
+suite reads as one thing with eight members instead of eight unrelated apps.</p>
+<div class="sw" id="sw"></div>
+</div>
+
+<script>
+const C={app:'Clear Odds',total:'233',run:'104d 20h this run · free since May 2, 2026',
+ why:'My kid asked why I was always on my phone during games.',
+ quote:'Urges are visitors now, not residents. They knock around paydays and big games, and they leave.',
+ note:'Sunday slate. Watched the whole thing, did not open the app once.',
+ meta:'Aug 13 · 2 days ago · you got through it',
+ stats:[['$2,695','kept'],['21','urges met'],['134','not placed']],
+ cats:[['Urge intensity','near-miss pull largely gone'],['Financial recovery','a quarter of compounding'],['Sleep & clarity','holding steady'],['Relationships & trust','rebuilding on evidence']]};
+
+const phone=()=>`
+ <div class="brand"><div class="wm">${C.app}</div><div class="tag">gambling</div></div>
+ <div class="fig">${C.total}</div><div class="lab">days free</div>
+ <div class="sub">${C.run}</div><div class="why">${C.why}</div>
+ <div class="stats">${C.stats.map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+ <div class="q">${C.quote}</div>
+ <div class="idg"><b>+7</b><span>more the person who does not, than the one who did</span></div>
+ <div class="note"><div class="e">You wrote this</div><p>${C.note}</p><div class="m">${C.meta}</div></div>
+ <div class="cats">${C.cats.slice(0,3).map(([n,s])=>`<div class="cat"><b>${n}</b><span>${s}</span></div>`).join('')}</div>`;
+
+document.getElementById('d').innerHTML=phone();
+document.getElementById('l').innerHTML=phone();
+document.getElementById('e').innerHTML=phone()
+  .replace('Clear Odds','Clear Flow').replace('gambling','alcohol')
+  .replace(C.why,'I want to remember evenings.')
+  .replace(C.quote,'You are not losing something. You are stopping paying for a discomfort.')
+  .replace(C.note,'Wedding. Stayed till the end, drank lime and soda, drove myself home.')
+  .replace('urges met','cravings met').replace('not placed','not drunk').replace('134','412');
+document.getElementById('w').innerHTML=`
+ <div class="l">
+   <div class="brand" style="margin-bottom:auto"><div class="wm">${C.app}</div><div class="tag">gambling</div></div>
+   <div class="fig">${C.total}</div><div class="lab">days free</div>
+   <div class="sub">${C.run}</div><div class="why">${C.why}</div>
+   <div class="stats" style="max-width:430px">${C.stats.map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+   <div style="margin-top:auto"></div>
+ </div>
+ <div class="r">
+   <div class="note"><div class="e">You wrote this</div><p>${C.note}</p><div class="m">${C.meta}</div></div>
+   <div class="idg"><b>+7</b><span>more the person who does not, than the one who did</span></div>
+   <div class="cats">${C.cats.map(([n,s])=>`<div class="cat"><b>${n}</b><span>${s}</span></div>`).join('')}</div>
+ </div>`;
+
+const A=[['Clear Flow','alcohol','#C4563C'],['Clear Air','vaping','#5E8B7E'],['Clear Mind','cannabis','#6B8A3D'],
+ ['Clear Body','sugar','#C4636B'],['Clear Feed','social','#8B7BA8'],['Clear Odds','gambling','#C89B4A'],
+ ['Clear Sight','porn','#6B7F9E'],['Clear Energy','caffeine','#D08A2C']];
+document.getElementById('sw').innerHTML=A.map(([n,s,h])=>
+ `<div><i style="background:${h}"></i><b>${n}</b><span>${s} · ${h}</span></div>`).join('');
+</script>

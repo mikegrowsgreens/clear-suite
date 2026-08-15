@@ -99,12 +99,44 @@ next-milestone percentage still renders in seven apps as a credit-balance displa
 "days free" is avoidance-shaped where approach-framed goals succeeded 58.9% vs 47.1%
 (Oscarsson 2020, N=1,066).
 
-**S4 · Visual direction** — blocked on Mike's pick. Nine directions rendered at equal
-fidelity (see the plan file). Gates `DESIGN.md`, which this repo has never had. The
-constraint from the research: the system must express *identity evidence*, not *reward*,
-which favours the record-like directions (A Clinical Daylight, D Ledger, H Chart).
+**S4 · Visual direction — DECIDED 2026-08-15. Named direction: "Long Evening".**
 
-**S5 · Identity assets** — blocked on S4. Suite mark (none exists; the hub currently
+Round one (nine directions, `design/directions/index.html`) was **rejected**: "very very
+sanitized, clinical, sterile — it feels like I'm in a hospital being in our apps." That was
+correct, and the mistake is worth recording so nobody repeats it. The research said the
+*mental model* is a record of your own recovery; I translated that into hospital, which
+frames the user as a **patient being treated** — the opposite of the product's thesis that
+you already did it and you are free. Casino-neon and hospital-white are both the wrong role.
+All nine were also refined serif on white: nine shades of one idea, not nine directions.
+Warmth comes from saturated hue, soft light and texture — not from paper.
+
+Round two (`design/directions/warm.html`, reference-locked to Liven, Wayfinder, Palette
+Supply and Apron) produced the pick — "long evening my favorite style, field guide and
+hearth best colors". Resolved in `design/directions/synthesis.html`:
+
+- **Long Evening** = the system. Sora 200 for the hero figure, Fraunces for the wordmark,
+  pull-quote and identity gap. Soft 18px cards, low-alpha accent surfaces, generous quiet.
+- **Hearth** = the dark theme. `radial-gradient(120% 85% at 50% 0%, #2A1E15, #17120E 60%)`,
+  text `#F3E7DA`, secondary `#9C8975`, surface `rgba(255,235,215,.05)`.
+- **Field Guide** = the light theme. Ground `#D8DFCB` with a warm ochre corner wash, text
+  `#1E2A19`, accent `#6E4E24`, surface `rgba(252,250,242,.58)`. Fills a real hole — light
+  mode is currently undesigned Tailwind slate, identical across all eight apps.
+
+**Per-app accents, custom-mixed, no Tailwind:** Flow `#C4563C`, Air `#5E8B7E`, Mind
+`#6B8A3D`, Body `#C4636B`, Feed `#8B7BA8`, Odds `#C89B4A`, Sight `#6B7F9E`, Energy `#D08A2C`.
+
+**Desktop is new work, not a restyle.** At 1440 every app is a 400px column in a void; the
+synthesis puts the look-back and the identity gap in a second column.
+
+**Known fix before building:** light-mode secondary `#66765A` is 3.56:1 on the sage ground —
+passes for large text, fails for the 10px category descriptions. Darken it. Everything else
+checks out (dark 15.3:1 body / 5.5:1 secondary / 6.1–7.3:1 accents; light 11:1 body).
+
+Next step is `DESIGN.md` — named aesthetic, reference lock, tokens with roles, ban list (no
+emoji as iconography, no stock Tailwind swatches, no fill-to-100 progress, no unlock/reward
+vocabulary, no clinical sterility), decision ledger — then roll across the eight apps and hub.
+
+**S5 · Identity assets** — unblocked now that S4 is decided. Suite mark (none exists; the hub currently
 borrows Clear Flow's icon), hub favicon and manifest, and nine real 1200×630 OG cards —
 every share currently renders as a small square app icon.
 

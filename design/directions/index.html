@@ -1,0 +1,350 @@
+<meta charset="utf-8">
+<title>Clear Suite Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Serif+Display&family=Newsreader:opsz,wght@6..72,200;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;700&family=Archivo:wght@300;400;500;700;800&family=Instrument+Serif&family=Public+Sans:wght@300;400;500;700&family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@300;400;500;700&family=Spectral:wght@200;300;400;600&family=Work+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --page:#e9e7e2; --page-ink:#191817; --page-dim:#6d6a63; --page-line:#cfccc4;
+}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --page:#16151a; --page-ink:#eceaf2; --page-dim:#918da0; --page-line:#302e39; }
+}
+:root[data-theme="dark"]{ --page:#16151a; --page-ink:#eceaf2; --page-dim:#918da0; --page-line:#302e39; }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--page-ink);
+  font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:48px 24px 96px}
+header.top{max-width:660px;margin-bottom:8px}
+h1.title{font-family:'Newsreader',serif;font-weight:400;font-size:clamp(28px,4vw,42px);
+  line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px}
+.lede{font-size:15px;line-height:1.6;color:var(--page-dim);margin:0 0 6px}
+.meta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--page-dim);margin-top:22px}
+hr.rule{border:0;border-top:1px solid var(--page-line);margin:28px 0 36px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:34px 26px}
+.slot{min-width:0}
+.slot-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.slot-n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--page-dim)}
+.slot-name{font-family:'Newsreader',serif;font-size:19px;font-weight:500;letter-spacing:-0.01em}
+.slot-thesis{font-size:12.5px;line-height:1.5;color:var(--page-dim);margin:0 0 12px;min-height:38px}
+.slot-specs{font-family:'IBM Plex Mono',monospace;font-size:10.5px;line-height:1.7;
+  color:var(--page-dim);margin-top:10px}
+.slot-specs b{color:var(--page-ink);font-weight:500}
+.frame{width:100%;aspect-ratio:390/620;border-radius:14px;overflow:hidden;
+  border:1px solid var(--page-line);position:relative}
+.frame > .screen{position:absolute;inset:0;width:390px;height:620px;
+  transform-origin:top left;overflow:hidden}
+
+/* ---------- shared screen scaffolding (each direction restyles it) ---------- */
+.screen{padding:26px 22px;display:flex;flex-direction:column;gap:0}
+.brand{display:flex;justify-content:space-between;align-items:center}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr}
+.cats{display:flex;flex-direction:column}
+.cat{display:flex;align-items:baseline;justify-content:space-between}
+.tll{font-size:10px;letter-spacing:.04em;margin-top:6px;opacity:.62}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <h1 class="title">Clear Suite — nine directions</h1>
+  <p class="lede">The same screen (Clear Odds, day 104) built nine ways at equal fidelity.
+     Every one drops the fill-to-100 ring, the badge grid and emoji iconography, and finds a
+     different grammar for “here is what has already happened.”</p>
+  <p class="lede">Name the ones worth developing. Nothing here is finished — these are
+     generation one, and generation one never ships.</p>
+  <p class="meta">Anti-reference: QUITTR · Reference lock: Ease Health, Function Health, Claude, Open</p>
+</header>
+<hr class="rule">
+<div class="grid" id="grid"></div>
+</div>
+
+<script>
+/* Same content in every direction, so the comparison is about the language, not the copy. */
+const C = {
+  app:'Clear Odds', days:'104', since:'free since May 2, 2026', elapsed:'104d 20h',
+  quote:'Urges are visitors now, not residents. They knock around paydays and big games, and they leave.',
+  stats:[['$2,695','kept'],['134','bets not placed'],['26h','back']],
+  cats:[['Urge intensity','near-miss pull largely gone'],
+        ['Financial recovery','a quarter of compounding'],
+        ['Sleep & clarity','consistent schedule holding']],
+  next:'Six months', nextIn:'in 75 days'
+};
+
+const DIRECTIONS = [
+{
+  n:'A', name:'Clinical Daylight',
+  thesis:'A lab report on your own recovery. Paper ground, one desaturated accent used only for data. Progress is a record of elapsed events, never a percentage of a person.',
+  specs:'<b>Newsreader</b> + IBM Plex Sans · paper #F7F4EE · slate #3A5A7A',
+  css:`
+   .s{background:#F7F4EE;color:#1B1A17;font-family:'IBM Plex Sans',sans-serif}
+   .s .wm{font-family:'Newsreader',serif;font-size:19px;font-weight:500;letter-spacing:-.01em}
+   .s .tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#8A857C}
+   .s .fig{font-family:'Newsreader',serif;font-weight:200;font-size:78px;line-height:.95;letter-spacing:-.03em;color:#1B1A17;margin-top:26px}
+   .s .figlab{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3A5A7A;margin-top:6px}
+   .s .since{font-size:12px;color:#8A857C;margin-top:2px}
+   .s .tl{margin-top:24px;border-top:1px solid #DDD8CE;padding-top:12px;display:flex;gap:3px;align-items:flex-end;height:44px}
+   .s .tl i{flex:1;height:100%;background:#3A5A7A;opacity:.18;border-radius:1px}
+   .s .tl i.on{opacity:1}
+   .s .stats{margin-top:22px;border-top:1px solid #DDD8CE;border-bottom:1px solid #DDD8CE;padding:13px 0;gap:8px}
+   .s .stats b{display:block;font-family:'Newsreader',serif;font-weight:400;font-size:21px;letter-spacing:-.01em}
+   .s .stats span{font-size:10px;color:#8A857C;letter-spacing:.02em}
+   .s .q{font-family:'Newsreader',serif;font-size:15.5px;line-height:1.5;font-weight:300;margin-top:20px;color:#37342E}
+   .s .cats{margin-top:22px;gap:0}
+   .s .cat{padding:11px 0;border-bottom:1px solid #E6E1D7}
+   .s .cat b{font-weight:500;font-size:13px}
+   .s .cat span{font-size:11px;color:#8A857C;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:16px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;color:#8A857C;text-transform:uppercase}
+  `, layout:'record'
+},
+{
+  n:'B', name:'Field Notes',
+  thesis:'An almanac kept in your own hand. Cream and ink, DM Serif Display carrying the whole identity. The accent is a rule and a marker — it never fills anything.',
+  specs:'<b>DM Serif Display</b> + DM Sans · cream #F2EDE1 · marker #9A5B2E',
+  css:`
+   .s{background:#F2EDE1;color:#211E19;font-family:'DM Sans',sans-serif}
+   .s .wm{font-family:'DM Serif Display',serif;font-size:21px;letter-spacing:-.01em}
+   .s .tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#8C8271;font-weight:500}
+   .s .fig{font-family:'DM Serif Display',serif;font-size:82px;line-height:.9;letter-spacing:-.02em;margin-top:22px}
+   .s .figlab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8C8271;margin-top:8px;font-weight:500}
+   .s .since{font-size:12px;color:#8C8271;margin-top:3px;font-style:italic}
+   .s .tl{margin-top:20px;height:0;border-top:2px solid #9A5B2E;width:52%}
+   .s .stats{margin-top:20px;gap:8px}
+   .s .stats b{display:block;font-family:'DM Serif Display',serif;font-size:23px}
+   .s .stats span{font-size:10px;color:#8C8271;letter-spacing:.04em;text-transform:uppercase}
+   .s .q{font-family:'DM Serif Display',serif;font-size:16px;line-height:1.45;margin-top:22px;
+     border-left:2px solid #9A5B2E;padding-left:13px;color:#3A342A}
+   .s .cats{margin-top:22px}
+   .s .cat{padding:10px 0;border-bottom:1px dotted #C9BFA9}
+   .s .cat b{font-weight:500;font-size:13px}
+   .s .cat span{font-size:11px;color:#8C8271;text-align:right;max-width:52%;font-style:italic}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8C8271}
+  `, layout:'record'
+},
+{
+  n:'C', name:'Night Ward',
+  thesis:'Stays dark for the 2am use case, strips the casino. Desaturated ground, one calm suite accent, drawn rules instead of neon. Nothing glows, nothing fills.',
+  specs:'<b>DM Serif Display</b> + DM Sans · ward #12151B · accent #8FB0C4',
+  css:`
+   .s{background:#12151B;color:#E4E7EC;font-family:'DM Sans',sans-serif}
+   .s .wm{font-family:'DM Serif Display',serif;font-size:21px;letter-spacing:-.01em}
+   .s .tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#6E7885}
+   .s .fig{font-family:'DM Serif Display',serif;font-size:80px;line-height:.92;letter-spacing:-.02em;margin-top:24px;color:#F2F5F8}
+   .s .figlab{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8FB0C4;margin-top:7px}
+   .s .since{font-size:12px;color:#6E7885;margin-top:3px}
+   .s .tl{margin-top:22px;display:flex;gap:2px;height:26px;align-items:flex-end}
+   .s .tl i{flex:1;height:100%;background:#8FB0C4;opacity:.16;border-radius:1px}
+   .s .tl i.on{opacity:.85}
+   .s .stats{margin-top:22px;border-top:1px solid #232833;border-bottom:1px solid #232833;padding:13px 0;gap:8px}
+   .s .stats b{display:block;font-family:'DM Serif Display',serif;font-size:22px;color:#F2F5F8}
+   .s .stats span{font-size:10px;color:#6E7885;letter-spacing:.03em}
+   .s .q{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.5;margin-top:20px;color:#C3CAD3}
+   .s .cats{margin-top:20px}
+   .s .cat{padding:11px 0;border-bottom:1px solid #1D222B}
+   .s .cat b{font-weight:500;font-size:13px}
+   .s .cat span{font-size:11px;color:#6E7885;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#4E5763}
+  `, layout:'record'
+},
+{
+  n:'D', name:'Ledger',
+  thesis:'Everything is a figure in a monospaced column. No decoration at all — the product is a receipt for what you did not spend, drink or bet. Hairlines only.',
+  specs:'<b>IBM Plex Mono</b> + IBM Plex Sans · bone #FBFAF7 · ink #101010',
+  css:`
+   .s{background:#FBFAF7;color:#101010;font-family:'IBM Plex Mono',monospace}
+   .s .wm{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:15px;letter-spacing:-.01em;text-transform:uppercase}
+   .s .tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#9B9890}
+   .s .fig{font-family:'IBM Plex Mono',monospace;font-weight:300;font-size:70px;line-height:1;letter-spacing:-.05em;margin-top:26px}
+   .s .figlab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#101010;margin-top:8px;border-top:2px solid #101010;padding-top:6px;display:inline-block}
+   .s .since{font-size:11px;color:#9B9890;margin-top:6px}
+   .s .tl{margin-top:20px;display:flex;gap:2px;height:18px;align-items:flex-end}
+   .s .tl i{flex:1;height:100%;background:#101010;opacity:.13}
+   .s .tl i.on{opacity:.9}
+   .s .stats{margin-top:20px;border-top:1px solid #101010;padding-top:11px;gap:8px}
+   .s .stats b{display:block;font-size:19px;font-weight:400;letter-spacing:-.03em}
+   .s .stats span{font-size:9px;color:#9B9890;letter-spacing:.06em;text-transform:uppercase}
+   .s .q{font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;line-height:1.55;margin-top:20px;color:#3A3934}
+   .s .cats{margin-top:20px;border-top:1px solid #E2DFD8}
+   .s .cat{padding:9px 0;border-bottom:1px solid #E2DFD8}
+   .s .cat b{font-weight:500;font-size:12px;letter-spacing:-.01em}
+   .s .cat span{font-family:'IBM Plex Sans',sans-serif;font-size:10.5px;color:#9B9890;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#9B9890}
+  `, layout:'record'
+},
+{
+  n:'E', name:'Apothecary',
+  thesis:'Warm sage and pharmacy label. Fraunces gives it a dispensary calm; the accent is a herbal green used at low saturation. Reads as care, not competition.',
+  specs:'<b>Fraunces</b> + Karla · sage #EAEDE4 · bottle #3F5A43',
+  css:`
+   .s{background:#EAEDE4;color:#1F2620;font-family:'Karla',sans-serif}
+   .s .wm{font-family:'Fraunces',serif;font-weight:600;font-size:20px;letter-spacing:-.015em}
+   .s .tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#7E8A7C;font-weight:700}
+   .s .fig{font-family:'Fraunces',serif;font-weight:300;font-size:78px;line-height:.95;letter-spacing:-.03em;margin-top:24px;color:#1F2620}
+   .s .figlab{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#3F5A43;margin-top:7px;font-weight:700}
+   .s .since{font-size:12px;color:#7E8A7C;margin-top:3px}
+   .s .tl{margin-top:22px;height:30px;border-radius:2px;background:
+     repeating-linear-gradient(90deg,#3F5A43 0 2px,transparent 2px 9px);opacity:.5}
+   .s .stats{margin-top:20px;background:#F4F6F0;border:1px solid #D5DCCF;border-radius:3px;padding:13px 10px;gap:6px}
+   .s .stats b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:20px}
+   .s .stats span{font-size:9.5px;color:#7E8A7C;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+   .s .q{font-family:'Fraunces',serif;font-weight:300;font-size:15.5px;line-height:1.5;margin-top:20px;color:#36423A}
+   .s .cats{margin-top:20px}
+   .s .cat{padding:10px 0;border-bottom:1px solid #D5DCCF}
+   .s .cat b{font-weight:700;font-size:12.5px}
+   .s .cat span{font-size:11px;color:#7E8A7C;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#7E8A7C;font-weight:700}
+  `, layout:'record'
+},
+{
+  n:'F', name:'Bulletin',
+  thesis:'Public-health poster. Heavy Archivo, hard rules, black on newsprint, one signal red. Blunt and unsentimental — the opposite of a wellness app.',
+  specs:'<b>Archivo 800</b> + Archivo · newsprint #EFEDE8 · signal #B3321F',
+  css:`
+   .s{background:#EFEDE8;color:#121110;font-family:'Archivo',sans-serif}
+   .s .wm{font-weight:800;font-size:19px;letter-spacing:-.03em;text-transform:uppercase}
+   .s .tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#B3321F;font-weight:700}
+   .s .fig{font-weight:800;font-size:86px;line-height:.85;letter-spacing:-.055em;margin-top:20px}
+   .s .figlab{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-top:8px;
+     background:#121110;color:#EFEDE8;display:inline-block;padding:3px 7px}
+   .s .since{font-size:12px;color:#6C6862;margin-top:7px;font-weight:400}
+   .s .tl{margin-top:18px;height:8px;background:#121110}
+   .s .stats{margin-top:18px;gap:8px;border-bottom:3px solid #121110;padding-bottom:12px}
+   .s .stats b{display:block;font-weight:800;font-size:22px;letter-spacing:-.04em}
+   .s .stats span{font-size:9px;color:#6C6862;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+   .s .q{font-size:14.5px;line-height:1.4;margin-top:18px;font-weight:500;color:#121110}
+   .s .cats{margin-top:18px}
+   .s .cat{padding:9px 0;border-bottom:1px solid #CFCBC3}
+   .s .cat b{font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:-.01em}
+   .s .cat span{font-size:10.5px;color:#6C6862;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#B3321F;font-weight:700}
+  `, layout:'record'
+},
+{
+  n:'G', name:'Tide',
+  thesis:'The copy already calls urges waves. Instrument Serif at display size over a pale wash; the only graphic is a receding tide line. Soft, but not soft-headed.',
+  specs:'<b>Instrument Serif</b> + Public Sans · shell #F4F1EC · deep #2A4A52',
+  css:`
+   .s{background:#F4F1EC;color:#1C2528;font-family:'Public Sans',sans-serif}
+   .s .wm{font-family:'Instrument Serif',serif;font-size:23px;letter-spacing:-.01em}
+   .s .tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8C918F}
+   .s .fig{font-family:'Instrument Serif',serif;font-size:88px;line-height:.9;letter-spacing:-.02em;margin-top:22px;color:#2A4A52}
+   .s .figlab{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8C918F;margin-top:8px}
+   .s .since{font-size:12px;color:#8C918F;margin-top:3px}
+   .s .tl{margin-top:20px;height:40px;border-radius:2px;background:
+     linear-gradient(180deg,rgba(42,74,82,0) 0%,rgba(42,74,82,.10) 55%,rgba(42,74,82,.20) 100%);
+     border-bottom:1px solid rgba(42,74,82,.35)}
+   .s .stats{margin-top:20px;gap:8px}
+   .s .stats b{display:block;font-family:'Instrument Serif',serif;font-size:25px;color:#2A4A52}
+   .s .stats span{font-size:10px;color:#8C918F;letter-spacing:.03em}
+   .s .q{font-family:'Instrument Serif',serif;font-size:17px;line-height:1.4;margin-top:20px;color:#38474B}
+   .s .cats{margin-top:20px}
+   .s .cat{padding:11px 0;border-bottom:1px solid #E0DBD3}
+   .s .cat b{font-weight:500;font-size:13px}
+   .s .cat span{font-size:11px;color:#8C918F;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#8C918F}
+  `, layout:'record'
+},
+{
+  n:'H', name:'Chart',
+  thesis:'A hospital chart at the foot of the bed. Libre Caslon headings, cool clinical blue-grey, boxed data. Most literal fit for “medical record of my own recovery”.',
+  specs:'<b>Libre Caslon Text</b> + Libre Franklin · chart #EDEFF2 · ink-blue #24425C',
+  css:`
+   .s{background:#EDEFF2;color:#171B20;font-family:'Libre Franklin',sans-serif}
+   .s .wm{font-family:'Libre Caslon Text',serif;font-size:18px}
+   .s .tag{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#7B838E;font-weight:600}
+   .s .fig{font-family:'Libre Caslon Text',serif;font-size:66px;line-height:1;letter-spacing:-.02em;margin-top:24px;color:#24425C}
+   .s .figlab{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#7B838E;margin-top:9px;font-weight:600}
+   .s .since{font-size:11.5px;color:#7B838E;margin-top:3px}
+   .s .tl{margin-top:20px;display:flex;gap:1px;height:34px;align-items:flex-end;
+     border-bottom:1px solid #C4CBD4;border-left:1px solid #C4CBD4;padding-left:2px}
+   .s .tl i{flex:1;height:100%;background:#24425C;opacity:.18}
+   .s .tl i.on{opacity:.75}
+   .s .stats{margin-top:18px;gap:1px;background:#C4CBD4;border:1px solid #C4CBD4}
+   .s .stats > div{background:#F7F8FA;padding:10px 8px}
+   .s .stats b{display:block;font-family:'Libre Caslon Text',serif;font-size:19px;color:#24425C}
+   .s .stats span{font-size:9px;color:#7B838E;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+   .s .q{font-family:'Libre Caslon Text',serif;font-size:14.5px;line-height:1.5;margin-top:18px;color:#3A424B}
+   .s .cats{margin-top:18px;border-top:1px solid #C4CBD4}
+   .s .cat{padding:9px 0;border-bottom:1px solid #DDE1E6}
+   .s .cat b{font-weight:600;font-size:12px}
+   .s .cat span{font-size:10.5px;color:#7B838E;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#7B838E;font-weight:600}
+  `, layout:'record'
+},
+{
+  n:'I', name:'Small Hours',
+  thesis:'The other dark option. Near-black warmed with brown, Spectral at light weight, a single dim amber. Built to be readable at 3am without lighting up the room.',
+  specs:'<b>Spectral 200</b> + Work Sans · umber #14120F · lamp #C99A55',
+  css:`
+   .s{background:#14120F;color:#EDE8DF;font-family:'Work Sans',sans-serif}
+   .s .wm{font-family:'Spectral',serif;font-weight:400;font-size:21px;letter-spacing:-.01em}
+   .s .tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#7C7466}
+   .s .fig{font-family:'Spectral',serif;font-weight:200;font-size:84px;line-height:.92;letter-spacing:-.03em;margin-top:24px;color:#F4EFE6}
+   .s .figlab{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#C99A55;margin-top:8px}
+   .s .since{font-size:12px;color:#7C7466;margin-top:3px}
+   .s .tl{margin-top:22px;height:1px;background:linear-gradient(90deg,#C99A55 0%,#C99A55 62%,#2A251E 62%,#2A251E 100%)}
+   .s .stats{margin-top:22px;gap:8px}
+   .s .stats b{display:block;font-family:'Spectral',serif;font-weight:300;font-size:23px;color:#F4EFE6}
+   .s .stats span{font-size:10px;color:#7C7466;letter-spacing:.04em}
+   .s .q{font-family:'Spectral',serif;font-weight:300;font-style:italic;font-size:15.5px;line-height:1.5;margin-top:20px;color:#C8C0B2}
+   .s .cats{margin-top:20px}
+   .s .cat{padding:11px 0;border-bottom:1px solid #221E19}
+   .s .cat b{font-weight:500;font-size:13px}
+   .s .cat span{font-size:11px;color:#7C7466;text-align:right;max-width:52%}
+   .s .foot{margin-top:auto;padding-top:14px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#5A5347}
+  `, layout:'record'
+}
+];
+
+function screenHTML(){
+  const bars = Array.from({length:26},(_,i)=>`<i class="${i<18?'on':''}"></i>`).join('');
+  return `
+  <div class="brand">
+    <div class="wm">${C.app}</div>
+    <div class="tag">gambling</div>
+  </div>
+  <div class="fig">${C.days}</div>
+  <div class="figlab">days free</div>
+  <div class="since">${C.since}</div>
+  <div class="tl">${bars}</div>
+  <div class="tll">18 of 26 weeks since you stopped</div>
+  <div class="stats">
+    ${C.stats.map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}
+  </div>
+  <div class="q">${C.quote}</div>
+  <div class="cats">
+    ${C.cats.map(([n,s])=>`<div class="cat"><b>${n}</b><span>${s}</span></div>`).join('')}
+  </div>
+  <div class="foot">next · ${C.next} ${C.nextIn}</div>`;
+}
+
+const grid = document.getElementById('grid');
+DIRECTIONS.forEach(d=>{
+  const slot = document.createElement('div');
+  slot.className='slot';
+  slot.innerHTML = `
+    <div class="slot-head"><span class="slot-n">${d.n}</span><span class="slot-name">${d.name}</span></div>
+    <p class="slot-thesis">${d.thesis}</p>
+    <div class="frame"><div class="screen s">${screenHTML()}</div></div>
+    <div class="slot-specs">${d.specs}</div>`;
+  const st = document.createElement('style');
+  st.textContent = d.css.replace(/\.s\b/g, `#dir-${d.n} .s`).replace(/^\s*\.s\{/m, `#dir-${d.n} .s{`);
+  slot.id = `dir-${d.n}`;
+  document.head.appendChild(st);
+  grid.appendChild(slot);
+});
+
+/* scale each 390px screen to fit its frame */
+function fit(){
+  document.querySelectorAll('.frame').forEach(f=>{
+    const s = f.querySelector('.screen');
+    s.style.transform = `scale(${f.clientWidth/390})`;
+  });
+}
+fit(); addEventListener('resize', fit);
+document.fonts && document.fonts.ready.then(fit);
+</script>
