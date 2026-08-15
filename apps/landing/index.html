@@ -100,6 +100,19 @@
 
   .footer { text-align:center; padding:32px 24px; color:var(--text-dim); font-size:13px; }
   .footer a { color:var(--text-muted); text-decoration:none; }
+  /* MGG garden frame — inlined (this repo's privacy claim forbids external scripts) */
+  .mgg-frame { position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); z-index:60;
+    display:inline-flex; align-items:center; gap:7px; padding:5px 10px 5px 5px; border-radius:6px;
+    background:#1E2721; color:#F2F1E4; border:1px solid rgba(242,241,228,0.12); text-decoration:none;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11px; line-height:1;
+    letter-spacing:0.02em; opacity:0.92; transition:opacity 0.15s,border-color 0.15s; }
+  .mgg-frame:hover { opacity:1; border-color:#6B9A45; }
+  .mgg-frame .seal { width:18px; height:18px; border-radius:4px; background:#4E7532; color:#F6F3E7;
+    display:grid; place-items:center; font-weight:700; }
+  .mgg-frame .g { color:#A9BC90; }
+  [data-theme="light"] .mgg-frame { background:#FCFBF4; color:#221F1A; border-color:#E3E0CE; }
+  [data-theme="light"] .mgg-frame:hover { border-color:#4E7532; }
+  [data-theme="light"] .mgg-frame .g { color:#4E7532; }
 
   @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
   .hero { animation: fadeIn 0.6s ease-out; }
@@ -227,6 +240,12 @@
   <div class="footer">
     <p>Built by <a href="https://linkedin.com/in/mikepaulus">Mike Paulus</a></p>
   </div>
+
+  <a class="mgg-frame" href="https://mikegrowsgreens.com/?utm_source=garden-frame&amp;utm_medium=badge&amp;utm_campaign=clearsuite.mikegrowsgreens.com"
+     aria-label="Grown by mikegrowsgreens.com — see the rest of the garden">
+    <span class="seal" aria-hidden="true">m</span>
+    <span>mikegrows<span class="g">greens</span>.com</span>
+  </a>
 
 <script>
 (function(){
