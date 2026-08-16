@@ -62,8 +62,11 @@ for app in "${APPS[@]}"; do
   for v in react-18.2.0.production.min.js react-dom-18.2.0.production.min.js babel-7.23.9.min.js \
            fonts/long-evening.css fonts/sora-latin.woff2 fonts/fraunces-latin.woff2 \
            fonts/fraunces-italic-latin.woff2; do
-    code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v" || echo 000)"
-    ct="$(curl -fsSI "$url/vendor/$v" | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2}')"
+    # Cache-busted: /vendor/* is immutable, so a 404 from probing before the
+    # file lands would be cached at the edge for a year against the real URL.
+    bust="$url/vendor/$v?probe=$$"
+    code="$(curl -fsS -o /dev/null -w '%{http_code}' "$bust" || echo 000)"
+    ct="$(curl -fsSI "$bust" | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2}')"
     printf '   %-34s %s %s\n' "/vendor/$v" "$code" "$ct"
     [ "$code" = "200" ] || { echo "   FAIL vendor missing"; fail=1; }
     case "$ct" in text/html*) echo "   FAIL vendor served as HTML - try_files is swallowing the 404"; fail=1;; esac
@@ -99,7 +102,7 @@ if [ -z "${SKIP_LANDING:-}" ]; then
   printf '   index.html  local %s  live %s  (was %s)\n' "$local_html" "$after_html" "$before_html"
   [ "$after_html" = "$local_html" ] || { echo "   FAIL index.html live != local"; fail=1; }
   for v in fonts/long-evening.css fonts/sora-latin.woff2 fonts/fraunces-latin.woff2; do
-    code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v" || echo 000)"
+    code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v?probe=$$" || echo 000)"
     printf '   %-34s %s\n' "/vendor/$v" "$code"
     [ "$code" = "200" ] || { echo "   FAIL vendor missing"; fail=1; }
   done

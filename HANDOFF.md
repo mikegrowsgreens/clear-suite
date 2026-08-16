@@ -80,6 +80,13 @@ teal in all eight, title/OG/manifest normalisation.
 - **Never transition `color`.** See S4 below — a var()-backed colour on an element with a
   colour transition does not re-resolve when the theme changes.
 - Never bump `CACHE_NAME`; never rename `sw.js`. The document is network-first.
+- **Vendor URLs are `immutable` at the edge, so never request one before it exists.**
+  A `--verify-only` run made *before* an upload got a 404 that Cloudflare then pinned for
+  a year against the real URL (clearair's `long-evening.css`, 2026-08-15). `deploy.sh` now
+  probes `?probe=$$`, and the page references `long-evening.css?v=N` — bump `v` rather than
+  renaming the file when the faces change. `clearair.../long-evening.css` (no query) is
+  still a poisoned 404 at one PoP; nothing references it, and a CF purge would clear it.
+- `SKIP_LANDING` is tested with `-z`, so **`SKIP_LANDING=0` skips the hub**. Unset it to deploy the hub.
 - Deploy: `CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (add `--verify-only` for a
   read-only check). Apps → `/var/www/<app>/`, hub → `/var/www/clearsuite/`. The script now
   covers the hub and asserts `/vendor/fonts/*` returns 200 and the live HTML contains no
@@ -204,7 +211,9 @@ hearth best colors". Resolved in `design/directions/synthesis.html`:
 **Per-app accents, custom-mixed, no Tailwind:** Flow `#C4563C`, Air `#5E8B7E`, Mind
 `#6B8A3D`, Body `#C4636B`, Feed `#8B7BA8`, Odds `#C89B4A`, Sight `#6B7F9E`, Energy `#D08A2C`.
 
-**S4 — SHIPPED 2026-08-15.** `DESIGN.md` is now the contract; read it before touching any
+**S4 — SHIPPED AND DEPLOYED 2026-08-15** (`bee7f91`, `1bd0f4a`). All nine surfaces
+verified live: `long-evening.css?v=2` 200 everywhere, Sora + Fraunces loading, zero
+third-party requests, zero rendered emoji. `DESIGN.md` is now the contract; read it before touching any
 surface. Rolled across all eight apps and the hub, verified in a browser app by app in both
 themes at 375 / 768 / 1440.
 

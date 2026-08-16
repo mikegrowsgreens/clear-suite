@@ -80,7 +80,7 @@ screen and it should not look like a system font.
 | Section heading | Fraunces 600 | 18–20 | |
 | Identity-gap figure | Fraunces 400 | 27 | |
 | Pull-quote | Fraunces 300 | 15.5 | `line-height:1.5` |
-| The user's reason | Fraunces 400 *italic* | 12.5 | accent colour, `opacity:.9` |
+| The user's reason | Fraunces 400 *italic* | 12.5 | accent colour, **no opacity** — .9 dropped it to 4.37:1 |
 | Body | Sora 300 | 13 | `line-height:1.6` |
 | Stat value | Sora 300 | 21 | |
 | Label / eyebrow | Sora 400 | 9–10 | `letter-spacing:.15–.2em`, uppercase |
@@ -250,8 +250,9 @@ Not stylistic preferences. Each of these has a reason attached.
 | L4 | Per-app accents, two values each | One accent per app makes the suite read as one thing with eight members. Two values per accent because contrast on umber and contrast on sage are different problems. |
 | L5 | Sora 200 for the figure, Fraunces for sentences | The split is semantic: measured things in the sans, human things in the serif. It is also what stops the hero figure from reading as a scoreboard. |
 | L6 | `--text-muted` light darkened `#66765A` → `#4A5640` | `#66765A` is 3.56:1 on the sage ground. It passes for large text; the suite uses it at 10px for category descriptions, where it fails. |
-| L7 | Font stylesheet renamed `fonts.css` → `long-evening.css` | `/vendor/*` is cache-first in the service worker and never revalidated. Reusing the filename would have left every returning user on DM Sans forever. Any future change to the shipped faces needs a new filename again. |
+| L7 | Font stylesheet renamed `fonts.css` → `long-evening.css`, and referenced as `?v=N` | `/vendor/*` is cache-first in the service worker and never revalidated, so reusing the filename would have left every returning user on DM Sans forever. The query version is the cheaper lever for the same problem: bump `?v=` to change the cache key without renaming files. It also escapes a poisoned edge cache — see L10. |
 | L8 | Fraunces axes clipped, italic's optical size pinned | These are render-blocking bytes on a first visit. Clipping `opsz`/`wght` to what the design uses roughly halves each file. The italic appears at one size on one element, so it does not need a live axis. |
+| L10 | Deploy probes are cache-busted, and the stylesheet carries `?v=` | `/vendor/*` is served `immutable`, so Cloudflare cached the 404 from a `--verify-only` run made *before* the file was uploaded, and pinned it for a year against the real URL. Clear Air's stylesheet 404'd at the edge while being perfectly fine on the box. `deploy.sh` now probes `?probe=$$` so a pre-deploy miss can never poison a live URL, and the page's `?v=` gave the fix without another rename. |
 | L9 | "Days free" kept, "Drinks Avoided" kept | S3 call, restated here so it is not reopened: "free" names a state you hold, not a behaviour you abstain from. And there is no honest approach-framed version of a drink you did not drink — better to leave it than to invent one. |
 
 ---
