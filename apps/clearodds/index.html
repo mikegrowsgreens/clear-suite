@@ -158,8 +158,8 @@ const CRAVING_ACHIEVEMENTS = [
 
 const HEALTH_CATEGORIES = [
   { id:"urges", label:"Urge Intensity", icon:"\uD83C\uDF0A", color:"#38bdf8", weight:0.25, milestones:[
-    {time:6*H,label:"First urges hitting and passing",pct:4,tip:"Betting urges are cue-driven and time-limited. Each one peaks and passes in minutes, whether you bet or not."},
-    {time:24*H,label:"One day of urges survived",pct:10,tip:"Urges are most frequent in the first days. Every one you ride out weakens the loop that fires the next."},
+    {time:6*H,label:"First urges hitting and passing",pct:4,tip:"Betting urges are cue-driven. They come in waves that rise and ease rather than climbing forever — how long a wave lasts has never actually been measured."},
+    {time:24*H,label:"One day of urges survived",pct:10,tip:"Urges are most frequent in the first days. Riding one out changes what you do next time, which is the part that actually moves."},
     {time:72*H,label:"Urges sharp around games and odds",pct:18,tip:"Cue reactivity peaks now. Game start times, score alerts, and promo emails are the strongest triggers. Mute what you can."},
     {time:7*D,label:"Urge frequency starting to drop",pct:30,tip:"One week. Research on problem gambling shows urges begin fading in days to weeks when they stop being reinforced."},
     {time:14*D,label:"Two weeks in",pct:42,tip:"Two weeks. Some days the pull is weaker. Around big games and paydays it can be sharper than week one — that is documented and normal, not backsliding."},
@@ -231,7 +231,7 @@ const ACHIEVEMENTS = [
   {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Four hours bet-free. No open wagers, nothing riding on any score."},
   {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day without checking odds. Your attention is coming back to you."},
   {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Twelve hours. The deposit you did not make is still in your account."},
-  {time:18*H,label:"Settling",icon:"\uD83C\uDF0A",desc:"First real urges may be building. They peak and pass in minutes, bet or no bet."},
+  {time:18*H,label:"Settling",icon:"\uD83C\uDF0A",desc:"First real urges may be building. They come in waves \u2014 they rise, crest and ease."},
   {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without placing a bet. Every dollar you earned today stayed yours."},
   {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You made it through a night without late-night lines or live odds in bed."},
   {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"Two days. The reward loop is already losing reinforcement. Urges starting to shift."},
@@ -255,13 +255,13 @@ const ACHIEVEMENTS = [
 const MOTIVATIONAL = {
   acute:[
     "The house edge only works on money you wager. From this hour forward, it collects nothing from you.",
-    "An urge to bet is a cue firing, not a need. It peaks in minutes and passes whether you place the bet or not.",
+    "An urge to bet is a cue firing, not a need. It rises and eases. How long that takes has never been measured, so ride it out rather than counting minutes.",
     "Every sportsbook promo you ignore was priced by people who knew exactly what it would cost you.",
     "Your recovery started the moment you stopped. The money side started improving on day zero."
   ],
   peak:[
     "The first days are the loudest. Restlessness and what-if thinking are documented withdrawal, and they fade.",
-    "Every urge you sit through without betting weakens the loop that fires the next one. That is not a metaphor. That is learning.",
+    "Sitting through an urge does not reliably make the next one weaker. What it changes is what you do when it arrives \u2014 and that is the whole skill.",
     "Chasing losses is the engine of the whole trap. You turned the engine off. The thoughts will idle down.",
     "A near miss was never almost winning. It was a designed feeling. You are getting free of the design."
   ],
@@ -316,7 +316,7 @@ function getDailyMotivation(elapsed) {
 }
 function getContextualTip(elapsed) {
   if(elapsed<H)return"You just stopped. Close the sportsbook apps, unsubscribe from promo emails, and tell one person.";
-  if(elapsed<8*H)return"First urges may appear soon, especially near game time. They peak in minutes and pass, bet or no bet.";
+  if(elapsed<8*H)return"First urges may appear soon, especially near game time. They come in waves that rise and ease rather than climbing forever.";
   if(elapsed<24*H)return"Day one. Your financial position stopped getting worse the moment you quit. It only improves from here.";
   if(elapsed<48*H)return"Restlessness and what-if thinking are normal early withdrawal. Keep your hands busy during games.";
   if(elapsed<72*H)return"Peak urge window. Game starts, score alerts, and promo emails hit hardest now. Mute and block what you can.";

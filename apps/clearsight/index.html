@@ -171,9 +171,9 @@ const CRAVING_ACHIEVEMENTS = [
 
 const HEALTH_CATEGORIES = [
   { id:"dopamine", label:"Everyday Reward", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.20, milestones:[
-    {time:12*H,label:"First urges surfacing",pct:3,tip:"Urges now are conditioned reflexes, not needs. They rise, peak in 10-20 minutes, and pass on their own."},
-    {time:24*H,label:"Reward system getting its first rest",pct:8,tip:"One day without supernormal stimulation. Your dopamine system is beginning to downshift."},
-    {time:72*H,label:"Cue-triggered cravings near their strongest",pct:15,tip:"The first 1-2 weeks typically bring the strongest urges. Each one you surf weakens the loop that drives the next."},
+    {time:12*H,label:"First urges surfacing",pct:3,tip:"Urges come in waves \u2014 they rise, crest and ease. How long a single wave lasts has never been measured, so treat any specific number you have heard as a coping frame, not a fact."},
+    {time:24*H,label:"One day out of the loop",pct:8,tip:"One day. What changes first is what you do with an urge. Nothing measurable in the brain has been shown to change on this timescale."},
+    {time:72*H,label:"Cue-triggered cravings near their strongest",pct:15,tip:"Early urges are often the strongest, though they do not follow a schedule. Sitting with one may not make the next one weaker \u2014 in the trial that tested this, urges were unchanged and people simply acted on them less."},
     {time:7*D,label:"Urge frequency starting to drop",pct:28,tip:"One week. Most people report urges becoming less frequent, though cues like late nights and being alone can still spike them."},
     {time:14*D,label:"Two weeks in",pct:42,tip:"Two weeks. The withdrawal-like phase is usually behind you. Urges themselves do not follow a schedule — a harder week later is common and does not undo this."},
     {time:30*D,label:"Everyday rewards regaining pull",pct:58,tip:"Music, food, exercise, conversation. Ordinary pleasures commonly start feeling rewarding again around now."},
@@ -243,7 +243,7 @@ const ACHIEVEMENTS = [
   {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"One hour porn-free. The decision is made and the clock is running."},
   {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Your reward system is getting its first quiet in a long time."},
   {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day without the loop. Notice what you did with the time instead."},
-  {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"First urges may be surfacing. They peak and pass in 10-20 minutes."},
+  {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"First urges may be surfacing. They come in waves \u2014 they rise, crest and ease."},
   {time:18*H,label:"Settling",icon:"\uD83D\uDD25",desc:"Restlessness is your brain asking for the old stimulation. It is temporary."},
   {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day. The shame-relief circuit has been broken for 24 hours."},
   {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You got through the highest-risk window: late night, alone, screen in reach."},
@@ -268,12 +268,12 @@ const ACHIEVEMENTS = [
 const MOTIVATIONAL = {
   acute:[
     "Your brain is already adjusting. Neuroplasticity does not wait for a milestone. It started the moment you stopped.",
-    "An urge is a wave. It rises, peaks in about 10-20 minutes, and passes whether you act on it or not. Surf it.",
+    "An urge is a wave. It rises, crests and eases. How long that takes has never been measured, so ride it out instead of counting minutes.",
     "You are not fighting yourself. You are letting a trained reflex go untrained.",
     "The first days are the loudest. Every hour of quiet teaches your reward system a new normal."
   ],
   peak:[
-    "The strongest urges hit in the first week or two. Each one you sit through physically weakens the pathway that fires the next.",
+    "The strongest urges often hit in the first week or two. Sitting through one may not weaken the next \u2014 in the trial that tested this, urges were unchanged and people simply acted on them less.",
     "Restlessness, irritability, low mood. These are withdrawal-like effects people commonly report. They pass.",
     "Do not negotiate with an urge at night. Close the device, leave the room, change the channel your body is on.",
     "Neuroplasticity cuts both ways: the wiring the habit built, the absence of the habit unbuilds."
@@ -281,7 +281,7 @@ const MOTIVATIONAL = {
   recovery:[
     "If everything feels flat right now, that is the widely reported flatline. A phase of recalibration, not your new personality.",
     "Streaks are a measuring stick, not the goal. Recovery is the goal. A hard day does not erase what you have learned.",
-    "Ordinary things are starting to feel good again. Music, sunlight, conversation. That is your reward system healing.",
+    "Ordinary things are starting to feel good again. Music, sunlight, conversation. That is the most consistent thing people report \u2014 and the part no study has measured.",
     "You are not white-knuckling anymore. You are becoming someone who simply does not do this."
   ],
   healing:[
@@ -329,11 +329,11 @@ function getDailyMotivation(elapsed) {
 }
 function getContextualTip(elapsed) {
   if(elapsed<H)return"Decision made. Close the tabs, keep the phone out of the bedroom tonight, and let hour one pass.";
-  if(elapsed<8*H)return"First urges may surface soon. They are conditioned reflexes: they peak in 10-20 minutes, then pass.";
+  if(elapsed<8*H)return"First urges may surface soon. They come in waves that rise and ease rather than climbing forever.";
   if(elapsed<24*H)return"Your reward system is getting its first real rest. Late night, alone, is the risk window. Plan for it.";
   if(elapsed<48*H)return"Restlessness and irritability are common right now. Movement, cold showers, and sleep are your tools.";
   if(elapsed<72*H)return"You are inside the strongest urge window of the whole process. Surf each one. None of them lasts.";
-  if(elapsed<7*D)return"Urges are frequent, but each one you ride out weakens the loop. Keep screens out of the bedroom.";
+  if(elapsed<7*D)return"Urges are frequent early on. Riding one out changes what you do, not how strong the next one is. Keep screens out of the bedroom.";
   if(elapsed<14*D)return"Peak cravings typically fade from here. Sleep and focus gains commonly start showing up.";
   if(elapsed<30*D)return"If mood or libido feels flat, that is the commonly reported flatline. Temporary. Keep going.";
   if(elapsed<90*D)return"Deep recalibration in progress. Many report better focus, steadier mood, and improving sexual function in this window.";

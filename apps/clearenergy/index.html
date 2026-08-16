@@ -149,7 +149,14 @@ const CRAVING_ACHIEVEMENTS = [
  *  Juliano & Griffiths 2004 (Psychopharmacology): caffeine withdrawal review --
  *    onset 12-24h, peak 24-51h, duration 2-9 days
  *  Caffeine pharmacokinetics: plasma half-life ~5 hours, mostly cleared by ~24h
- *  Adenosine A1/A2A receptor upregulation and normalization research (~7-12 days)
+ *  Adenosine receptor "normalization in 7-12 days": RETIRED Aug 2026. No human
+ *    study has measured adenosine receptor density before or after chronic
+ *    caffeine, and none has measured recovery after quitting. Rodent data are
+ *    contradictory (Holtzman 1991: no change in binding despite clear
+ *    behavioural tolerance). Tolerance reversal has never been timed in humans.
+ *  Rogers 2010 (n=379) and James & Rogers 2005: caffeine's alertness benefit in
+ *    habitual users is largely withdrawal reversal. The honest destination of
+ *    quitting is a never-user's baseline, not more energy than you had before.
  *  Drake et al. 2013 (J Clin Sleep Med): caffeine 6h before bed disrupts sleep
  *  Sleep-architecture studies: slow-wave sleep recovery after cessation
  *  Blood pressure literature: caffeine's acute pressor effect resolves off-drug
@@ -166,15 +173,15 @@ const CRAVING_ACHIEVEMENTS = [
 const HEALTH_CATEGORIES = [
   { id:"adenosine", label:"Caffeine Tolerance", icon:"\uD83E\uDDE0", color:"#f97316", weight:0.25, milestones:[
     {time:5*H,label:"Caffeine level in your blood halved",pct:4,tip:"Caffeine's half-life is about 5 hours. Half of your last dose is already gone."},
-    {time:12*H,label:"Withdrawal window opening",pct:8,tip:"Blood caffeine is dropping fast. Adenosine receptors are unblocking \u2014 the first fog and heaviness may appear."},
+    {time:12*H,label:"Withdrawal window opening",pct:8,tip:"Blood caffeine is dropping fast. Withdrawal typically starts 12 to 24 hours after your last dose \u2014 the first fog and heaviness may appear."},
     {time:24*H,label:"Caffeine essentially cleared",pct:15,tip:"After roughly five half-lives, the drug is functionally out of your system. What you feel now is your brain adjusting, not caffeine."},
-    {time:36*H,label:"Peak receptor rebound",pct:22,tip:"Withdrawal peaks 24-51 hours in (Juliano & Griffiths 2004). The headache is your surplus adenosine receptors all firing at once. It passes."},
+    {time:36*H,label:"Peak withdrawal",pct:22,tip:"Withdrawal peaks 20-51 hours in and headache hits about half of people (Juliano & Griffiths 2004, 57 experimental studies). It passes."},
     {time:72*H,label:"Worst of the rebound behind you",pct:32,tip:"For most people, symptoms crest by day 2-3 and start fading from here."},
-    {time:7*D,label:"Extra receptors being pruned",pct:52,tip:"Your brain grew extra adenosine receptors to fight caffeine. Without the drug, it is dismantling them."},
-    {time:12*D,label:"Receptor density near baseline",pct:68,tip:"Research suggests adenosine receptor levels normalize in roughly 7-12 days. Withdrawal is over for nearly everyone by now."},
+    {time:7*D,label:"Nearly through the window",pct:52,tip:"Withdrawal runs 2 to 9 days. By one week most people are out the far side. What your brain is doing underneath has never been measured in humans."},
+    {time:12*D,label:"Withdrawal over",pct:68,tip:"Day 12 is past the far edge of the published withdrawal window for everyone. How long tolerance takes to reverse has never been measured, so we will not put a date on it."},
     {time:30*D,label:"Brain chemistry rebalanced",pct:82,tip:"One month. Adenosine signaling is running at its natural rhythm \u2014 tiredness now means tired, alertness means awake."},
-    {time:90*D,label:"Full adenosine reset",pct:94,tip:"Three months. Your sleep-pressure system works the way it was designed to, with no chemical interference."},
-    {time:Y,label:"A year of natural signaling",pct:98,tip:"A full year of your brain regulating alertness on its own. The reset is complete and stable."}
+    {time:90*D,label:"Off the treadmill",pct:94,tip:"Three months. Nothing in the literature describes what changes here \u2014 what is real is that you are no longer dosing to fix a trough you created this morning."},
+    {time:Y,label:"A year of your own alertness",pct:98,tip:"A full year without a stimulant setting your baseline. Nobody has studied this far out, so the only evidence that counts now is your own."}
   ]},
   { id:"sleep", label:"Sleep Quality", icon:"\uD83D\uDE34", color:"#a78bfa", weight:0.20, milestones:[
     {time:12*H,label:"First caffeine-free bedtime approaching",pct:5,tip:"Even caffeine taken 6 hours before bed measurably disrupts sleep (Drake et al. 2013). Tonight, nothing is working against you."},
@@ -190,13 +197,13 @@ const HEALTH_CATEGORIES = [
   { id:"energy", label:"Natural Energy", icon:"\u26A1", color:"#a3e635", weight:0.20, milestones:[
     {time:24*H,label:"Fatigue as the drug exits",pct:4,tip:"Feeling drained is expected \u2014 withdrawal fatigue peaks in the first two days. It is temporary and front-loaded."},
     {time:48*H,label:"Peak withdrawal fatigue",pct:10,tip:"This is usually the low point. From here, your natural energy system starts taking back over."},
-    {time:72*H,label:"Fog beginning to lift",pct:20,tip:"Day 3. Concentration and drive start returning as receptor rebound settles."},
+    {time:72*H,label:"Fog beginning to lift",pct:20,tip:"Day 3. Concentration and drive start returning as withdrawal settles."},
     {time:7*D,label:"Energy steadier through the day",pct:38,tip:"One week. No more borrowed alertness, no more repayment crashes \u2014 energy comes from sleep and food again."},
     {time:14*D,label:"The 3pm crash is fading",pct:55,tip:"Two weeks. The afternoon slump was largely a caffeine trough. Without the spike, there is less of a dip."},
     {time:21*D,label:"Stable all-day energy emerging",pct:68,tip:"Three weeks. Most people report smooth, even energy from morning to evening by weeks 2-4."},
     {time:30*D,label:"Mornings without the fix",pct:78,tip:"One month. You wake up and simply get going \u2014 no chemical bootstrap required."},
     {time:60*D,label:"Natural energy fully online",pct:88,tip:"Two months. Deep sleep plus normal adenosine signaling equals real, sustainable energy."},
-    {time:90*D,label:"Energy system reset complete",pct:95,tip:"Three months. This steady, honest energy is your actual baseline \u2014 caffeine was masking it, not creating it."}
+    {time:90*D,label:"This is your actual baseline",pct:95,tip:"Three months. In habitual users caffeine's lift is largely just withdrawal reversal, so the honest destination is a never-user's baseline \u2014 not more energy than you had before."}
   ]},
   { id:"anxiety", label:"Anxiety & Calm", icon:"\uD83E\uDDD8", color:"#60a5fa", weight:0.15, milestones:[
     {time:12*H,label:"Jitters clearing with the drug",pct:6,tip:"Caffeine-induced restlessness fades as blood levels fall. Your nervous system is coming off high alert."},
@@ -217,7 +224,7 @@ const HEALTH_CATEGORIES = [
     {time:14*D,label:"Cardiovascular load reduced",pct:56,tip:"Two weeks. Lower average blood pressure and heart rate mean less daily strain on your heart and vessels."},
     {time:30*D,label:"Heart benefits consolidating",pct:70,tip:"One month. Improved sleep and lower stress hormones compound the direct cardiovascular gains."},
     {time:60*D,label:"Steady rhythm, steady pressure",pct:82,tip:"Two months. Your resting heart rate and blood pressure reflect your true baseline now."},
-    {time:90*D,label:"Cardiovascular reset complete",pct:93,tip:"Three months. Your heart runs its natural pace all day, every day \u2014 no stimulant tax."},
+    {time:90*D,label:"No stimulant tax",pct:93,tip:"Three months without caffeine's acute pressor effect. No cessation trial has tracked blood pressure as a main outcome, so we will not promise you a number."},
     {time:Y,label:"A year of easier heartbeats",pct:98,tip:"A year of lower cardiovascular load. Small daily differences, compounded across millions of beats."}
   ]},
   { id:"digestion", label:"Digestion", icon:"\uD83C\uDF4F", color:"#2dd4bf", weight:0.10, milestones:[
@@ -236,17 +243,17 @@ const HEALTH_CATEGORIES = [
 const ACHIEVEMENTS = [
   {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"The last dose is already being metabolized. Your liver is on it."},
   {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Blood caffeine near its half-life point. The level only drops from here."},
-  {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Most of your last dose is gone. Adenosine receptors are starting to unblock."},
+  {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Most of your last dose is gone. Withdrawal usually begins 12 to 24 hours out."},
   {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Withdrawal window opening. Whatever hits next is the exit, not a setback."},
   {time:18*H,label:"Settling",icon:"\uD83C\uDF19",desc:"The first headache or heaviness may be arriving. It is chemistry, and it is temporary."},
   {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day caffeine-free \u2014 the drug is essentially out of your system. Everything from here is recovery."},
   {time:36*H,label:"Into the Peak",icon:"\uD83C\uDF0A",desc:"Withdrawal peaks 24-51 hours in. You are inside the hardest stretch right now \u2014 and it is short."},
   {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"Peak fatigue and headache day for most people. From here the arc bends downward."},
-  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"The worst window has passed. Receptor rebound is easing, fog lifting."},
+  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"The worst window has passed. Withdrawal is easing, fog lifting."},
   {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Symptoms fading fast now. Sleep already deepening underneath you."},
   {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Most people's withdrawal resolves within 2-9 days. You are near the far edge."},
-  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"Adenosine receptors actively normalizing. Deep sleep rebounding. The hard part is essentially done."},
-  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Receptor density approaching baseline. Natural alertness is coming back online."},
+  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"One week. Withdrawal runs 2 to 9 days, so the hard part is essentially done."},
+  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Ten days. Past the far edge of the withdrawal window for everyone."},
   {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"More slow-wave sleep, lower baseline anxiety, steadier energy. Measurably better."},
   {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"The 3pm crash is disappearing. All-day energy without a single milligram."},
   {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Brain chemistry rebalanced. Mornings work without a bootstrap."},
@@ -254,7 +261,7 @@ const ACHIEVEMENTS = [
   {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Sleep, energy, and calm have all reset themselves."},
   {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Blood pressure and resting heart rate at your true baseline."},
   {time:60*D,label:"Two Months",icon:"\uD83E\uDD89",desc:"Energy honest. Your alertness belongs to you again."},
-  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. Full reset \u2014 adenosine, sleep, energy, calm, and heart all recovered."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. Long past withdrawal, and running on your own alertness rather than a dose."},
   {time:180*D,label:"Six Months",icon:"\uD83D\uDC51",desc:"Half a year of deep sleep and unforced energy. This is simply who you are now."},
   {time:Y,label:"One Year Free",icon:"\uD83C\uDF1F",desc:"A year without the daily loan against tomorrow's energy. Fully your own."}
 ];
@@ -262,19 +269,19 @@ const ACHIEVEMENTS = [
 const MOTIVATIONAL = {
   acute:[
     "Caffeine's half-life is about 5 hours. With every passing hour, there is measurably less of it in your blood. The exit is automatic.",
-    "The craving is a chemical signal, not a need. It peaks in about 15 minutes and passes whether you drink or not.",
+    "A craving is a wave, not an instruction. It builds and eases. Nobody has actually measured how long one lasts, so ride it out rather than watching the clock.",
     "You are not losing energy. Caffeine never created energy \u2014 it borrowed it from your sleep and charged interest.",
     "By tomorrow the drug will be essentially gone. Everything after that is your brain healing, not you suffering."
   ],
   peak:[
-    "The withdrawal headache is receptor rebound \u2014 extra adenosine receptors your brain grew, all firing at once. It peaks between 24 and 51 hours and then it passes.",
+    "The withdrawal headache is real and common \u2014 about half of people get one. It peaks somewhere between 20 and 51 hours, and then it goes.",
     "This is the best-documented withdrawal in the scientific literature, and it is short: worst by day 2, gone within about a week for most people.",
     "The fatigue is not weakness. It is your brain running without a stimulant for the first time in years. It recalibrates fast.",
-    "Every hour you sit through the peak is an hour you never have to repeat. The arc only bends downward from here."
+    "Every hour you sit through the peak is an hour you never have to repeat. Caffeine is one of the few things here with a real end date: 2 to 9 days."
   ],
   recovery:[
     "Your deep sleep is rebounding right now. Caffeine suppressed slow-wave sleep even when you did not feel it \u2014 that suppression is over.",
-    "Adenosine receptors normalize in roughly 7-12 days. The tiredness is lifting because the chemistry is finishing, not because you are pushing harder.",
+    "Withdrawal runs 2 to 9 days and then it is done. The tiredness is lifting because the withdrawal is finishing, not because you are pushing harder.",
     "The 3pm crash was never a personality trait. It was a caffeine trough. Watch it disappear over the next two weeks.",
     "Baseline anxiety drops when you remove a daily stimulant. That quieter feeling in your chest is real and it is yours."
   ],
@@ -285,7 +292,7 @@ const MOTIVATIONAL = {
     "You did not give up energy. You stopped renting it back from a drug that took it in the first place."
   ],
   healed:[
-    "Your sleep-pressure system, energy, and calm have fully reset. Caffeine has no lever left to pull.",
+    "Caffeine has no lever left to pull. It cannot fix a trough it is no longer creating.",
     "A year free. Hundreds of nights of naturally deep sleep, thousands of steady afternoons.",
     "You broke the most normalized drug dependence in the world. Most people never even notice they have it.",
     "Nothing was taken from you. Your energy is simply yours again."
@@ -325,10 +332,10 @@ function getContextualTip(elapsed) {
   if(elapsed<H)return"Your liver is already metabolizing the last dose. Caffeine's half-life is about 5 hours \u2014 the level only drops from here.";
   if(elapsed<8*H)return"Blood caffeine falling steadily. Drink water; mild fatigue later today is normal and expected.";
   if(elapsed<24*H)return"Caffeine still clearing \u2014 mostly gone by the 24-hour mark. Withdrawal, if it comes, starts around now. It is short and front-loaded.";
-  if(elapsed<48*H)return"Peak withdrawal window. Headache, fatigue, and fog are receptor rebound, not damage. Hydrate, eat, rest \u2014 it crests and passes.";
+  if(elapsed<48*H)return"Peak withdrawal window. Headache, fatigue, and fog are withdrawal, not damage. Hydrate, eat, rest \u2014 it crests and passes.";
   if(elapsed<72*H)return"Symptoms typically peak at 24-51 hours and ease from here. You are at or past the top of the hill.";
   if(elapsed<7*D)return"Withdrawal resolving \u2014 most people are symptom-free within 2-9 days. Deep sleep is already rebounding.";
-  if(elapsed<14*D)return"Adenosine receptors normalizing (roughly 7-12 days). Slow-wave sleep increasing. Energy steadier every day.";
+  if(elapsed<14*D)return"Past the published withdrawal window (2-9 days) for nearly everyone. What settles after that has not been studied \u2014 judge it by how you actually feel.";
   if(elapsed<30*D)return"The 3pm crash is fading. Baseline anxiety lower. Mornings starting to work without a chemical bootstrap.";
   if(elapsed<90*D)return"Stable all-day energy consolidating. Blood pressure and resting heart rate at your true baseline.";
   if(elapsed<180*D)return"Sleep, energy, and calm fully rebalanced. Occasional cravings are habit echoes, not chemistry.";
@@ -597,7 +604,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"Caffeine never gave you energy. It blocked the signal telling you that you were tired, then borrowed against tonight's sleep to cover the gap. You are not losing alertness \u2014 you are getting your own energy back.",source:"You are already free. The rest is your brain catching up."},
     {icon:"\uD83C\uDF31",title:"Recovery starts in hours",body:"Caffeine's half-life is about 5 hours \u2014 it is mostly out of your system within a day. From that point on, everything you feel is your brain resetting, and every hour counts.",source:"Caffeine pharmacokinetics; Juliano & Griffiths 2004"},
-    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track your adenosine reset, sleep quality, natural energy, anxiety and calm, heart and blood pressure, and digestion. All grounded in clinical research \u2014 and the withdrawal is short and front-loaded: worst by day 2, gone within about a week for most people.",source:"Psychopharmacology, J Clin Sleep Med"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track withdrawal, sleep quality, natural energy, anxiety and calm, heart and blood pressure, and digestion. The withdrawal arc is the best-measured thing in this whole suite \u2014 worst around day 2, done inside 2 to 9 days. Most of the rest has never been studied after quitting, and we say so.",source:"Juliano & Griffiths 2004, Psychopharmacology"},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>

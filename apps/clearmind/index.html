@@ -153,7 +153,7 @@ const CRAVING_ACHIEVEMENTS = [
  * CLEAR MIND v3 -- Cannabis Cessation Recovery Milestones
  * =======================================================
  * MILESTONE PHILOSOPHY: Front-loaded in first week when cravings peak
- * and dopamine is lowest. More frequent wins = stronger reinforcement.
+ * and withdrawal is hardest. More frequent wins = stronger reinforcement.
  *
  * SCORING PHILOSOPHY: Recovery percentages use diminishing-returns
  * weighting. The massive healing in months 1-3 accounts for ~70-80%
@@ -173,17 +173,15 @@ const CRAVING_ACHIEVEMENTS = [
  */
 
 const HEALTH_CATEGORIES = [
-  { id: "endocannabinoid", label: "ECS Recovery", icon: "\uD83E\uDDE0", color: "#a3e635", weight: 0.25, milestones: [
+  { id: "endocannabinoid", label: "Withdrawal", icon: "\uD83E\uDDE0", color: "#a3e635", weight: 0.25, milestones: [
     { time: 6*H, label: "THC metabolism accelerating", pct: 3, tip: "Your liver is actively breaking down stored THC. Stay hydrated to support the process." },
     { time: 12*H, label: "Blood THC levels dropping fast", pct: 8, tip: "THC half-life in blood is about 1.3 days for daily users." },
-    { time: 24*H, label: "THC levels significantly reduced", pct: 15, tip: "Most acute THC effects have worn off. Your brain is noticing the change." },
-    { time: 48*H, label: "CB1 receptors beginning to upregulate", pct: 28, tip: "PET scans show measurable receptor changes within 48 hours of cessation." },
-    { time: 4*D, label: "Receptor recovery gaining momentum", pct: 40, tip: "Your endocannabinoid system is actively rebuilding. This is real progress." },
-    { time: 7*D, label: "CB1 recovery accelerating", pct: 52, tip: "One week in. Receptor density is climbing back toward baseline." },
-    { time: 14*D, label: "Receptor density approaching normal", pct: 68, tip: "D'Souza et al. found significant CB1R recovery by this point." },
-    { time: 21*D, label: "Endocannabinoid tone stabilizing", pct: 80, tip: "Your natural endocannabinoid signaling is finding its rhythm again." },
-    { time: 28*D, label: "CB1 receptors returned to normal density", pct: 92, tip: "Hirvonen's PET data: CB1 receptor density indistinguishable from non-users at 4 weeks." },
-    { time: 90*D, label: "Endocannabinoid system fully recalibrated", pct: 100, tip: "Full system recalibration complete." }
+    { time: 24*H, label: "THC levels significantly reduced", pct: 15, tip: "Most acute THC effects have worn off. Withdrawal usually starts somewhere in the first one to three days." },
+    { time: 48*H, label: "Withdrawal at its sharpest", pct: 26, tip: "Days 2 to 6 are the peak. A small PET study found no clear CB1 difference from non-users by day 2, but with ten people that is a null result, not proof of recovery." },
+    { time: 7*D, label: "Past the peak", pct: 42, tip: "One week. Most withdrawal symptoms run 4 to 14 days. Nobody has scanned anyone's receptors at this point, so what is happening underneath is genuinely unknown." },
+    { time: 14*D, label: "Most symptoms behind you", pct: 58, tip: "Two weeks. Sleep and strange dreams are the stragglers and can run on for weeks yet." },
+    { time: 26*D, label: "CB1 density back in the normal range", pct: 85, tip: "Hirvonen 2012 rescanned 14 chronic users after 26 \u00b1 5 days of monitored abstinence and could no longer tell them from non-users. The range was 13 to 32 days and there was no scan in between \u2014 so this is an endpoint, not your date." },
+    { time: 45*D, label: "Sleep and dreams settling last", pct: 94, tip: "Around six weeks. Disturbed sleep and vivid dreams are the longest-running part of cannabis withdrawal, documented out to about day 45." }
   ]},
   { id: "cognitive", label: "Cognitive", icon: "\u26A1", color: "#a78bfa", weight: 0.25, milestones: [
     { time: 24*H, label: "Mental clarity beginning to shift", pct: 4, tip: "You may feel foggy. That's withdrawal, not permanent. It lifts." },
@@ -210,16 +208,16 @@ const HEALTH_CATEGORIES = [
     { time: 90*D, label: "Full sleep restoration", pct: 100, tip: "Natural, restorative sleep is your new normal." }
   ]},
   { id: "mood", label: "Mood Stability", icon: "\uD83C\uDF1F", color: "#fbbf24", weight: 0.15, milestones: [
-    { time: 12*H, label: "Irritability and restlessness starting", pct: 2, tip: "Mood changes are hitting. Your dopamine system is recalibrating." },
+    { time: 12*H, label: "Irritability and restlessness starting", pct: 2, tip: "Mood changes are hitting. Cannabis withdrawal is a recognised syndrome \u2014 irritability and restlessness are part of it." },
     { time: 24*H, label: "Anxiety may be peaking", pct: 5, tip: "Day one mood swings are real. They are temporary." },
     { time: 48*H, label: "Emotional intensity fluctuating", pct: 10, tip: "Tears, anger, joy, all amplified. You're feeling things that were muted." },
     { time: 72*H, label: "Acute irritability easing", pct: 18, tip: "The worst of the mood disruption is behind you." },
     { time: 7*D, label: "Anxiety beginning to settle", pct: 30, tip: "Your GABA/glutamate balance is normalizing." },
     { time: 14*D, label: "Mood swings decreasing", pct: 44, tip: "Emotional regulation is improving. Fewer sudden shifts." },
     { time: 21*D, label: "Emotional range returning", pct: 58, tip: "You're feeling the full spectrum again without the THC filter." },
-    { time: 30*D, label: "Natural dopamine regulation improving", pct: 70, tip: "Your reward system is finding its natural set point." },
+    { time: 30*D, label: "Mood steadier without the filter", pct: 70, tip: "One month. Steadier mood is what people commonly report here. What the reward system is doing has not been measured." },
     { time: 60*D, label: "Emotional resilience strengthening", pct: 88, tip: "Handling stress with your own resources now." },
-    { time: 90*D, label: "Mood stability fully restored", pct: 100, tip: "Full emotional recalibration. Natural emotional intelligence fully online." }
+    { time: 90*D, label: "Mood settled", pct: 100, tip: "Three months. Steady mood is what most people report by here. There is no scan or scale behind that \u2014 just consistent self-report." }
   ]},
   { id: "respiratory", label: "Lungs", icon: "\uD83E\uDEC1", color: "#2dd4bf", weight: 0.10, milestones: [
     { time: 24*H, label: "Bronchial irritation beginning to ease", pct: 5, tip: "Lungs are getting their first break." },
@@ -234,7 +232,7 @@ const HEALTH_CATEGORIES = [
   { id: "appetite", label: "Appetite", icon: "\uD83C\uDF3F", color: "#fb923c", weight: 0.05, milestones: [
     { time: 12*H, label: "Appetite changes starting", pct: 5, tip: "Appetite may vanish. THC was driving hunger signals artificially." },
     { time: 24*H, label: "Nausea or reduced appetite", pct: 10, tip: "GI discomfort is common. Small, simple meals help." },
-    { time: 3*D, label: "Appetite suppressed (withdrawal)", pct: 18, tip: "Peak appetite disruption. Your endocannabinoid system regulated your gut." },
+    { time: 3*D, label: "Appetite suppressed (withdrawal)", pct: 18, tip: "Peak appetite disruption. Decreased appetite is one of the listed cannabis-withdrawal symptoms and it settles with the rest." },
     { time: 5*D, label: "First natural hunger signals", pct: 32, tip: "Real hunger is returning. Not THC-driven, but physiological need." },
     { time: 7*D, label: "Hunger patterns stabilizing", pct: 48, tip: "Your body is learning to regulate appetite on its own again." },
     { time: 14*D, label: "Eating patterns normalizing", pct: 68, tip: "Regular meals feel natural again." },
@@ -247,11 +245,11 @@ const ACHIEVEMENTS = [
   { time: H, label: "First Hour Clear", icon: "\u23F1", desc: "You are already free. Everything from here is your body catching up." },
   { time: 4*H, label: "Four Hours Strong", icon: "\uD83C\uDF31", desc: "Your body has already started metabolizing stored THC." },
   { time: 8*H, label: "Through the Night", icon: "\uD83C\uDF19", desc: "Eight hours without cannabis. That matters." },
-  { time: 12*H, label: "Half Day", icon: "\uD83C\uDF1E", desc: "That noise is your receptors rebalancing. It is repair, not wanting." },
-  { time: 18*H, label: "Receptors Recovering", icon: "\uD83E\uDDE0", desc: "Every craving you sit through weakens the next one." },
+  { time: 12*H, label: "Half Day", icon: "\uD83C\uDF1E", desc: "That noise is withdrawal, and withdrawal has a far edge. It is not a verdict on you." },
+  { time: 18*H, label: "Sitting With It", icon: "\uD83E\uDDE0", desc: "Sitting with a craving does not shrink the next one. It changes what you do with it." },
   { time: 24*H, label: "Day One Complete", icon: "\uD83C\uDF1F", desc: "A full day. You just did the hardest part." },
-  { time: 36*H, label: "Day and a Half", icon: "\u2728", desc: "Your CB1 receptors are already beginning to wake up." },
-  { time: 48*H, label: "Receptors Waking Up", icon: "\uD83E\uDDE0", desc: "Two days. Your brain is physically changing." },
+  { time: 36*H, label: "Day and a Half", icon: "\u2728", desc: "Withdrawal typically starts to bite around now and peaks across days 2 to 6." },
+  { time: 48*H, label: "Two Days", icon: "\uD83E\uDDE0", desc: "Two days. This is the front edge of the peak, not the tail of it." },
   { time: 60*H, label: "Two and a Half Days", icon: "\uD83D\uDD25", desc: "Withdrawal symptoms are near their peak. Almost through the worst." },
   { time: 72*H, label: "Through the Peak", icon: "\u26A0", desc: "Three days. It genuinely gets easier from here." },
   { time: 4*D, label: "Four Days Free", icon: "\uD83D\uDCAA", desc: "The acute storm is calming." },
@@ -259,29 +257,29 @@ const ACHIEVEMENTS = [
   { time: 6*D, label: "Almost a Week", icon: "\uD83C\uDF05", desc: "Tomorrow is a massive milestone." },
   { time: 7*D, label: "One Week", icon: "\uD83C\uDFC6", desc: "Memory improving. CB1 recovery accelerating. Landmark moment." },
   { time: 10*D, label: "Double Digits", icon: "\uD83D\uDD1F", desc: "Physical withdrawal is fading. New pathways forming." },
-  { time: 14*D, label: "Two Weeks", icon: "\uD83C\uDFAF", desc: "Attention sharpening. Receptor density approaching normal." },
-  { time: 21*D, label: "Three Weeks", icon: "\uD83C\uDFD4", desc: "Endocannabinoid tone stabilizing. Emotional range expanding." },
-  { time: 28*D, label: "The Reset", icon: "\uD83E\uDDE0", desc: "CB1 receptors returned to normal density. The neurological reset is complete." },
+  { time: 14*D, label: "Two Weeks", icon: "\uD83C\uDFAF", desc: "Memory gains land early \u2014 mostly week one. Attention is the one that did not measurably improve." },
+  { time: 21*D, label: "Three Weeks", icon: "\uD83C\uDFD4", desc: "Three weeks. Emotional range expanding, by every account except a measured one." },
+  { time: 28*D, label: "Four Weeks", icon: "\uD83E\uDDE0", desc: "Around here is where the one PET study found CB1 density back in the normal range. There is no single reset day \u2014 the range ran 13 to 32." },
   { time: 45*D, label: "Six Weeks", icon: "\uD83C\uDF3F", desc: "Brain fog fully lifted. Sleep normalizing. Clear thinking." },
   { time: 60*D, label: "Two Months", icon: "\uD83D\uDCC8", desc: "Working memory restored. New patterns are home." },
-  { time: 90*D, label: "Quarter Year", icon: "\uD83C\uDFC6", desc: "Full cognitive and endocannabinoid recovery." },
+  { time: 90*D, label: "Quarter Year", icon: "\uD83C\uDFC6", desc: "Cognitive testing says the deficits were gone long before now \u2014 within days, not months." },
   { time: 180*D, label: "Six Months", icon: "\uD83D\uDE80", desc: "Airway inflammation healed. Habits deeply changed." },
-  { time: Y, label: "One Year Free", icon: "\uD83D\uDC8E", desc: "Every system recalibrated. This is who you are." }
+  { time: Y, label: "One Year Free", icon: "\uD83D\uDC8E", desc: "A year. Nothing measurable was still pending. This is just who you are now." }
 ];
 
 // Phase-based motivational content
 const MOTIVATIONAL = {
   acute: [
     "The discomfort you feel right now is your brain healing. It is not a sign of weakness. It is a sign of repair.",
-    "Every minute without cannabis is a minute your receptors are rebuilding. This is active healing.",
+    "Cannabis withdrawal peaks across days 2 to 6 and most of it is done inside two weeks. You are inside a window with a far edge.",
     "You are not depriving yourself. You are giving yourself back.",
-    "The craving will pass whether you use or not. Choose the version of 'after' where you kept going."
+    "Using would end this craving faster. It would also be the thing that sets up the next one. Choose the version of 'after' where you kept going."
   ],
   peak: [
     "Days 2-4 are the hardest for a reason. Your brain is doing the heaviest lifting right now.",
     "Withdrawal is temporary. The clarity is not on the other side of anything \u2014 it is already arriving.",
     "A craving is not a command. Every wave you ride makes the next one smaller.",
-    "Right now your CB1 receptors are physically regenerating. You can't see it, but it's happening."
+    "CB1 receptor density does come back \u2014 it is the one thing in this entire app that a brain scan has actually confirmed. What nobody knows is the day it happens for you."
   ],
   recovery: [
     "The hard chemistry is behind you. Nothing further needs to be endured.",
@@ -290,9 +288,9 @@ const MOTIVATIONAL = {
     "You didn't just quit something. You started something."
   ],
   healing: [
-    "Your neurological reset is nearly complete. What you've done takes real courage.",
+    "You are past the part with a published timeline. What you've done takes real courage.",
     "The person you are becoming was always there, waiting underneath the fog.",
-    "Your natural reward system is finding its set point. Joy from simple things is returning.",
+    "Joy from simple things comes back. That is one of the most consistent things people report, even though nobody has put a number on it.",
     "You did not choose a harder path. You stopped walking a rigged one."
   ],
   healed: [
@@ -359,12 +357,12 @@ function getContextualTip(elapsed) {
   if (elapsed < 72*H) return "Withdrawal peaks between days 2-4. Irritability, insomnia, and appetite loss are normal. They fade.";
   if (elapsed < 5*D) return "The acute phase is winding down. Vivid dreams are your brain's REM rebound.";
   if (elapsed < 7*D) return "Almost a week. Your cognitive function is already measurably improving.";
-  if (elapsed < 14*D) return "Week two. Cravings are less frequent. Receptor recovery is accelerating.";
-  if (elapsed < 21*D) return "Your endocannabinoid system is finding its natural balance. Emotional range expanding.";
-  if (elapsed < 28*D) return "Approaching the 28-day CB1 reset. Nearly back to natural receptor density.";
-  if (elapsed < 60*D) return "The neurological reset is complete. Building new patterns and protecting your clarity.";
+  if (elapsed < 14*D) return "Week two. Most withdrawal symptoms run 4 to 14 days, so you are near the far edge of the measured part.";
+  if (elapsed < 21*D) return "Three weeks. Sleep and dreams are the stragglers and can run on to about six weeks. Everything else has usually settled.";
+  if (elapsed < 28*D) return "Around four weeks is where the one PET study found CB1 density back in the normal range \u2014 though its range ran 13 to 32 days, so there is no single date.";
+  if (elapsed < 60*D) return "Past every measured milestone cannabis has. From here it is new patterns and protecting your clarity.";
   if (elapsed < 90*D) return "Deep recovery territory. Cognitive function at full capacity. Your brain is yours again.";
-  return "Full recovery achieved. Every system recalibrated. You chose clarity and it chose you back.";
+  return "Past everything cannabis research has actually measured. You chose clarity and it chose you back.";
 }
 
 function getCategoryProgress(cat, elapsed) {
@@ -762,8 +760,8 @@ function Onboarding({ onComplete }) {
     {
       icon: "\uD83C\uDF3F",
       title: "Your brain heals fast",
-      body: "CB1 receptors begin recovering within 48 hours. By day 28, PET scans show receptor density indistinguishable from people who never used cannabis.",
-      source: "Hirvonen et al., Molecular Psychiatry 2012"
+      body: "In the one PET study that rescanned people, CB1 receptor density was back in the normal range after about 26 days off cannabis. It is the only receptor-recovery claim in this whole app that anyone has actually measured.",
+      source: "Hirvonen 2012, Mol Psychiatry \u2014 14 users rescanned, range 13-32 days"
     },
     {
       icon: "\uD83E\uDDE0",

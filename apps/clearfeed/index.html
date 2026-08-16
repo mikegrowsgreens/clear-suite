@@ -151,7 +151,9 @@ const CRAVING_ACHIEVEMENTS = [
  *    limiting social media to 30 min/day reduced loneliness and depression
  *  Gloria Mark, UC Irvine: attention switching, fragmentation, and refocus costs
  *  Sleep research: pre-bed screen use, sleep onset latency, and sleep quality
- *  Reviews of dopamine reward-prediction and variable-reward (slot machine) design
+ *  Variable-ratio reward schedules in product design. Behavioural, not
+ *    neurochemical: no human study measures dopamine before and after
+ *    quitting a feed, so no claim here rests on one.
  *  Hunt et al. 2018 also: reduced social comparison pathway for depression effects
  *  Social comparison theory (Festinger 1954) applied to curated feeds; appearance-
  *    comparison and body-image literature on image-based platforms
@@ -173,14 +175,14 @@ const HEALTH_CATEGORIES = [
   ]},
   { id:"dopamine", label:"Everyday Reward", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.20, milestones:[
     {time:6*H,label:"First urges to check hitting",pct:3,tip:"The feed trained your brain with unpredictable rewards, like a slot machine. The pull is chemical, not weakness."},
-    {time:24*H,label:"Urge spikes at their peak",pct:8,tip:"The first 24-72 hours bring the strongest urges. Each one peaks and passes in minutes."},
+    {time:24*H,label:"Urge spikes at their peak",pct:8,tip:"The first 24-72 hours often bring the strongest urges. They come in waves that rise and ease \u2014 how long a wave lasts has not really been measured."},
     {time:72*H,label:"Peak urge window passing",pct:18,tip:"Days 1-3 are typically the hardest. The reflex to reach for the phone starts weakening from here."},
     {time:7*D,label:"Phantom-check reflex fading",pct:32,tip:"One week. Unlocking your phone with no destination in mind is happening less and less."},
     {time:14*D,label:"Reaching for the phone rarer",pct:46,tip:"Two weeks. Phantom checking fades noticeably over the first fortnight. Idle hands stay idle."},
     {time:21*D,label:"Novelty-seeking loop quieting",pct:58,tip:"Three weeks. Your brain is asking for new content less often. Silence is comfortable again."},
     {time:30*D,label:"Slow pleasures rewarding again",pct:70,tip:"One month. Walks, meals, music, and conversation register as genuinely satisfying without a screen chaser."},
     {time:60*D,label:"Urges rare and brief",pct:84,tip:"Two months. Urges still visit occasionally but leave quickly. The loop is broken."},
-    {time:90*D,label:"Reward system recalibrated",pct:93,tip:"Three months. Everyday life produces enough dopamine on its own. The feed lost its leverage."},
+    {time:90*D,label:"Slower things are enough again",pct:93,tip:"Three months. This is what people report, not something anyone has measured \u2014 no study has looked at the brain before and after quitting a feed."},
     {time:Y,label:"The feed holds no pull",pct:98,tip:"A year out. Infinite scroll reads as noise, not reward. Your reward system answers to you."}
   ]},
   { id:"sleep", label:"Sleep", icon:"\uD83D\uDE34", color:"#a78bfa", weight:0.15, milestones:[
@@ -232,8 +234,8 @@ const ACHIEVEMENTS = [
   {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Possibly your longest feed-free stretch in months. Notice the quiet."},
   {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Half a day of your attention, unsold. Nobody monetized this morning."},
   {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Phantom reaches for the phone are normal. Each one you notice loses power."},
-  {time:18*H,label:"Settling",icon:"\uD83D\uDD25",desc:"Urges to check may be building. They peak and pass in a few minutes."},
-  {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without the feed. Your dopamine system noticed."},
+  {time:18*H,label:"Settling",icon:"\uD83D\uDD25",desc:"Urges to check may be building. They come in waves \u2014 they rise, crest and ease."},
+  {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without the feed. The reflex is still reaching for it and finding nothing there."},
   {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You fell asleep without scrolling. Your sleep got its bedtime back."},
   {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"The novelty-seeking loop is quieting. Urges are starting to space out."},
   {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"The hardest urge window is passing. Restlessness fades from here."},
@@ -242,7 +244,7 @@ const ACHIEVEMENTS = [
   {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"One week. Trials show measurable mood and wellbeing gains right at this mark."},
   {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Phantom checking fading fast. Your hands are learning new defaults."},
   {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"FOMO subsiding. Focus stretches lengthening. Sleep deepening."},
-  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Reward pathways resetting. Slow, real pleasures feel good again."},
+  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Three weeks. Slow, real pleasures feel good again \u2014 which is a thing people report, not a thing anyone has scanned."},
   {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Checking is no longer your default idle state."},
   {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"New habits consolidating. People notice you are more present."},
   {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Your mornings and evenings belong to you again."},
@@ -256,13 +258,13 @@ const ACHIEVEMENTS = [
 const MOTIVATIONAL = {
   acute:[
     "Your attention is coming back right now. Not in a week. Not tomorrow. Right now. Every hour off the feed counts.",
-    "The urge to check is a trained reflex, not a need. It will peak in a few minutes and pass whether you scroll or not.",
+    "The urge to check is a trained reflex, not a need. It rises and eases on its own. Nobody has measured how long that takes, so ride it out rather than counting.",
     "The feed was engineered with variable rewards, the same mechanism as a slot machine. Stepping away is not deprivation. It is unhooking.",
     "Nothing in the feed is decaying while you are gone. There was never anything to miss. The urgency was the product."
   ],
   peak:[
     "Days 1-3 are the hardest. The restlessness, the phantom reaches, the itch. They are withdrawal, and they pass.",
-    "Every urge you ride out without checking physically weakens the neural loop that drives the next one.",
+    "Riding out an urge does not reliably shrink the next one. What it changes is what you do when it arrives \u2014 which is the part that actually counts.",
     "Your attention span is already lengthening. Every uninterrupted task is a repetition that rebuilds it.",
     "The boredom feels loud because your brain forgot what quiet is. Underneath it, your own thoughts are coming back online."
   ],
@@ -317,14 +319,14 @@ function getDailyMotivation(elapsed) {
 }
 function getContextualTip(elapsed) {
   if(elapsed<H)return"Your attention is already yours again. Expect reflexive reaches for the phone. Notice them, let them pass.";
-  if(elapsed<8*H)return"First urges to check arriving. Each one peaks and passes in a few minutes whether you scroll or not.";
+  if(elapsed<8*H)return"First urges to check arriving. They come in waves that rise and ease rather than climbing forever.";
   if(elapsed<24*H)return"The refresh reflex is firing into nothing. Keep the phone out of reach during idle moments today.";
   if(elapsed<48*H)return"Restlessness and phantom checking are normal withdrawal. Boredom is your brain relearning quiet.";
   if(elapsed<72*H)return"Peak urge window. Days 1-3 are typically the hardest. You are almost through it.";
   if(elapsed<7*D)return"Urges spacing out. Sleep onset improving. Idle moments starting to feel like yours again.";
   if(elapsed<14*D)return"Approaching the one-week mark where trials show measurable mood and wellbeing gains. Phantom checking fading.";
   if(elapsed<30*D)return"FOMO subsiding. Focus stretches lengthening. Reclaimed hours looking for new homes. Give them one.";
-  if(elapsed<90*D)return"Deep attention rebuilding. Reward system recalibrating. Presence becoming your default, not your effort.";
+  if(elapsed<90*D)return"Presence becoming your default rather than your effort. Attention recovery has never actually been demonstrated in a study \u2014 judge this one by your own days.";
   if(elapsed<180*D)return"Baseline anxiety lower. Deep-work capacity back. Urges rare and weak.";
   if(elapsed<Y)return"Approaching the one-year mark. Your attention span, sleep, and mood run on your life, not a feed.";
   return"Full recovery. Your attention, your time, and your mood answer to you, not to an algorithm.";

@@ -148,7 +148,11 @@ const CRAVING_ACHIEVEMENTS = [
  *  Journal of Clinical Investigation: Insulin sensitivity recovery
  *  PMC/Nutrients: Gut microbiome response to diet changes
  *  American Heart Association: Inflammation and cardiovascular markers
- *  Neuroscience & Biobehavioral Reviews: Sugar/dopamine receptor normalization
+ *  Sugar/dopamine "receptor normalization": RETIRED Aug 2026. No human study
+ *    measures dopamine markers before and after cutting sugar. Wang 2001
+ *    (Lancet, n=10) is a cross-sectional D2/BMI correlation with no cessation
+ *    arm, and "sugar addiction" is not an established human construct.
+ *    Craving copy now describes what people report, not a mechanism.
  *  The Lancet: Ultra-processed food and metabolic syndrome
  *  British Journal of Dermatology: Sugar, AGEs, and skin health
  *  Sleep Foundation: Blood sugar and sleep quality
@@ -190,15 +194,15 @@ const HEALTH_CATEGORIES = [
     {time:Y,label:"Gut microbiome largely restored",pct:97,tip:"Microbial diversity and function at a healthy baseline. Digestion running smoothly."}
   ]},
   { id:"dopamine", label:"Cravings", icon:"\uD83E\uDDE0", color:"#60a5fa", weight:0.15, milestones:[
-    {time:12*H,label:"First sugar cravings hitting",pct:3,tip:"Sugar activates the same dopamine pathways as other addictive substances. Cravings are real and chemical."},
+    {time:12*H,label:"First sugar cravings hitting",pct:3,tip:"Wanting something you just stopped eating is not weakness. Whether sugar is addictive in the clinical sense is still argued over. The craving is real either way."},
     {time:24*H,label:"The flat stretch",pct:8,tip:"Ordinary food tastes dull for a while after very sweet food. This discomfort is temporary."},
     {time:72*H,label:"Peak withdrawal discomfort",pct:18,tip:"Days 2-3 are the hardest for withdrawal symptoms, and those do settle from here. Cravings run on a separate clock — expect them well after the physical part is over."},
-    {time:7*D,label:"Cravings beginning to lessen",pct:32,tip:"The worst is behind you. Dopamine receptors are starting to upregulate and rebalance."},
+    {time:7*D,label:"Physical withdrawal easing",pct:32,tip:"The rough physical patch usually settles within the first week. Cravings run on their own clock and can spike again weeks in. That spike is normal, not a relapse."},
     {time:14*D,label:"Taste receptors recalibrating",pct:48,tip:"Whole foods are starting to taste better. Your palate is recovering from sugar saturation."},
-    {time:21*D,label:"Reward system resetting",pct:60,tip:"Three weeks. Natural pleasures like conversation, movement, and rest feel more rewarding."},
+    {time:21*D,label:"Ordinary things landing again",pct:60,tip:"Three weeks. Natural pleasures like conversation, movement and rest commonly start feeling more rewarding around now."},
     {time:30*D,label:"Sweet things taste sweet again",pct:72,tip:"One month. The neurological pull toward sugar is significantly weaker."},
     {time:60*D,label:"No longer running your day",pct:86,tip:"Two months. Cravings still happen. They are no longer the thing organising your day."},
-    {time:90*D,label:"Reward pathways largely restored",pct:95,tip:"Natural dopamine response fully functional. Sugar has lost its grip."}
+    {time:90*D,label:"Sweet food is just food again",pct:95,tip:"Three months. Most people report very sweet things now taste too sweet and ordinary food is enough. That is a report, not a scan \u2014 nobody has measured this."}
   ]},
   { id:"energy", label:"Energy & Sleep", icon:"\u26A1", color:"#a3e635", weight:0.10, milestones:[
     {time:24*H,label:"Energy dip as blood sugar stabilizes",pct:3,tip:"You may feel sluggish today. Your body is adjusting from sugar-fueled energy spikes."},
@@ -226,17 +230,17 @@ const ACHIEVEMENTS = [
   {time:4*H,label:"Four Hours Free",icon:"\u2728",desc:"Insulin levels dropping. Your pancreas is getting relief."},
   {time:8*H,label:"Half Day",icon:"\uD83C\uDF1E",desc:"Blood sugar stable. No more spike-and-crash cycles today."},
   {time:12*H,label:"Twelve Hours",icon:"\uD83D\uDCAA",desc:"Your body is beginning to shift from sugar-burning to fat-burning."},
-  {time:18*H,label:"Settling",icon:"\uD83D\uDD25",desc:"First real cravings may be building. They peak and pass in 15-20 minutes."},
+  {time:18*H,label:"Settling",icon:"\uD83D\uDD25",desc:"First real cravings may be building. They come in waves \u2014 they build, crest and ease."},
   {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without fast food or added sugar. Your gut microbiome noticed."},
   {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You made it through the evening routine without old habits."},
-  {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"Dopamine receptors are beginning to upregulate. Cravings starting to shift."},
+  {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"Two days. Ordinary food starts registering again as the very-sweet baseline fades."},
   {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"Peak craving window passing. Inflammation markers already dropping."},
   {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Bloating reducing. Energy stabilizing. Your body is responding fast."},
   {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Gut bacteria are shifting. Beneficial species are repopulating."},
   {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"Insulin sensitivity improving. Taste buds recalibrating. You look less puffy."},
   {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Sustained energy without sugar crashes. Your new normal is emerging."},
   {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"Measurable metabolic improvement. Skin clearing. Sleep deepening."},
-  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Dopamine pathways resetting. Natural foods taste richer and more satisfying."},
+  {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Three weeks. Whole food commonly starts tasting richer once the sweetness baseline drops."},
   {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Gut microbiome significantly shifted. Cravings much weaker."},
   {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"Deep metabolic changes consolidating. New habits solidifying."},
   {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Your taste, energy, and appetite have all reset themselves."},
@@ -250,13 +254,13 @@ const ACHIEVEMENTS = [
 const MOTIVATIONAL = {
   acute:[
     "Your insulin levels are dropping right now. Not in a week. Not tomorrow. Right now. Every hour without sugar counts.",
-    "The craving is a chemical signal, not a need. It will peak in about 15 minutes and pass whether you eat or not.",
+    "A craving is a wave, not an instruction. It builds and eases. Nobody has actually measured how long one lasts, so ride it out rather than watching the clock.",
     "Your gut bacteria are already responding to the absence of processed food. New colonies are forming.",
     "Blood sugar is stabilizing. The spike-and-crash cycle is breaking. Steady energy is coming."
   ],
   peak:[
     "Days 2-3 are the hardest. Sugar withdrawal is real and documented. The headaches, the irritability. They pass.",
-    "Every craving you sit through without giving in physically weakens the neural pathway that drives the next one.",
+    "Sitting through a craving may not make the next one smaller \u2014 in the trial that tested this directly, urges were unchanged and people simply acted on them less. Acting on them less is the whole thing.",
     "Your gut lining is beginning to heal from the emulsifiers and additives in processed food. You cannot see it, but it is happening.",
     "The fatigue is your body switching fuel sources. From sugar spikes to stable, sustained energy. The transition is temporary."
   ],
@@ -311,14 +315,14 @@ function getDailyMotivation(elapsed) {
 }
 function getContextualTip(elapsed) {
   if(elapsed<H)return"Your body is clearing the last processed meal. Blood sugar beginning to stabilize. Drink water.";
-  if(elapsed<8*H)return"Insulin levels dropping. First cravings may appear soon. They peak in 15-20 minutes then pass.";
+  if(elapsed<8*H)return"Insulin levels dropping. First cravings may appear soon. They arrive in waves that build and ease rather than climbing forever.";
   if(elapsed<24*H)return"Blood sugar stabilizing without sugar spikes. Your pancreas is getting its first real break.";
   if(elapsed<48*H)return"Sugar withdrawal may be hitting. Headaches, irritability, fatigue are all normal. Stay hydrated and eat protein.";
   if(elapsed<72*H)return"Peak craving window. Days 2-3 are typically the hardest. You are almost through it.";
   if(elapsed<7*D)return"Cravings beginning to fade. Gut bacteria are shifting. Bloating and puffiness decreasing.";
   if(elapsed<14*D)return"Taste buds recalibrating. Insulin sensitivity improving. Inflammation markers dropping.";
   if(elapsed<30*D)return"Energy stabilizing. Skin clearing. Sleep improving. Gut microbiome actively recolonizing.";
-  if(elapsed<90*D)return"Deep metabolic changes in progress. Dopamine receptors normalizing. New food habits becoming automatic.";
+  if(elapsed<90*D)return"Deep metabolic changes in progress. Sweet things taste sweeter than they used to. New food habits becoming automatic.";
   if(elapsed<180*D)return"Inflammation near baseline. Metabolic markers significantly improved. Cravings come and go without running the day.";
   if(elapsed<Y)return"Approaching the one-year mark. Diabetes risk dropping. Gut health fully restored.";
   return"Full metabolic transformation. Every system in your body has benefited from this decision.";
@@ -585,7 +589,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"Engineered food never satisfied you. It created the craving it then relieved, and sold you the relief as enjoyment. Your appetite worked fine before it was trained. You are not losing a pleasure \u2014 you are getting your own hunger back.",source:"You are already free. The rest is your body catching up."},
     {icon:"\uD83C\uDF31",title:"Your body starts healing immediately",body:"Within hours of cutting fast food and added sugar, your blood sugar stabilizes, insulin drops, and your gut begins to recover. The changes are real and measurable.",source:"Journal of Clinical Investigation, The Lancet, PMC"},
-    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track blood sugar and insulin, inflammation, gut microbiome, dopamine and cravings, energy and sleep, and skin and appearance. All grounded in clinical research.",source:"Neuroscience & Biobehavioral Reviews, AHA"},
+    {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track blood sugar and insulin, inflammation, gut microbiome, cravings, energy and sleep, and skin and appearance. The metabolic markers are well studied. Cravings and skin are not, and we say so where that is true.",source:"Schwarz 2017, Te Morenga 2014, AHA"},
     {icon:"\u26A0\uFE0F",title:"One note if you take diabetes medication",body:"If you take insulin or a sulfonylurea \u2014 glipizide, gliclazide, glimepiride \u2014 your dose was set for how you were eating before. Cutting sugar and refined carbohydrate quickly can drop your blood sugar too low. Tell your prescriber what you are changing so they can adjust it. Do not change the dose yourself.",source:"Everything else here is safe to stop abruptly. This one needs a phone call."},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];
