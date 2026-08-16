@@ -80,18 +80,44 @@ teal in all eight, title/OG/manifest normalisation.
 
 ## Remaining slices
 
-**S2 · Finish the claims pass** — next up. Three findings, one coherent slice:
-- ~9 dopamine-receptor claims in Clear Body / Clear Feed / Clear Mind. No human evidence
-  supports a fixed dopamine-recovery timeline; the load-bearing citation (Volkow 2001)
-  measured transporters, n=5, over 12–17 months.
-- **"Cravings peak in 10–20 minutes and pass"** — 5 places in Clear Sight, plus "15
-  minutes" in Clear Energy (`clearenergy:265`). Craving-episode duration has never been
-  measured in minutes; this is Marlatt-era clinical lore.
-- **Clear Flow's sleep timeline is optimistic in the direction that matters.** It claims
-  "deep sleep returning" at 60 days and "sleep architecture largely recovered" at 180.
-  Slow-wave sleep normalises at **21–27 months**, sleep is still objectively impaired at
-  two months, and insomnia roughly **doubles relapse risk** — so someone sleeping badly at
-  day 90 is being told they should be fixed by now.
+**S2 · Mechanism claims — SHIPPED 2026-08-15** (`9788b26`). 65 edits, 9 surfaces.
+
+The slice was scoped to three findings and grew to one coherent family, because the
+same claim recurs in four vocabularies. Keyword greps kept surfacing new instances after
+each pass; the sweep that finally closed it greps for the *vocabulary*
+(`receptor|endocannabinoid|reward system|recalibrat|reset|peaks? and passe?s?`), not for
+individual phrasings. Use that grep, not a phrase list, when auditing this codebase.
+
+- **Dopamine** (Body/Feed/Mind/Sight, 9 claims) — retired. Volkow 2001 measured
+  transporters, n=5, 12–17 months, +16–19%, no cognitive gain. Replaced with report-level
+  language ("what people report", "nobody has measured this").
+- **Adenosine** (Energy, 9 claims incl. "Full adenosine reset" at 90d) — retired.
+  Never measured in humans; rodent data contradictory. Replaced with the withdrawal arc,
+  which is the most precise evidence in the suite, and with the honest destination — a
+  never-user's baseline, not more energy than before (Rogers 2010).
+- **CB1** (Mind) — **kept**, it is the one measured receptor finding. What went: the
+  10-milestone curve between two scans, the "day 28 reset" event, and a day-14 D'Souza
+  cite (he scanned day 2 and day 28). Category renamed `ECS Recovery` → `Withdrawal`;
+  the hub's Clear Mind card was updated to match.
+- **Craving duration** (15 places, 6 apps) — retired. Never measured in minutes; the
+  "whether you act or not" half is contradicted by EMA data showing use lowers craving.
+- **Urge surfing** (all 8 apps) — "sitting through one weakens the next" retired.
+  Bowen & Marlatt: urges unchanged, behaviour changed. Also stops a normal incubation
+  spike reading as failure.
+- **Clear Flow sleep** — rebuilt from 180 days to 24 months, with the day-4–5 insomnia
+  peak (72%), still-impaired-at-2-months, SWS at 21–27 months, and CBT-I signposting at
+  week two (insomnia roughly doubles relapse risk).
+
+**S2b · The remaining retire-list items** — not started, and each needs its own careful
+rewrite rather than a find-and-replace. From the audit's 45-item list, still live in the
+apps: nicotine's "lung function up 30%" / "heart disease risk halved at 1 year" /
+"20 minutes" and "12 hours" as exact figures; **the entire combustion timeline shown to
+vapers** (CO, cilia, tar — physically meaningless without combustion, and the audit's
+single biggest structural error); alcohol's "BP improves within 24 hours" (directionally
+wrong — biphasic rebound), clearer-skin and immune claims on any date; sugar's HbA1c and
+inflammation milestones; social media's wellbeing promises (pooled effect null) and
+anything at 3 months or 1 year; and porn's flatline framing. Audit sections are keyed by
+domain in the plan file.
 
 **S3 · Framing consistency** — two empty-state patterns (Flow/Air/Mind have a CTA, the
 other five do not); setup taglines split between poetic and flat category labels; the
