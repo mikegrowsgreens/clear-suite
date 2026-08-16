@@ -270,7 +270,13 @@
 
 <script>
 (function(){
-  var icons = { auto: '\u25D0', light: '\u2600', dark: '\u263E' };
+  /* SVG, not glyphs: U+2600 and U+263E are Extended_Pictographic, i.e. emoji,
+     which ban list §7.1 forbids. The apps' toggle was fixed at the same time. */
+  var icons = {
+    auto:  '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg>',
+    light: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 3.2v1.6M12 19.2v1.6M3.2 12h1.6M19.2 12h1.6M5.9 5.9l1.1 1.1M17 17l1.1 1.1M18.1 5.9L17 7M7 17l-1.1 1.1"/></svg>',
+    dark:  '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.4 8.4 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2z"/></svg>'
+  };
   var order = ['auto', 'light', 'dark'];
   var btn = document.getElementById('themeToggle');
   var current = localStorage.getItem('clearsuite_theme') || 'auto';
@@ -285,7 +291,7 @@
     root.setAttribute('data-theme', resolved);
     setTimeout(function(){ root.classList.remove('theme-switching'); }, 60);
     document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#17120E' : '#D8DFCB');
-    btn.textContent = icons[theme];
+    btn.innerHTML = icons[theme];
     btn.title = 'Theme: ' + theme.charAt(0).toUpperCase() + theme.slice(1);
   }
 

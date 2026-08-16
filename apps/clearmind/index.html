@@ -1325,7 +1325,15 @@ function ThemeToggle({ prefix }) {
     }
   }, [theme]);
   const cycle = () => { const order = ['auto', 'light', 'dark']; setTheme(order[(order.indexOf(theme) + 1) % 3]); };
-  const icons = { auto: '\u25D0', light: '\u2600', dark: '\u263E' };
+  const SV = p => <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{p}</svg>;
+  /* Chrome icons are SVG, not glyphs. The old set was U+2699/2600/263E, all three
+     Extended_Pictographic — i.e. emoji, which ban list §7.1 forbids and S4 believed it
+     had removed. S4's check only saw one theme at a time, so the sun and moon hid. */
+  const icons = {
+    auto:  SV(<React.Fragment><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></React.Fragment>),
+    light: SV(<React.Fragment><circle cx="12" cy="12" r="4.2"/><path d="M12 3.2v1.6M12 19.2v1.6M3.2 12h1.6M19.2 12h1.6M5.9 5.9l1.1 1.1M17 17l1.1 1.1M18.1 5.9L17 7M7 17l-1.1 1.1"/></React.Fragment>),
+    dark:  SV(<path d="M20 14.2A8.4 8.4 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2z"/>)
+  };
   const labels = { auto: 'Auto', light: 'Light', dark: 'Dark' };
   return (
     <button onClick={cycle} title={`Theme: ${labels[theme]}`} style={{
@@ -1569,11 +1577,11 @@ function Dashboard({ config, onUpdateConfig, onReset }) {
         <div style={{ display:'flex', gap:8 }}>
           <ThemeToggle prefix="clearmind" />
           {/* Emergency Breathing Button */}
-          <button onClick={()=>setShowBreathing(true)} style={{background:'var(--accent-glow)',border:'1px solid var(--border-accent)',color:'var(--accent-strong)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:15,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-body)'}} title="Craving? Breathe.">{"\u25CB"}</button>
+          <button onClick={()=>setShowBreathing(true)} style={{background:'var(--accent-glow)',border:'1px solid var(--border-accent)',color:'var(--accent-strong)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:15,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-body)'}} title="Craving? Breathe."><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="7.5"/></svg></button>
           <button onClick={() => setShowSettings(true)} style={{
             background:'var(--surface-faint)',
             color:'var(--text-muted)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:16
-          }}>{"\u2699"}</button>
+          }}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h3M11 7h9M4 12h9M17 12h3M4 17h2M10 17h10"/><circle cx="9" cy="7" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
         </div>
       </div>
 

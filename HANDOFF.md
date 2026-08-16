@@ -177,9 +177,12 @@ within each category and in the achievement ladder. A one-off script caught a re
 bug here — a Clear Body skin milestone collided with a pre-existing 60-day entry I had not
 seen — so check ordering, not just JSX.
 
-**Found but deliberately not fixed (out of scope, worth a slice):** a gear emoji renders in
-the settings button of all eight apps, which contradicts both DESIGN.md ban #1 and S4's
-"0 emoji render anywhere, verified". S4's check evidently looked at content, not chrome.
+**The emoji straggler is fixed** (`chrome-svg`). It was worse than first reported: not just the
+gear, but the theme toggle's sun and moon too — `U+2699`, `U+2600`, `U+263E`, all three
+Extended_Pictographic. S4's "0 emoji render anywhere, verified" missed them because a
+toggle renders one of three states at a time, so a single-state check cannot see the other
+two. All chrome icons in the eight apps and the hub are now inline SVG. The hub also needed
+`textContent` → `innerHTML`, since textContent cannot render markup. Ledger L18.
 
 **S3 · Framing consistency — SHIPPED 2026-08-15.** 8 apps, verified live in a browser
 (setup → dashboard → journal tab → settings round-trip) app by app, not just grepped.
