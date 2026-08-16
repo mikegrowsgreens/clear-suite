@@ -86,7 +86,8 @@ teal in all eight, title/OG/manifest normalisation.
   a year against the real URL (clearair's `long-evening.css`, 2026-08-15). `deploy.sh` now
   probes `?probe=$$`, and the page references `long-evening.css?v=N` — bump `v` rather than
   renaming the file when the faces change. `clearair.../long-evening.css` (no query) is
-  still a poisoned 404 at one PoP; nothing references it, and a CF purge would clear it.
+  **The poisoned URL was purged from Cloudflare on 2026-08-15** (Custom Purge, single URL)
+  and now returns 200 with the correct bytes. The `?v=` versioning stays as the cheap lever.
 - `SKIP_LANDING` is tested with `-z`, so **`SKIP_LANDING=0` skips the hub**. Unset it to deploy the hub.
 - Deploy: `CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (add `--verify-only` for a
   read-only check). Apps → `/var/www/<app>/`, hub → `/var/www/clearsuite/`. The script now
@@ -348,9 +349,14 @@ Two things worth knowing:
   users get the old icon once and the new one after. This is *not* the font trap (L7) and
   needs no rename.
 - The repo `Caddyfile`s are **excluded from rsync** (`--exclude Caddyfile`) — they are the
-  record of intent, not live config. Their `@icons` matcher now lists the new files, but the
-  droplet's own Caddy needs the same edit by hand if the new assets should be cached rather
-  than falling through to the `no-cache` catch-all. Nothing breaks either way.
+  record of intent, not live config. **The droplet's own Caddy was updated by hand on
+  2026-08-15** so the S5 assets are cached rather than falling through to the `no-cache`
+  catch-all: all nine `@icons` matchers now list `icon-32/180/192/512`,
+  `icon-maskable-512` and `og.png`, and the hub's additionally lists the eight
+  `clear<app>-icon.png` card marks. Backup at `/etc/caddy/Caddyfile.bak-s5icons-*`.
+  Verified: those URLs return `max-age=604800` while the document stays `no-cache` and
+  `/vendor/*` stays `immutable`. **If you edit a repo Caddyfile, the box does not follow —
+  change both.**
 
 **S6 · Optional one-person share — DECLINED 2026-08-15 (Mike). Do not re-propose.**
 
