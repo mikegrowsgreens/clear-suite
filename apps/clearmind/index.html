@@ -671,7 +671,7 @@ function CravingsTab({ onOpenLog }) {
       <div style={{ fontSize:48, marginBottom:16 }}>🌊</div>
       <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)', marginBottom:8 }}>Track Your Cravings</h3>
       <p style={{ fontSize:13, color:'var(--text-secondary)', lineHeight:1.6, maxWidth:280, margin:'0 auto 24px' }}>
-        Log when cravings hit, what triggers them, and how you respond. Over time you will see your own patterns clearly.
+        Log when a craving hits, what set it off, and what you did. Over time you will see your own patterns clearly.
       </p>
       <button onClick={onOpenLog} style={{ padding:'14px 32px', borderRadius:40, border:'none', cursor:'pointer', fontSize:14, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #a3e635, #65a30d)', color:'#0a0f0a' }}>Log First Craving</button>
     </div>
@@ -847,6 +847,7 @@ function SetupScreen({ onSave }) {
   const [quitTime, setQuitTime] = useState('');
   const [dailySpend, setDailySpend] = useState('');
   const [method, setMethod] = useState('smoked');
+  const [motivation, setMotivation] = useState('');
   const ready = quitDate && quitTime;
 
   const [err, setErr] = useState('');
@@ -856,7 +857,7 @@ function SetupScreen({ onSave }) {
       setErr("That time is in the future. Enter the moment you actually quit.");
       return;
     }
-    const config = { quitDate: quitDate + 'T' + quitTime, dailySpend: parseFloat(dailySpend) || 0, method };
+    const config = { quitDate: quitDate + 'T' + quitTime, dailySpend: parseFloat(dailySpend) || 0, method, motivation: motivation || '' };
     Store.save(config);
     onSave(config);
   };
@@ -883,7 +884,7 @@ function SetupScreen({ onSave }) {
             color:'var(--text-primary)', marginBottom:8
           }}>Clear Mind</h1>
           <p style={{ color:'var(--text-muted)', fontSize:14, lineHeight:1.5 }}>
-            Track your brain's recovery from the first hour forward
+            Track your brain's recovery from cannabis
           </p>
         </div>
 
@@ -916,6 +917,13 @@ function SetupScreen({ onSave }) {
                 }}>{m}</button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>What do you want more of? (optional)</label>
+            <input type="text" placeholder="e.g. sharp mornings, real sleep, being present" value={motivation}
+              onChange={e => setMotivation(e.target.value)} style={inputStyle} />
+            <p style={{ fontSize:10, color:'var(--text-muted)', marginTop:6, lineHeight:1.5 }}>Name what you are moving toward, not what you are quitting.</p>
           </div>
 
           <div style={{
@@ -1022,6 +1030,7 @@ function SettingsModal({ config, onSave, onReset, onClose }) {
   const [qt, setQt] = useState(config.quitDate ? new Date(config.quitDate).toTimeString().slice(0,5) : '');
   const [ds, setDs] = useState(String(config.dailySpend || ''));
   const [method, setMethod] = useState(config.method || 'smoked');
+  const [mot, setMot] = useState(config.motivation || '');
   const [confirmReset, setConfirmReset] = useState(false);
   const [confirmSlip, setConfirmSlip] = useState(false);
   const [err, setErr] = useState('');
@@ -1062,7 +1071,7 @@ function SettingsModal({ config, onSave, onReset, onClose }) {
       setErr("That time is in the future. Enter the moment you actually quit.");
       return;
     }
-    onSave({ quitDate: qd + 'T' + qt, dailySpend: parseFloat(ds) || 0, method });
+    onSave({ quitDate: qd + 'T' + qt, dailySpend: parseFloat(ds) || 0, method, motivation: mot });
     onClose();
   };
 
@@ -1113,6 +1122,11 @@ function SettingsModal({ config, onSave, onReset, onClose }) {
                 }}>{m}</button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>What you want more of</label>
+            <input type="text" value={mot} onChange={e => setMot(e.target.value)} style={inputStyle} />
           </div>
 
           {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
@@ -1350,9 +1364,9 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
       <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--text-primary)' }}>
         {gap > 0 ? '+' : ''}{gap}</span>
       <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-        {gap > 0 ? 'more the person who does not, than the one who did' :
-         gap < 0 ? 'still more the person who did, than the one who does not' :
-         'evenly split between the two'}</span>
+        {gap > 0 ? `closer to ${freeLabel} than to ${usingLabel}` :
+         gap < 0 ? `still closer to ${usingLabel} than to ${freeLabel}` :
+         `evenly split between the two`}</span>
     </div>
     {moved !== null && moved !== 0 && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
       {moved > 0 ? 'up ' + moved : 'down ' + Math.abs(moved)} since your first check-in{log.length > 1 ? ', ' + log.length + ' readings' : ''}</div>}
@@ -1464,6 +1478,7 @@ function Dashboard({ config, onUpdateConfig, onReset }) {
           </div>;})()}
         <div style={{ marginTop:12, fontSize:16, fontWeight:400, color:'var(--text-secondary)', fontFamily:'var(--font-display)', letterSpacing:-0.3 }}>{formatDuration(elapsed)} this run</div>
         <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
+        {config.motivation && <div style={{ fontSize:11, color:'var(--green-primary)', marginTop:6, fontStyle:'italic', opacity:0.8 }}>{config.motivation}</div>}
       </div>
 
       {/* Stats Row */}
@@ -1518,16 +1533,11 @@ function Dashboard({ config, onUpdateConfig, onReset }) {
               {nextAch.time - elapsed > 0 ? `in ${formatDuration(nextAch.time - elapsed)}` : 'Almost there...'}
             </div>
           </div>
-          <div style={{
-            width:42, height:42, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center',
-            background:'rgba(163,230,53,0.06)', border:'1px solid var(--border-medium)',
-            fontSize:11, fontWeight:800, color:'var(--green-primary)'
-          }}>{Math.min(100, Math.round((elapsed / nextAch.time) * 100))}%</div>
         </div>
       )}
 
       {/* Tabs */}
-      <IdentityCheck prefix="clearmind" accent="var(--green-primary)" usingLabel="someone who smokes" freeLabel="someone who does not" />
+      <IdentityCheck prefix="clearmind" accent="var(--green-primary)" usingLabel="someone who smokes" freeLabel="someone who is fully here" />
 
       {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
         if(!all.length)return null;

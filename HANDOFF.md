@@ -67,6 +67,10 @@ teal in all eight, title/OG/manifest normalisation.
 ## Conventions
 
 - Eight apps are one template. A fix propagates eight times; script it, then verify all eight.
+- **Verify in a browser, not just by grep.** Each app is a separate preview server
+  (`clear-flow` … `clear-sight` in the parent `.claude/launch.json`); seed
+  `<app>_onboarded='true'` and `<app>_data` in localStorage to land on the dashboard.
+  Only five preview servers may run at once — stop one before starting the next.
 - **Validate JSX before every commit** with the vendored Babel in Node — there is no build step:
   `node -e '...Babel.transform(...)'` over each `<script type="text/babel">` block.
 - Never bump `CACHE_NAME`; never rename `sw.js`. The document is network-first.
@@ -119,11 +123,54 @@ inflammation milestones; social media's wellbeing promises (pooled effect null) 
 anything at 3 months or 1 year; and porn's flatline framing. Audit sections are keyed by
 domain in the plan file.
 
-**S3 · Framing consistency** — two empty-state patterns (Flow/Air/Mind have a CTA, the
-other five do not); setup taglines split between poetic and flat category labels; the
-next-milestone percentage still renders in seven apps as a credit-balance display; and
-"days free" is avoidance-shaped where approach-framed goals succeeded 58.9% vs 47.1%
-(Oscarsson 2020, N=1,066).
+**S3 · Framing consistency — SHIPPED 2026-08-15.** 8 apps, verified live in a browser
+(setup → dashboard → journal tab → settings round-trip) app by app, not just grepped.
+
+- **Empty state.** Five apps (Body/Energy/Feed/Odds/Sight) had no early return: opening
+  the journal tab for the first time rendered a row of zeroed stat tiles, the entire
+  achievement ladder greyed out, and a "No cravings logged yet" note underneath — a wall
+  of zeros as the first thing a new user sees. All eight now early-return the same
+  designed empty state (icon, one line of explanation, one CTA). Copy unified across all
+  eight, including the three that already had one.
+- **Setup taglines.** Air/Flow/Mind said "recovery from the first minute/hour forward" —
+  the only three that never named what you quit. Now "from alcohol", "from vaping and
+  nicotine", "from cannabis", matching the shape the other five already used.
+- **The next-milestone percentage is gone from all eight** (the count was seven; Flow had
+  it too). It was `elapsed / nextAch.time` — elapsed against an *absolute* milestone time,
+  not progress through the current segment — so it ran **backwards**: day 29 of a 30-day
+  milestone read 96%, then day 31 with the next at 60 days read 52%. Reaching a milestone
+  dropped your number. It was also a fill-to-100 reward meter, which is on the S4 ban
+  list. The row now reads icon + label + "in 23h 59m", which is the honest, complete
+  information and was already sitting right next to it.
+- **Approach framing (Oscarsson 2020, 58.9% vs 47.1%, N=1,066).** The evidence is about
+  how a *goal* is worded, so that is where it was applied:
+  - `IdentityCheck` `freeLabel` was `"someone who does not"` in **all eight** — the target
+    identity defined purely by negation, on the one slider whose gap is the mechanism
+    (Dingle 2015). Now per-app and approach-shaped: "someone who wakes up clear",
+    "someone who just breathes", "someone who is fully here", "someone who eats for how
+    they want to feel", "someone whose attention is their own", "someone who keeps what
+    they earn", "someone at ease with themselves", "someone who runs on their own energy".
+  - The gap sentence hardcoded "more the person who does not, than the one who did" and
+    **ignored the app's own labels entirely**. It now composes from them: "closer to
+    someone who keeps what they earn than to someone who bets".
+  - The goal field: "Why are you doing this?" → "What do you want more of?", with the
+    helper "Name what you are moving toward, not what you are quitting" and approach-shaped
+    placeholders. It existed in only five apps; Air, Flow and Mind now have it too (setup
+    field, settings field, and the line under the day count) — config round-trip verified
+    in the browser for all three.
+
+**"Days free" was deliberately left alone.** It was on the S3 list as avoidance-shaped, and
+it is not. "Free" names a state you hold, not a behaviour you are abstaining from, and the
+counter is the honest measure the whole S1 rebuild was built around. Renaming it would have
+been cosmetic. Same call on "Drinks Avoided" / "Puffs Avoided" in Air and Flow: those two
+are avoidance-shaped and the newer five already use reclaim language ("Hours Reclaimed",
+"Hours Back", "Money Kept"), but there is no honest approach-framed version of a drink you
+did not drink. Left as-is rather than inventing one.
+
+Also added: per-app entries (`clear-flow`, `clear-air`, …) in the parent
+`.claude/launch.json`. Each app hardcodes absolute asset paths (`/vendor/...`), so it has
+to be served at its own root — serving `apps/` and browsing to `/clearodds/` 404s every
+script. S4 will want these.
 
 **S4 · Visual direction — DECIDED 2026-08-15. Named direction: "Long Evening".**
 

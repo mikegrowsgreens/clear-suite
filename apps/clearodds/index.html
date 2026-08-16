@@ -522,6 +522,17 @@ function CravingsTab({ onOpenLog }) {
   const all = CravingStore.getAll();
   const triggerMap = {};
   CRAVING_TRIGGERS.forEach(t => { triggerMap[t.id] = t; });
+  if (all.length === 0) return (
+    <div style={{ textAlign:'center', padding:'40px 20px', animation:'fadeIn 0.4s ease-out' }}>
+      <div style={{ fontSize:48, marginBottom:16 }}>{"\uD83C\uDF0A"}</div>
+      <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)', marginBottom:8 }}>Track Your Urges</h3>
+      <p style={{ fontSize:13, color:'var(--text-secondary)', lineHeight:1.6, maxWidth:280, margin:'0 auto 24px' }}>
+        Log when an urge hits, what set it off, and what you did. Over time you will see your own patterns clearly.
+      </p>
+      <button onClick={onOpenLog} style={{ padding:'14px 32px', borderRadius:40, border:'none', cursor:'pointer', fontSize:14, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #38bdf8, #0284c7)', color:'#082f49' }}>Log First Urge</button>
+    </div>
+  );
+
   return <div style={{ animation:'fadeIn 0.3s ease-out' }}>
     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
       <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)' }}>Urge Journal</h3>
@@ -576,11 +587,6 @@ function CravingsTab({ onOpenLog }) {
           <span style={{ fontSize:10, color:'var(--text-muted)' }}>{formatRelativeTime(c.timestamp)}</span>
         </div>
       ))}
-    </div>}
-    {all.length === 0 && <div style={{ textAlign:'center', padding:'40px 20px' }}>
-      <div style={{ fontSize:40, marginBottom:12 }}>{"\uD83C\uDF3F"}</div>
-      <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6 }}>No urges logged yet.</p>
-      <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>When an urge to bet hits, log it here or use the breathing button.</p>
     </div>}
   </div>;
 }
@@ -639,7 +645,7 @@ function SetupScreen({onSave}) {
         <div><label style={ls}>Average $ lost per week</label><input type="number" placeholder="e.g. 100" value={weeklyLoss} onChange={e=>setWeeklyLoss(e.target.value)} style={is}/></div>
         <div><label style={ls}>Bets placed per week</label><input type="number" placeholder="e.g. 12" value={betsPerWeek} onChange={e=>setBetsPerWeek(e.target.value)} style={is}/></div>
         <div><label style={ls}>Hours per week gambling / watching odds</label><input type="number" placeholder="e.g. 10" value={hoursPerWeek} onChange={e=>setHoursPerWeek(e.target.value)} style={is}/></div>
-        <div><label style={ls}>Why are you doing this? (optional)</label><input type="text" placeholder="e.g. Family, debt, sleep, my own money" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/></div>
+        <div><label style={ls}>What do you want more of? (optional)</label><input type="text" placeholder="e.g. my own money, easy weekends, my family back" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/><p style={{fontSize:10,color:'var(--text-muted)',marginTop:6,lineHeight:1.5}}>Name what you are moving toward, not what you are quitting.</p></div>
         <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
         </div>
@@ -722,7 +728,7 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         <div><label style={ls}>Average $ Lost Per Week</label><input type="number" value={wl} onChange={e=>setWl(e.target.value)} style={is}/></div>
         <div><label style={ls}>Bets Placed Per Week</label><input type="number" value={bw} onChange={e=>setBw(e.target.value)} style={is}/></div>
         <div><label style={ls}>Hours Per Week Gambling</label><input type="number" value={hw} onChange={e=>setHw(e.target.value)} style={is}/></div>
-        <div><label style={ls}>Motivation</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
+        <div><label style={ls}>What you want more of</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
         {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
         <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
@@ -878,9 +884,9 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
       <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--text-primary)' }}>
         {gap > 0 ? '+' : ''}{gap}</span>
       <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-        {gap > 0 ? 'more the person who does not, than the one who did' :
-         gap < 0 ? 'still more the person who did, than the one who does not' :
-         'evenly split between the two'}</span>
+        {gap > 0 ? `closer to ${freeLabel} than to ${usingLabel}` :
+         gap < 0 ? `still closer to ${usingLabel} than to ${freeLabel}` :
+         `evenly split between the two`}</span>
     </div>
     {moved !== null && moved !== 0 && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
       {moved > 0 ? 'up ' + moved : 'down ' + Math.abs(moved)} since your first check-in{log.length > 1 ? ', ' + log.length + ' readings' : ''}</div>}
@@ -985,10 +991,9 @@ function Dashboard({config,onUpdateConfig,onReset}) {
         <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
         <div style={{fontSize:11,color:'var(--text-muted)'}}>{nextAch.time-elapsed>0?`in ${formatDuration(nextAch.time-elapsed)}`:'Almost there...'}</div>
       </div>
-      <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(56,189,248,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--sky-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
     </div>}
 
-    <IdentityCheck prefix="clearodds" accent="var(--sky-primary)" usingLabel="someone who bets" freeLabel="someone who does not" />
+    <IdentityCheck prefix="clearodds" accent="var(--sky-primary)" usingLabel="someone who bets" freeLabel="someone who keeps what they earn" />
 
     {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
       if(!all.length)return null;

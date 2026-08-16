@@ -552,10 +552,10 @@ function CravingsTab({ onOpenLog }) {
 
   if (!stats || stats.total === 0) return (
     <div style={{ textAlign:'center', padding:'40px 20px', animation:'fadeIn 0.4s ease-out' }}>
-      <div style={{ fontSize:48, marginBottom:16 }}>{"\u2728"}</div>
+      <div style={{ fontSize:48, marginBottom:16 }}>{"\uD83C\uDF0A"}</div>
       <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)', marginBottom:8 }}>Track Your Cravings</h3>
       <p style={{ fontSize:13, color:'var(--text-secondary)', lineHeight:1.6, maxWidth:280, margin:'0 auto 24px' }}>
-        Log when cravings hit, what triggers them, and how you respond. Over time you will see your own patterns clearly.
+        Log when a craving hits, what set it off, and what you did. Over time you will see your own patterns clearly.
       </p>
       <button onClick={onOpenLog} style={{ padding:'14px 32px', borderRadius:40, border:'none', cursor:'pointer', fontSize:14, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #f59e0b, #d97706)', color:'#451a03' }}>Log First Craving</button>
     </div>
@@ -659,10 +659,10 @@ function Onboarding({onComplete}) {
 
 function SetupScreen({onSave}) {
   const[quitDate,setQuitDate]=useState('');const[quitTime,setQuitTime]=useState('');
-  const[dailySpend,setDailySpend]=useState('');const[drinksPerDay,setDrinksPerDay]=useState('');
+  const[dailySpend,setDailySpend]=useState('');const[drinksPerDay,setDrinksPerDay]=useState('');const[motivation,setMotivation]=useState('');
   const ready=quitDate&&quitTime;
   const[err,setErr]=useState('');
-  const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,drinksPerDay:parseInt(drinksPerDay)||0};Store.save(c);onSave(c);};
+  const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,drinksPerDay:parseInt(drinksPerDay)||0,motivation:motivation||''};Store.save(c);onSave(c);};
   const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
   const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
@@ -670,7 +670,7 @@ function SetupScreen({onSave}) {
       <div style={{textAlign:'center',marginBottom:40}}>
         <div style={{fontSize:48,marginBottom:16}}>{"\u2728"}</div>
         <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,color:'var(--text-primary)',marginBottom:8}}>Clear Flow</h1>
-        <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from the first minute forward</p>
+        <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from alcohol</p>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
         <div><div style={{ padding:'14px 16px', borderRadius:'var(--radius-md)', background:'rgba(251,113,133,0.08)', border:'1px solid rgba(251,113,133,0.28)', marginBottom:16 }}>
@@ -695,6 +695,7 @@ function SetupScreen({onSave}) {
         </div>
         <div><label style={ls}>Daily spend on drinking ($)</label><input type="number" placeholder="e.g. 8" value={dailySpend} onChange={e=>setDailySpend(e.target.value)} style={is}/></div>
         <div><label style={ls}>Drinks per day (approx)</label><input type="number" placeholder="e.g. 4" value={drinksPerDay} onChange={e=>setDrinksPerDay(e.target.value)} style={is}/></div>
+        <div><label style={ls}>What do you want more of? (optional)</label><input type="text" placeholder="e.g. clear mornings, being present, my own money" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/><p style={{fontSize:10,color:'var(--text-muted)',marginTop:6,lineHeight:1.5}}>Name what you are moving toward, not what you are quitting.</p></div>
         <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
         </div>
@@ -742,6 +743,7 @@ function SettingsModal({config,onSave,onReset,onClose}) {
   const[qt,setQt]=useState(config.quitDate?new Date(config.quitDate).toTimeString().slice(0,5):'');
   const[ds,setDs]=useState(String(config.dailySpend||''));
   const[pp,setPp]=useState(String(config.drinksPerDay||''));
+  const[mot,setMot]=useState(config.motivation||'');
   const[confirmReset,setConfirmReset]=useState(false);
   const[confirmSlip,setConfirmSlip]=useState(false);
   const[err,setErr]=useState('');
@@ -763,7 +765,7 @@ function SettingsModal({config,onSave,onReset,onClose}) {
   };
   const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
   const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
-  const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,drinksPerDay:parseInt(pp)||0});onClose();};
+  const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,drinksPerDay:parseInt(pp)||0,motivation:mot});onClose();};
   return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
     <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
@@ -774,6 +776,7 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         <div><label style={ls}>Quit Date</label><div style={{display:'flex',gap:8}}><input type="date" value={qd} max={toLocalDateStr(Date.now())} onChange={e=>setQd(e.target.value)} style={{...is,flex:1.2}}/><input type="time" value={qt} onChange={e=>setQt(e.target.value)} style={{...is,flex:0.8}}/></div></div>
         <div><label style={ls}>Daily Spend ($)</label><input type="number" value={ds} onChange={e=>setDs(e.target.value)} style={is}/></div>
         <div><label style={ls}>Drinks Per Day</label><input type="number" value={pp} onChange={e=>setPp(e.target.value)} style={is}/></div>
+        <div><label style={ls}>What you want more of</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
         {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
         <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
           <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
@@ -928,9 +931,9 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
       <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--text-primary)' }}>
         {gap > 0 ? '+' : ''}{gap}</span>
       <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-        {gap > 0 ? 'more the person who does not, than the one who did' :
-         gap < 0 ? 'still more the person who did, than the one who does not' :
-         'evenly split between the two'}</span>
+        {gap > 0 ? `closer to ${freeLabel} than to ${usingLabel}` :
+         gap < 0 ? `still closer to ${usingLabel} than to ${freeLabel}` :
+         `evenly split between the two`}</span>
     </div>
     {moved !== null && moved !== 0 && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
       {moved > 0 ? 'up ' + moved : 'down ' + Math.abs(moved)} since your first check-in{log.length > 1 ? ', ' + log.length + ' readings' : ''}</div>}
@@ -1003,6 +1006,7 @@ function Dashboard({config,onUpdateConfig,onReset}) {
         </div>;})()}
       <div style={{marginTop:12,fontSize:16,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)} this run</div>
       <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
+      {config.motivation && <div style={{fontSize:11,color:'var(--amber-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
     </div>
 
     <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
@@ -1031,10 +1035,9 @@ function Dashboard({config,onUpdateConfig,onReset}) {
         <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
         <div style={{fontSize:11,color:'var(--text-muted)'}}>{nextAch.time-elapsed>0?`in ${formatDuration(nextAch.time-elapsed)}`:'Almost there...'}</div>
       </div>
-      <div style={{width:42,height:42,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(245,158,11,0.06)',border:'1px solid var(--border-medium)',fontSize:11,fontWeight:800,color:'var(--amber-primary)'}}>{Math.min(100,Math.round((elapsed/nextAch.time)*100))}%</div>
     </div>}
 
-    <IdentityCheck prefix="clearflow" accent="var(--amber-primary)" usingLabel="someone who drinks" freeLabel="someone who does not" />
+    <IdentityCheck prefix="clearflow" accent="var(--amber-primary)" usingLabel="someone who drinks" freeLabel="someone who wakes up clear" />
 
     {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
       if(!all.length)return null;
