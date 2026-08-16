@@ -353,7 +353,7 @@ monitoring shared with one other person **d+ = 0.47** vs private and unshared **
 The local-first stance forgoes it. A user-initiated local export is the only version that
 does not compromise the privacy position.
 
-**S7 · Recommitment prompt — SHIPPED 2026-08-15.** BCT 1.9 was the only technique to
+**S7 · Recommitment prompt — SHIPPED AND DEPLOYED 2026-08-15** (`8de40dc`; live on all eight, verified). BCT 1.9 was the only technique to
 survive in both Black 2020 (OR 1.30) and Leppin 2024 (digital-specific, b=0.39), and it
 was the best-evidenced technique the suite did not have.
 
