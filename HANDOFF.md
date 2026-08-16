@@ -125,7 +125,9 @@ individual phrasings. Use that grep, not a phrase list, when auditing this codeb
   peak (72%), still-impaired-at-2-months, SWS at 21–27 months, and CBT-I signposting at
   week two (insomnia roughly doubles relapse risk).
 
-**S2b · The remaining retire-list items — SHIPPED 2026-08-15.** 5 apps, ~45 rewrites.
+**S2b · The remaining retire-list items — SHIPPED AND DEPLOYED 2026-08-15** (`0100e98`).
+5 apps, ~45 rewrites. Deploy exits 0; 24 retired claim strings confirmed absent from
+production, with live bytes matching local on all five changed apps.
 
 `scripts/audit_claims.py` is the new tool and the thing to reuse: it greps the retire-list
 *vocabulary* per app and prints every hit with its line, because a phrase list keeps
