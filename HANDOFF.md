@@ -1,6 +1,6 @@
 # Clear Suite — handoff
 
-Last updated 2026-08-15 (S5). Keep this current; it is the first thing a fresh session reads.
+Last updated 2026-08-15 (S7). Keep this current; it is the first thing a fresh session reads.
 
 ## State
 
@@ -14,7 +14,8 @@ on `main`, deployed to all nine surfaces and verified live.
 Research briefings live at `~/.claude/plans/please-do-a-full-ethereal-lake*.md` —
 the main plan file plus four agent briefings (behaviour-change mechanisms and identity,
 harms of tracking apps, per-substance claims audit, digital therapeutics and attrition).
-**The per-substance claims audit is the gating input for the next slice.**
+The per-substance claims audit gated S2b and is now spent. **The only slice left is S6,
+and it is a decision rather than a build — see below.**
 
 ### What shipped
 
