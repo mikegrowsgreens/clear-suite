@@ -349,10 +349,21 @@ Two things worth knowing:
   droplet's own Caddy needs the same edit by hand if the new assets should be cached rather
   than falling through to the `no-cache` catch-all. Nothing breaks either way.
 
-**S6 · Optional one-person share** — needs a decision. Harkin's largest moderator:
-monitoring shared with one other person **d+ = 0.47** vs private and unshared **0.19**.
-The local-first stance forgoes it. A user-initiated local export is the only version that
-does not compromise the privacy position.
+**S6 · Optional one-person share — DECLINED 2026-08-15 (Mike). Do not re-propose.**
+
+The evidence for it is real and it still loses. Harkin's largest moderator is *reporting*,
+not recording: monitoring shared with one other person **d+ = 0.47** vs private-and-unshared
+**0.19**. The design that preserved the privacy stance was a user-initiated local export —
+a PNG card carrying days free, milestones and the identity-gap trend, with the app's name
+and the user's goal off by default and the craving notes never included.
+
+Mike's call, and the reasoning is better than the evidence: *"skip it, weird feature."* A
+shareable card summarising someone's porn- or gambling-recovery streak is not an artefact
+people want to hand another person, whatever the effect size says. Building it would have
+been optimising a number at the expense of the thing the product is actually for.
+
+The privacy position stays absolutely simple, which is worth more here than d+ 0.28.
+
 
 **S7 · Recommitment prompt — SHIPPED AND DEPLOYED 2026-08-15** (`8de40dc`; live on all eight, verified). BCT 1.9 was the only technique to
 survive in both Black 2020 (OR 1.30) and Leppin 2024 (digital-specific, b=0.39), and it
