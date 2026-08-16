@@ -249,7 +249,7 @@ the eight apps are now explicit property lists that exclude colour, and the them
 additionally made instant via a `theme-switching` class. This was latent before S4 and
 invisible only because both old themes were grey.
 
-**S5 · Identity assets — SHIPPED 2026-08-15.** Not deployed yet; see below.
+**S5 · Identity assets — SHIPPED AND DEPLOYED 2026-08-15** (`146e781`).
 
 The eight marks were **varied, not replaced**, and that was Mike's call after two rounds of
 replacement were rejected. Worth recording so nobody re-runs it: round one was ten *systems*
@@ -289,13 +289,12 @@ already-vendored woff2). `deploy.sh` now asserts all six icon files plus `og.png
 200 **and** `image/png` on every surface, because `try_files` turns a miss into the HTML
 document with a 200, and a missing OG card is invisible until somebody shares a link.
 
-**Not deployed.** Everything above is committed and verified locally — JSX compiles clean
-in all eight, hub and Clear Flow browser-verified in both themes, all nine surfaces' assets
-200 with the right content-type over a local server. Deploy with
-`CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (unset `SKIP_LANDING`), then re-run with
-`--verify-only`.
+**Verified live.** `--verify-only` exits 0 across all nine surfaces, with 62 new asset URLs
+returning 200 `image/png` (8 apps × 6, hub × 6, plus the hub's 8 card marks). JSX compiles
+clean in all eight under the vendored Babel; hub and Clear Flow were browser-checked in both
+themes; the production `og.png` was pulled back and confirmed to be a real 1200×630.
 
-Two things to know before deploying:
+Two things worth knowing:
 
 - Icons are **stale-while-revalidate** in the service worker, not cache-first, so returning
   users get the old icon once and the new one after. This is *not* the font trap (L7) and
