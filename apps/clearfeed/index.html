@@ -945,6 +945,96 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
   </div>;
 }
 
+function Recommit({ prefix, accent, elapsed, goal, onSaveGoal }) {
+  /* BCT 1.9 "Commitment" — the only technique to survive in BOTH Black 2020
+     (113 trials, N=43,992, OR 1.30) and Leppin 2024, which is digital-specific
+     (b = 0.39). It was the best-evidenced technique the suite did not have.
+
+     It sits at the milestone deliberately, because that is where the evidence
+     says the risk is. Kivetz 2006 documents post-reward resetting: once a
+     reward is collected, pace falls back to opening levels (p < .01), so a
+     milestone-heavy app manufactures its own troughs. Fishbach, Dhar & Zhang
+     2006 (F(1,95) = 12.60, p < .001) found a completed subgoal framed as
+     ATTAINMENT reduced interest in continuing, while the same subgoal framed as
+     COMMITMENT increased it. So a reached milestone asks a question here rather
+     than handing out congratulations — which is also ban-list §7.4.
+
+     Snoozable, and it takes an empty answer. A prompt you cannot decline is
+     coercion, and autonomy is the mechanism the rest of this app runs on. */
+  const KEY = prefix + '_recommit', SNOOZE = prefix + '_recommit_snooze';
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]') } catch { return [] } };
+  const [log, setLog] = useState(read);
+  const [snooze, setSnooze] = useState(() => Number(localStorage.getItem(SNOOZE) || 0));
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState(goal || '');
+  const last = log.length ? log[log.length - 1] : null;
+
+  const reached = ACHIEVEMENTS.filter(a => a.time <= elapsed);
+  const latest = reached.length ? reached[reached.length - 1] : null;
+  /* Once per milestone crossed, and otherwise no more than monthly. */
+  const sinceMilestone = latest && (!last || last.elapsed < latest.time);
+  const stale = !last || (Date.now() - last.t) > 30 * 86400000;
+  const due = (sinceMilestone || stale) && Date.now() > snooze;
+
+  const box = { margin: '8px 20px', padding: '14px 18px', borderRadius: 'var(--radius-md)',
+                background: 'var(--bg-card)' };
+  const eyebrow = { fontSize: 8.5, color: accent, fontWeight: 400, letterSpacing: '0.15em',
+                    textTransform: 'uppercase' };
+
+  const save = () => {
+    const t = text.trim();
+    const next = [...log, { t: Date.now(), elapsed, text: t }];
+    try { localStorage.setItem(KEY, JSON.stringify(next)) } catch {}
+    setLog(next); setOpen(false);
+    if (t && t !== (goal || '')) onSaveGoal(t);
+  };
+  const later = () => {
+    const until = Date.now() + 7 * 86400000;
+    try { localStorage.setItem(SNOOZE, String(until)) } catch {}
+    setSnooze(until); setOpen(false);
+  };
+
+  if (open || due) {
+    return <div style={box}>
+      <div style={eyebrow}>Commitment</div>
+      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 17,
+                    color: 'var(--text-hi)', marginTop: 6, lineHeight: 1.35 }}>
+        {latest ? latest.label + ' in. Is this still what you want?' : 'Is this what you want?'}
+      </div>
+      <input type="text" value={text} onChange={e => setText(e.target.value)}
+        placeholder="Say it in your own words"
+        style={{ width: '100%', marginTop: 12, padding: '10px 12px', fontSize: 13, fontWeight: 300,
+                 borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)',
+                 background: 'var(--input-bg)', color: 'var(--text-primary)',
+                 fontFamily: 'var(--font-body)' }} />
+      <button onClick={save} style={{ width: '100%', marginTop: 12, padding: 11, borderRadius: 40,
+        border: 'none', background: accent, color: 'var(--accent-on)', fontSize: 13, fontWeight: 600,
+        cursor: 'pointer', fontFamily: 'var(--font-body)' }}>This still holds</button>
+      <button onClick={later} style={{ width: '100%', marginTop: 8, background: 'none', border: 'none',
+        padding: 4, color: 'var(--text-muted)', fontSize: 11, fontWeight: 300, cursor: 'pointer',
+        fontFamily: 'var(--font-body)' }}>Not now</button>
+      <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+        Restating what you are doing this for is the one technique that held up in both large
+        reviews of what actually works. It is a sentence, and nobody else reads it.</p>
+    </div>;
+  }
+
+  const when = new Date(last.t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  return <div style={box}>
+    <div style={eyebrow}>Commitment</div>
+    {last.text
+      ? <div style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 400,
+                      fontSize: 13.5, color: accent, marginTop: 6, lineHeight: 1.45 }}>{last.text}</div>
+      : <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 6 }}>You said this still holds.</div>}
+    <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 6 }}>
+      Said {log.length === 1 ? 'once' : log.length + ' times'} · last on {when}</div>
+    <button onClick={() => { setText(goal || last.text || ''); setOpen(true); }}
+      style={{ marginTop: 10, background: 'none', border: 'none', padding: 0, color: accent,
+               fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+      Say it again</button>
+  </div>;
+}
+
 function Dashboard({config,onUpdateConfig,onReset}) {
   const[now,setNow]=useState(Date.now());const[activeTab,setActiveTab]=useState('health');
   const[detailCat,setDetailCat]=useState(null);const[showSettings,setShowSettings]=useState(false);
@@ -1047,6 +1137,8 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     </div>}
 
     <IdentityCheck prefix="clearfeed" accent="var(--accent-primary)" usingLabel="someone who scrolls" freeLabel="someone whose attention is their own" />
+    <Recommit prefix="clearfeed" accent="var(--accent-primary)" elapsed={elapsed}
+      goal={config.motivation} onSaveGoal={t=>onUpdateConfig({...config,motivation:t})} />
 
     {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
       if(!all.length)return null;

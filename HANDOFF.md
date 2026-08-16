@@ -353,8 +353,30 @@ monitoring shared with one other person **d+ = 0.47** vs private and unshared **
 The local-first stance forgoes it. A user-initiated local export is the only version that
 does not compromise the privacy position.
 
-**S7 · Recommitment prompt** — BCT 1.9 was the only technique to survive in both Black
-2020 (OR 1.30) and Leppin 2024 (digital-specific, b=0.39). Currently absent.
+**S7 · Recommitment prompt — SHIPPED 2026-08-15.** BCT 1.9 was the only technique to
+survive in both Black 2020 (OR 1.30) and Leppin 2024 (digital-specific, b=0.39), and it
+was the best-evidenced technique the suite did not have.
+
+One `Recommit` component, identical in all eight apps, mounted under `IdentityCheck`.
+
+- **It fires at the milestone, and it asks instead of congratulating.** That placement is
+  the evidence, not a layout choice: Kivetz 2006 documents post-reward resetting — once a
+  reward is collected, pace falls back to opening levels (p < .01) — so a milestone-heavy
+  app manufactures its own troughs. Fishbach 2006 (F(1,95)=12.60, p<.001) settles the
+  wording: a completed subgoal framed as *attainment* reduced interest in continuing, while
+  the same subgoal framed as *commitment* increased it. So it reads "One Week in. Is this
+  still what you want?" — which also keeps it clear of ban-list §7.4.
+- **Cadence:** once per milestone crossed, and otherwise no more than monthly. "Not now"
+  snoozes seven days, and an empty answer is accepted. A prompt you cannot decline is
+  coercion, and autonomy is the mechanism the rest of the app runs on.
+- **It writes back.** The field is pre-filled with the user's approach-framed goal from S3;
+  changing it updates `config.motivation`, so the italic line under the day count changes
+  too. Verified end to end in a browser.
+
+Verified in Clear Flow across the whole cycle — due state, save, re-trigger on crossing the
+next milestone, snooze, and the goal rewrite propagating to the hero line — plus Field Guide
+tokens resolving in light mode, and a second app (Clear Energy) to catch any per-app scope
+difference at the mount point.
 
 ## Open questions
 
