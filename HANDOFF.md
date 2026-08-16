@@ -125,16 +125,58 @@ individual phrasings. Use that grep, not a phrase list, when auditing this codeb
   peak (72%), still-impaired-at-2-months, SWS at 21–27 months, and CBT-I signposting at
   week two (insomnia roughly doubles relapse risk).
 
-**S2b · The remaining retire-list items** — not started, and each needs its own careful
-rewrite rather than a find-and-replace. From the audit's 45-item list, still live in the
-apps: nicotine's "lung function up 30%" / "heart disease risk halved at 1 year" /
-"20 minutes" and "12 hours" as exact figures; **the entire combustion timeline shown to
-vapers** (CO, cilia, tar — physically meaningless without combustion, and the audit's
-single biggest structural error); alcohol's "BP improves within 24 hours" (directionally
-wrong — biphasic rebound), clearer-skin and immune claims on any date; sugar's HbA1c and
-inflammation milestones; social media's wellbeing promises (pooled effect null) and
-anything at 3 months or 1 year; and porn's flatline framing. Audit sections are keyed by
-domain in the plan file.
+**S2b · The remaining retire-list items — SHIPPED 2026-08-15.** 5 apps, ~45 rewrites.
+
+`scripts/audit_claims.py` is the new tool and the thing to reuse: it greps the retire-list
+*vocabulary* per app and prints every hit with its line, because a phrase list keeps
+missing recurrences. Run it before and after any claims work.
+
+**Two whole categories turned out to be invented, and neither was on the scoped list.**
+That is the lesson of this slice: the HANDOFF list named individual milestones, but the
+same unsupported idea had been built out into a full six-milestone category twice.
+
+- **Clear Air's "Immune System"** → replaced by **Withdrawal**. No human study puts a date
+  on immune recovery after stopping nicotine. Withdrawal is the best-evidenced content in
+  the domain (Hughes 2007, 120 studies: peaks week 1, runs 2–4 weeks, and drowsiness and
+  fatigue are *not* withdrawal effects).
+- **Clear Body's "Inflammation"** → replaced by **Liver & BP**. Retire-list #28: no clean
+  evidence gives CRP or IL-6 a timescale for cutting sugar at any point. Liver fat is the
+  best-dated finding in the entire domain and wasn't a category at all — Schwarz 2017 took
+  it 7.2% → 3.8% in nine days with weight deliberately held stable, so it is the sugar and
+  not the weight loss.
+
+**Clear Air — the combustion timeline is gone.** Cilia (day 7 and day 270), the lung-function
+milestones, the 1-year heart-disease claim, and the 10y/15y "full recovery" endpoints. The
+worst single line was *"Studies of vapers who quit show respiratory symptoms easing within
+weeks"* — **no such studies exist**; a targeted search returned 11 hits, every one about
+switching *from smoking to* vaping. The app asserted a literature that has never been
+written. NASEM 2018 lists respiratory disease, clinical CV outcomes and cancer endpoints
+for e-cigarettes as **no available evidence**, so no curve is drawn for any of them. What
+was kept is what transfers because it is about nicotine rather than smoke: pharmacokinetics
+and withdrawal. A new onboarding slide, "What this app will not tell you", says all of this
+to the user directly.
+
+**The rest.** Clear Flow: the 24h BP milestone was directionally *wrong* (alcohol is
+biphasic — BP rises from ~13h, so a 24h "improvement" may be a rebound), and the 30-day one
+now says the −5.5 mmHg only applies above six drinks a day, since Roerecke found nothing
+significant at two or fewer. Clear Body: HbA1c at 30 days is physiologically impossible
+(red cells live ~100 days) and now says so; the skin category rebuilt around the one real
+datum, acne at twelve weeks, flagged as weight-confounded. Clear Feed: a single positive RCT
+was being stated as fact against a preregistered meta-analysis (10 studies, N=4,674) that
+found no significant effect — now framed as Allcott's trade-off, and the attention-span
+claims are gone. Clear Sight: the flatline is no longer *scheduled* (weeks 2–6, "lifts at
+day 45") since it is community-coined and unmeasured, and the erectile-function milestones
+went — the larger studies find little or no link to use itself.
+
+**Invariants worth re-checking after any claims edit** (all held): every app still has
+exactly 6 categories, weights still sum to 1.0, and milestone times are still ascending
+within each category and in the achievement ladder. A one-off script caught a real ordering
+bug here — a Clear Body skin milestone collided with a pre-existing 60-day entry I had not
+seen — so check ordering, not just JSX.
+
+**Found but deliberately not fixed (out of scope, worth a slice):** a gear emoji renders in
+the settings button of all eight apps, which contradicts both DESIGN.md ban #1 and S4's
+"0 emoji render anywhere, verified". S4's check evidently looked at content, not chrome.
 
 **S3 · Framing consistency — SHIPPED 2026-08-15.** 8 apps, verified live in a browser
 (setup → dashboard → journal tab → settings round-trip) app by app, not just grepped.

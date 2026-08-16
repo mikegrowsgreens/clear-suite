@@ -229,7 +229,7 @@ const HEALTH_CATEGORIES = [
     {time:24*H,label:"Mental energy no longer feeding the loop",pct:4,tip:"The search-scroll-escape cycle consumed real cognitive energy. That drain stopped today."},
     {time:72*H,label:"Restlessness as your brain seeks stimulation",pct:10,tip:"Feeling scattered is common early on. It is your brain asking for the old stimulation. Give it a walk instead."},
     {time:7*D,label:"Small tasks starting to feel doable",pct:22,tip:"One week. Many people report a first bump in follow-through around now."},
-    {time:14*D,label:"Possible dip: flatline can blunt drive",pct:32,tip:"Weeks 2-6 often bring a reported flatline of low drive and flat mood. It is temporary and commonly passes on its own."},
+    {time:14*D,label:"Some people describe a flat stretch",pct:32,tip:"A period of low drive and flat mood is described often in communities, on no particular schedule. It is not a measured phenomenon, and the one abstinence RCT found no withdrawal effects."},
     {time:21*D,label:"Focus stretches lengthening",pct:44,tip:"Three weeks. Attention-span gains are commonly reported as the urge-check-escape loop fades."},
     {time:30*D,label:"Deep work getting easier",pct:56,tip:"One month. Better sleep and fewer intrusive urges typically translate into steadier concentration."},
     {time:60*D,label:"Drive returning across the board",pct:72,tip:"Two months. Goals, projects, and effort start feeling intrinsically worth it again."},
@@ -239,12 +239,12 @@ const HEALTH_CATEGORIES = [
   { id:"sexual", label:"Sexual Health", icon:"\uD83D\uDC99", color:"var(--rose)", weight:0.25, milestones:[
     {time:72*H,label:"Sensitivity beginning to renormalize",pct:5,tip:"Without daily supernormal stimulation, arousal thresholds can begin recalibrating within days."},
     {time:7*D,label:"Conditioned arousal patterns loosening",pct:15,tip:"One week. Arousal that was tied to screens and endless novelty is starting to untether."},
-    {time:14*D,label:"Possible flatline: temporarily low libido",pct:25,tip:"A temporary drop in libido is commonly reported in weeks 2-6. It is widely reported to pass. Do not panic-test it."},
+    {time:14*D,label:"Libido may be uneven",pct:25,tip:"Some people describe a dip, on no fixed timetable. Nobody has measured it. Whatever it does, do not panic-test it."},
     {time:21*D,label:"Spontaneous arousal often returning",pct:36,tip:"Three weeks. Morning arousal returning is a commonly reported sign of recalibration."},
     {time:30*D,label:"Responsiveness to real intimacy improving",pct:50,tip:"One month. Clinical case series report improved arousal with real partners in the 30-90 day window. Timelines vary a lot."},
-    {time:45*D,label:"Flatline typically lifting",pct:62,tip:"For most who report a flatline, it lifts around this window. Libido returns gradually, not overnight."},
-    {time:60*D,label:"Erectile function gains commonly reported",pct:75,tip:"Two months. Case series describe meaningful improvement in erectile function by 60-90 days for many. Individual variation is real."},
-    {time:90*D,label:"Partnered arousal feeling natural again",pct:88,tip:"Three months. Many report normalized libido and arousal driven by a person, not a screen."},
+    {time:45*D,label:"Six weeks in",pct:62,tip:"There is no measured point where a flat stretch lifts, so this app will not pretend to know when yours will."},
+    {time:60*D,label:"Two months",pct:75,tip:"Some people report changes in sexual function. The larger studies find little or no link between porn use itself and erectile problems, so if yours persist, that is worth a doctor rather than a counter."},
+    {time:90*D,label:"Three months",pct:88,tip:"Commonly reported, never measured. Distress about use is real and responds to treatment \u2014 which does not require it to have been an addiction."},
     {time:Y,label:"Sexual response largely renormalized",pct:97,tip:"A year. For most, sexual health has settled at a healthy, real-world baseline."}
   ]},
   { id:"mood", label:"Mood", icon:"\uD83C\uDF24\uFE0F", color:"var(--amber)", weight:0.15, milestones:[
@@ -295,15 +295,15 @@ const ACHIEVEMENTS = [
   {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Attention starting to come back. The habit's grip loosens a little every day."},
   {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Conditioned cues are firing less. Each urge you surf retrains your brain."},
   {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"A full week. Urge frequency typically starts dropping around now."},
-  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Ten days. If a flatline shows up soon, remember: it is a phase, not a verdict."},
+  {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Ten days. However this feels, it is not a verdict on you."},
   {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"The peak craving window is typically behind you. Sleep and focus improving."},
   {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Ordinary pleasures are regaining their pull."},
   {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Everyday rewards feel rewarding again."},
-  {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"If you hit a flatline, it commonly lifts in the coming weeks. Keep going."},
+  {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"Five weeks. No schedule to keep up with here."},
   {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Mood steadier, urges rarer, self-respect compounding."},
-  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Six weeks. Reported flatlines typically lift around now. Energy returning."},
+  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Six weeks of choosing differently."},
   {time:60*D,label:"Two Months",icon:"\uD83E\uDD89",desc:"Urges rare and weak. Improvements in arousal and function commonly reported by now."},
-  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. The classic reboot benchmark. Many report normalized libido and steady mood."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. The famous number comes from forums, not research \u2014 nothing changes because a counter hits it."},
   {time:180*D,label:"Six Months",icon:"\uD83D\uDC51",desc:"Half a year. The new baseline is your default now, not a streak you defend."},
   {time:Y,label:"One Year Free",icon:"\uD83C\uDF1F",desc:"A year. Recovery, not the streak, was always the point. And you have it."}
 ];
@@ -322,7 +322,7 @@ const MOTIVATIONAL = {
     "Neuroplasticity cuts both ways: the wiring the habit built, the absence of the habit unbuilds."
   ],
   recovery:[
-    "If everything feels flat right now, that is the widely reported flatline. A phase of recalibration, not your new personality.",
+    "If everything feels flat right now, plenty of people describe the same thing. It is not measured, it is not a schedule, and it is not your new personality.",
     "Streaks are a measuring stick, not the goal. Recovery is the goal. A hard day does not erase what you have learned.",
     "Ordinary things are starting to feel good again. Music, sunlight, conversation. That is the most consistent thing people report \u2014 and the part no study has measured.",
     "You are not white-knuckling anymore. You are becoming someone who simply does not do this."
@@ -378,7 +378,7 @@ function getContextualTip(elapsed) {
   if(elapsed<72*H)return"You are inside the strongest urge window of the whole process. Surf each one. None of them lasts.";
   if(elapsed<7*D)return"Urges are frequent early on. Riding one out changes what you do, not how strong the next one is. Keep screens out of the bedroom.";
   if(elapsed<14*D)return"Peak cravings typically fade from here. Sleep and focus gains commonly start showing up.";
-  if(elapsed<30*D)return"If mood or libido feels flat, that is the commonly reported flatline. Temporary. Keep going.";
+  if(elapsed<30*D)return"If mood or libido feels flat, many people describe that. Nobody has measured how long it runs.";
   if(elapsed<90*D)return"Deep recalibration in progress. Many report better focus, steadier mood, and improving sexual function in this window.";
   if(elapsed<180*D)return"Urges rare and weak. The new baseline is consolidating into your default.";
   if(elapsed<Y)return"Approaching a year. The pull is gone for most people by now. Stay honest about your cues.";
@@ -650,7 +650,7 @@ function Onboarding({onComplete}) {
     {icon:"\u2728",title:"Why you are here is yours to say",body:"People stop for different reasons. Some want the hours back. Some find it no longer fits how they want to live. Some noticed it escalating. All of those are reasons enough, and none of them require calling yourself an addict \u2014 this app never will. What you track here is your own behaviour and what you notice changing.",source:"There is no diagnosis in this app, and none implied."},
     {icon:"\uD83E\uDDE0",title:"What actually changes",body:"Novelty on tap trains attention quickly, and attention untrains more slowly. You are not losing intimacy \u2014 you are getting your own attention and attraction back.",source:"You are already free. The rest is your brain catching up."},
     {icon:"\uD83E\uDDE0",title:"Your brain adapts fast",body:"Neuroplasticity works in both directions. The same wiring that learned the habit starts unlearning it within days of stopping: urges fade, cue reactivity drops, ordinary rewards regain their pull. Timelines vary and some findings are correlational \u2014 but the direction is yours.",source:"Kuhn & Gallinat 2014 (JAMA Psychiatry), Voon et al. 2014"},
-    {icon:"\uD83C\uDFAF",title:"Six dimensions of recovery",body:"Track how everyday rewards feel, motivation and focus, sexual health, mood, sleep, and relationships. Honest, research-grounded milestones \u2014 including the temporary flatline many people report in weeks 2-6.",source:"ICD-11 CSBD, Fernandez et al. 2021"},
+    {icon:"\uD83C\uDFAF",title:"Six dimensions of recovery",body:"Track how everyday rewards feel, motivation and focus, sexual health, mood, sleep, and relationships. Milestones say where the evidence stops \u2014 which in this domain is early and often.",source:"ICD-11 classifies this as an impulse-control disorder, explicitly not an addiction"},
     {icon:"\uD83D\uDD12",title:"Total privacy, by design",body:"Everything stays on this device. No account, no server, no analytics \u2014 nothing to leak, ever. Clear your browser data and it is gone.",source:""}
   ];
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>

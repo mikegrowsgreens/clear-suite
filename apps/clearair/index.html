@@ -206,48 +206,68 @@ const CRAVING_ACHIEVEMENTS = [
  *    neuropsychiatric risk from varenicline/bupropion vs patch or placebo
  *  Bedi et al. 2011 -- cue-induced craving can INCREASE over months 1-3
  *    (incubation). Milestone copy no longer promises a monotonic decline.
- * HONESTY NOTE: long-term milestones (1y+) are extrapolated from
- * smoking-cessation research (CDC/WHO). Vaping-specific long-term outcome
- * data does not exist yet. Milestone tips say so where it applies.
- * Carbon-monoxide claims were removed in v3.1 -- vaping produces
+ * S2b, August 2026 -- THE SMOKING TIMELINE DOES NOT TRANSFER TO VAPING, and
+ * extrapolating it "with a label" was still fabrication. What went, and why:
+ *  - CILIA (7d and 270d milestones). Combustion-derived. No human bronchial
+ *    biopsy study shows ciliary regrowth on any schedule; the best data
+ *    (Lapperre 2007, n=114) found epithelial features no different between
+ *    quitters under 3.5 years and current smokers. ACS has dropped the claim.
+ *  - "Studies of vapers who quit show respiratory symptoms easing within
+ *    weeks." No such studies exist. A targeted search returned 11 hits, every
+ *    one about switching FROM smoking TO vaping. This asserted a literature
+ *    that has never been written -- the worst line in the app.
+ *  - LUNG FUNCTION milestones. NASEM 2018 conclusion 11-1: whether
+ *    e-cigarettes cause respiratory disease in humans has NO AVAILABLE
+ *    EVIDENCE. There is no curve to draw, so none is drawn.
+ *  - "One year quit cuts heart-disease risk sharply." Duncan 2019 (n=8,770):
+ *    risk is not statistically indistinguishable from never-smokers until
+ *    10-15 years, and that is for SMOKERS. NASEM 9-1: clinical CV outcomes
+ *    for e-cigarettes have no available evidence.
+ *  - The 10y/15y "full recovery" endpoints. No recovery claim is drawn as
+ *    complete any more. The one remaining pct:100 is nicotine clearance at
+ *    72h, which is measured pharmacology and does genuinely finish.
+ *  - The IMMUNE category, entire. Invented; no human study establishes an
+ *    immune-recovery date after stopping nicotine. Replaced by WITHDRAWAL,
+ *    which is the best-evidenced content in the domain (Hughes 2007).
+ * What still transfers is nicotine pharmacology and nicotine withdrawal,
+ * because those are about nicotine rather than about smoke.
+ *  NASEM 2018, Public Health Consequences of E-Cigarettes -- conclusions
+ *    5-1 (toxicants conclusively present), 8-1 (dependence), 9-2/9-3 (acute
+ *    heart rate and diastolic BP), 9-1/10-1/11-1 (no available evidence)
+ *  Hughes 2007, Nicotine Tob Res 9(3):315-27 -- withdrawal peaks week 1,
+ *    runs 2-4 weeks; drowsiness and fatigue are NOT withdrawal effects
+ * Carbon-monoxide claims were removed earlier, in v3.1 -- vaping produces
  * negligible CO; those timelines belong to smoking cessation only.
- * Last audited: August 2026
+ * Last audited: August 2026 (S2b)
  */
 
 const HEALTH_CATEGORIES = [
   { id:"cardiovascular", label:"Heart & BP", icon:"\u2764\uFE0F", color:"var(--rose)", weight:0.25, milestones:[
-    {time:20*60000,label:"Heart rate beginning to drop",pct:8,tip:"Nicotine's stimulant effect fades within about 20 minutes of your last puff."},
+    {time:20*60000,label:"Heart rate beginning to drop",pct:8,tip:"Nicotine's stimulant effect starts fading within minutes of your last hit. This is the dose wearing off, not damage being repaired."},
     {time:2*H,label:"Heart rate normalizing",pct:18,tip:"Blood pressure settling as nicotine levels fall."},
     {time:24*H,label:"Heart working under less strain",pct:35,tip:"A full day without nicotine spikes means steadier heart rate and blood pressure."},
     {time:14*D,label:"Circulation measurably improved",pct:50,tip:"Blood vessels respond more naturally without nicotine's repeated constriction."},
-    {time:90*D,label:"Cardiovascular strain substantially reduced",pct:68,tip:"Three months of steady rhythm. Your heart isn't fighting nicotine anymore."},
-    {time:Y,label:"A year of lower cardiovascular strain",pct:82,tip:"In smokers, one year quit cuts heart-disease risk sharply. Vaping-specific data is still emerging, but the direction is the same."},
-    {time:5*Y,label:"Long-term risk continuing to fall",pct:95,tip:"Years without nicotine let your cardiovascular system fully re-adapt."},
-    {time:15*Y,label:"Full long-term recovery",pct:100,tip:"Timeline extrapolated from smoking-cessation research; quitting early means the long-term unknowns of vaping never apply to you."}
+    {time:90*D,label:"Three months off the stimulant",pct:72,tip:"The acute effects are the part that has been measured. What vaping does to the heart over years is listed by NASEM as having no available evidence, in either direction."},
+    {time:Y,label:"A year without nicotine",pct:90,tip:"No study has followed people who stopped vaping to see what changes. This marks your time, not a measured outcome."}
   ]},
-  { id:"respiratory", label:"Lung Function", icon:"\uD83E\uDEC1", color:"var(--blue)", weight:0.25, milestones:[
-    {time:12*H,label:"Airway irritation beginning to settle",pct:5,tip:"Without aerosol exposure, irritated airways get their first real break."},
-    {time:72*H,label:"Bronchial tubes relaxing",pct:15,tip:"Breathing feels easier. Airways opening."},
-    {time:7*D,label:"Airway inflammation decreasing",pct:25,tip:"Studies of vapers who quit show respiratory symptoms easing within weeks."},
-    {time:30*D,label:"Lung function improving measurably",pct:45,tip:"Coughing and shortness of breath decreasing."},
-    {time:90*D,label:"Exercise noticeably easier",pct:68,tip:"Less airway inflammation means more capacity when you push yourself."},
-    {time:180*D,label:"Airway inflammation largely resolved",pct:80,tip:"Deep airway tissue healing well."},
-    {time:270*D,label:"Airways cleaning themselves freely",pct:90,tip:"Your airways' natural clearance systems are working without constant irritation."},
-    {time:Y,label:"Lung function approaching full restoration",pct:96,tip:"Respiratory system nearly fully recovered."},
-    {time:10*Y,label:"Long-term respiratory risk minimized",pct:100,tip:"Based on smoking research; quitting vaping early sidesteps the long-term unknowns entirely."}
+  { id:"airways", label:"Airways", icon:"\uD83E\uDEC1", color:"var(--blue)", weight:0.15, milestones:[
+    {time:12*H,label:"No new aerosol going in",pct:6,tip:"Whatever your airways were reacting to, they stop receiving it now."},
+    {time:72*H,label:"Irritation easing for many people",pct:20,tip:"Cough and throat irritation are widely reported to settle over the first days. That is what people report \u2014 no trial has measured it."},
+    {time:14*D,label:"Two weeks of no exposure",pct:45,tip:"E-cigarette aerosol contains toxicants that are conclusively present, at levels far below cigarette smoke. Stopping ends that exposure."},
+    {time:90*D,label:"Three months of no exposure",pct:70,tip:"Whether vaping causes respiratory disease in humans has no available evidence either way (NASEM 2018). There is no lung-function curve to show you, so this app does not invent one."},
+    {time:Y,label:"A year of no exposure",pct:90,tip:"Nobody has studied what happens to the airways of someone who stops vaping. Your exposure ended. The rest is honestly unknown."}
   ]},
   { id:"senses", label:"Taste & Smell", icon:"\uD83D\uDC45", color:"var(--amber)", weight:0.10, milestones:[
     {time:24*H,label:"Taste and smell getting a break",pct:15,tip:"Constant flavor and nicotine exposure can dull taste over time. Recovery starts now."},
     {time:48*H,label:"Taste sensitivity increasing",pct:38,tip:"Food is starting to taste different. More vivid."},
     {time:72*H,label:"Smell sharpening",pct:60,tip:"You may notice scents you haven't noticed in months."},
-    {time:7*D,label:"Vaper's tongue fading",pct:80,tip:"Dulled taste from heavy vaping typically clears within days to weeks."},
-    {time:30*D,label:"Senses back to baseline",pct:100,tip:"Your taste and smell are back to their natural capacity."}
+    {time:7*D,label:"Vaper's tongue usually reported gone",pct:85,tip:"A community term, not a clinical one. It is generally described as clearing within days to weeks."}
   ]},
   { id:"blood", label:"Circulation", icon:"\uD83E\uDE78", color:"var(--orange)", weight:0.10, milestones:[
     {time:2*H,label:"Nicotine levels dropping rapidly",pct:30,tip:"Nicotine half-life is about 2 hours. Levels are crashing."},
     {time:8*H,label:"Blood vessels relaxing",pct:60,tip:"Less vasoconstriction means better blood flow and oxygen delivery."},
-    {time:24*H,label:"Oxygen delivery improving",pct:85,tip:"A day without nicotine's vessel-tightening lets your blood do its job."},
-    {time:72*H,label:"Blood chemistry normalized",pct:100,tip:"Cotinine (nicotine's metabolite) nearly cleared."}
+    {time:24*H,label:"A day without vessel-tightening",pct:85,tip:"Nicotine narrows blood vessels while it is present. It is no longer present."},
+    {time:72*H,label:"Cotinine nearly cleared",pct:95,tip:"Cotinine, nicotine's main metabolite, takes a few days to clear."}
   ]},
   { id:"nicotine", label:"Nicotine Clearance", icon:"\u26A1", color:"var(--purple)", weight:0.15, milestones:[
     {time:2*H,label:"Nicotine at half original level",pct:20,tip:"Two hours. Nicotine half-life reached."},
@@ -256,17 +276,17 @@ const HEALTH_CATEGORIES = [
     {time:48*H,label:"Cotinine levels dropping",pct:80,tip:"Your body is processing the last traces of nicotine metabolites."},
     {time:72*H,label:"Nicotine essentially cleared",pct:100,tip:"Traces of cotinine can linger a few more days, but the chemical grip is broken."}
   ]},
-  { id:"immune", label:"Immune System", icon:"\uD83D\uDEE1\uFE0F", color:"var(--accent-primary)", weight:0.15, milestones:[
-    {time:7*D,label:"White blood cell count normalizing",pct:10,tip:"Your immune system is no longer fighting constant inflammation."},
-    {time:30*D,label:"Circulation supporting immune function",pct:30,tip:"Better blood flow means immune cells reach infections faster."},
-    {time:90*D,label:"Respiratory immunity strengthening",pct:55,tip:"Lungs fighting infections more effectively."},
-    {time:180*D,label:"Overall immune function restored",pct:80,tip:"Fewer colds, faster recovery from illness."},
-    {time:270*D,label:"Immune system at full capacity",pct:100,tip:"Your body's defense system is operating at its natural strength."}
+  { id:"withdrawal", label:"Withdrawal", icon:"\uD83E\uDDE0", color:"var(--accent-primary)", weight:0.25, milestones:[
+    {time:24*H,label:"Withdrawal building",pct:12,tip:"The validated symptoms are irritability, anxiety, low mood, trouble concentrating, impatience, restlessness and poor sleep. Drowsiness and fatigue are not withdrawal effects."},
+    {time:7*D,label:"Through the peak week",pct:45,tip:"Withdrawal peaks in the first week \u2014 Hughes 2007, a review of 120 studies. At least half of people quitting get a significant version of it."},
+    {time:14*D,label:"Symptoms easing",pct:68,tip:"The core withdrawal window runs two to four weeks."},
+    {time:30*D,label:"Core withdrawal usually over",pct:85,tip:"Craving and appetite changes run longer than withdrawal does. Cue-triggered craving can rise between week 1 and week 5, so a spike now is normal rather than a warning."},
+    {time:90*D,label:"Past the incubation window",pct:95,tip:"How many people still have symptoms beyond a month has never been established. If yours have lasted, that is a gap in the research, not a failure of yours."}
   ]}
 ];
 
 const ACHIEVEMENTS = [
-  {time:20*60000,label:"Twenty Minutes",icon:"\u23F1",desc:"Heart rate already dropping. Healing starts this fast."},
+  {time:20*60000,label:"Twenty Minutes",icon:"\u23F1",desc:"Nicotine's stimulant effect is already fading."},
   {time:H,label:"First Hour",icon:"\uD83C\uDF31",desc:"One hour free. Nicotine levels already falling."},
   {time:2*H,label:"Two Hours",icon:"\u26A1",desc:"Nicotine at half its peak level. Your body works fast."},
   {time:4*H,label:"Four Hours Free",icon:"\uD83D\uDCAA",desc:"That noise is nicotine leaving, not you wanting. It is the sound of it losing."},
@@ -279,15 +299,15 @@ const ACHIEVEMENTS = [
   {time:60*H,label:"Sixty Hours",icon:"\uD83D\uDD25",desc:"Nicotine cravings at their most intense. The peak passes."},
   {time:72*H,label:"Three Days",icon:"\u26A0",desc:"Nicotine essentially cleared. Chemical dependency broken."},
   {time:5*D,label:"Five Days",icon:"\uD83C\uDFAF",desc:"The chemical part is nearly done. What is left is only habit, and habit is not addiction."},
-  {time:7*D,label:"One Week",icon:"\uD83C\uDFC6",desc:"Cilia regenerating. Immune system normalizing."},
+  {time:7*D,label:"One Week",icon:"\uD83C\uDFC6",desc:"Through the week withdrawal peaks in."},
   {time:10*D,label:"Double Digits",icon:"\uD83D\uDD1F",desc:"Each craving is weaker than the last."},
   {time:14*D,label:"Two Weeks",icon:"\uD83D\uDCAA",desc:"Circulation measurably improved. Exercise getting easier."},
   {time:21*D,label:"Three Weeks",icon:"\uD83C\uDFD4",desc:"New neural pathways forming around your new patterns."},
-  {time:30*D,label:"One Month",icon:"\uD83C\uDF3F",desc:"Lung function improving. Senses fully restored."},
-  {time:60*D,label:"Two Months",icon:"\uD83D\uDCC8",desc:"Energy levels noticeably higher. Breathing deeper."},
-  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFC6",desc:"Breathing easier. Exercise feels different now."},
-  {time:180*D,label:"Six Months",icon:"\uD83D\uDE80",desc:"Immune system at full strength. Lungs deeply healed."},
-  {time:270*D,label:"Nine Months",icon:"\uD83D\uDEE1\uFE0F",desc:"Cilia fully functional. Lungs cleaning at full capacity."},
+  {time:30*D,label:"One Month",icon:"\uD83C\uDF3F",desc:"Core withdrawal is usually over by now."},
+  {time:60*D,label:"Two Months",icon:"\uD83D\uDCC8",desc:"Two months of not paying for a discomfort."},
+  {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFC6",desc:"Past the window where cue-triggered craving tends to rise."},
+  {time:180*D,label:"Six Months",icon:"\uD83D\uDE80",desc:"Half a year of ended exposure."},
+  {time:270*D,label:"Nine Months",icon:"\uD83D\uDEE1\uFE0F",desc:"Nine months that belong to you rather than to a schedule."},
   {time:Y,label:"One Year Free",icon:"\uD83D\uDC8E",desc:"A year without nicotine. Every system running free of it."}
 ];
 
@@ -295,8 +315,8 @@ const MOTIVATIONAL = {
   acute:[
     "Nicotine has a half-life of two hours. Every minute that passes, there is less of it controlling your brain.",
     "Vaping would end this craving faster. It would also be the thing that builds the next one. Choose the version that leaves you stronger.",
-    "Your body started healing within 20 minutes of your last puff. This is not symbolic. It is biological.",
-    "Right now your heart rate is dropping, your blood pressure is normalizing, and your lungs are opening. All from doing nothing."
+    "Nicotine raises your heart rate and blood pressure every time you use it. That is the part that has actually been measured, and it is already unwinding.",
+    "Nothing is being withheld from you right now. Something is simply no longer being done to you."
   ],
   peak:[
     "Days 2-3 are the nicotine cliff. Levels crash to zero. Cravings scream. This is the peak. It passes.",
@@ -306,19 +326,19 @@ const MOTIVATIONAL = {
   ],
   recovery:[
     "The chemical dependency is broken. What you are building now are new patterns, new responses, a new default.",
-    "Your lungs are cleaning themselves. The cilia are waking up and sweeping out months of accumulated damage.",
+    "Your airways are not receiving aerosol any more. That much is certain — what it changes over years has not been studied in anyone who stopped vaping.",
     "Cravings do not fade on a fixed schedule, and some cues get stronger before they go quiet. What changes reliably is what you do when one arrives.",
-    "Notice your breathing. Deeper. Easier. That is not imagination. Your bronchial tubes have relaxed."
+    "Many people say their breathing feels easier around now. That is worth noticing, and it is a report rather than a measurement."
   ],
   healing:[
-    "Your immune system is rebuilding. Fewer colds. Faster recovery. Your body is defending itself properly again.",
+    "Withdrawal peaks in the first week and the core of it runs two to four weeks. That is one of the better-measured things in this whole app.",
     "There is nothing left to get through. This is simply what being free feels like now.",
     "Lung capacity is measurably higher than the day you quit. Exercise that winded you before feels different now.",
     "You did not give up a pleasure. You stopped paying for a discomfort you were sold as one."
   ],
   healed:[
     "Your cardiovascular system has had a full year to re-adapt. Time is doing its work.",
-    "A year free. Your lungs, your heart, your immune system, all fundamentally transformed.",
+    "A year free. Nobody has measured what that does for someone who vaped \u2014 which makes the year yours rather than a statistic's.",
     "You did not just quit vaping. You reclaimed your autonomy from a chemical that was engineered to keep you needing it.",
     "Nothing was taken from you. What is left is what was always underneath."
   ]
@@ -361,13 +381,13 @@ function getContextualTip(elapsed) {
   if(elapsed<24*H)return"Nicotine is nearly out of your bloodstream. Blood vessels are relaxing, and oxygen delivery is improving.";
   if(elapsed<48*H)return"Nerve endings for taste and smell are regenerating. Food may start tasting different.";
   if(elapsed<72*H)return"Nicotine is almost fully cleared. This is the intensity peak. It drops after this.";
-  if(elapsed<7*D)return"Physical withdrawal is fading. Cilia in your lungs are starting to regenerate.";
-  if(elapsed<14*D)return"Circulation improving measurably. Your immune system is normalizing.";
-  if(elapsed<30*D)return"Lung function improving. Coughing and shortness of breath decreasing.";
-  if(elapsed<90*D)return"Airway inflammation easing. Exercise capacity climbing.";
-  if(elapsed<180*D)return"Deep healing in progress. Immune system strengthening. Respiratory immunity rebuilding.";
+  if(elapsed<7*D)return"You are in the week withdrawal peaks in. It runs two to four weeks in total.";
+  if(elapsed<14*D)return"Past the peak week. Symptoms usually ease from here.";
+  if(elapsed<30*D)return"Cough and throat irritation are widely reported to settle around now.";
+  if(elapsed<90*D)return"Cue-triggered craving can rise between week 1 and week 5. A spike is normal, not a warning.";
+  if(elapsed<180*D)return"Months of ended exposure. What that buys long-term has not been studied in people who stopped vaping.";
   if(elapsed<Y)return"Approaching the one-year mark. Your cardiovascular system has nearly a year of running without nicotine.";
-  return"Full recovery underway. Every system in your body has been transformed by this decision.";
+  return"A year and beyond. Nobody has measured what happens this far out after vaping — this is your record, not a prediction.";
 }
 function getCategoryProgress(cat, elapsed) {
   let progress=0,currentLabel="Not started",currentTip="",nextLabel=cat.milestones[0]?.label||"",nextTime=cat.milestones[0]?.time||0;
@@ -662,8 +682,8 @@ function Onboarding({onComplete}) {
   const[step,setStep]=useState(0);
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"Nicotine never gave you a lift. Each hit only ended the withdrawal the last one caused, and relief got mistaken for pleasure. Non-vapers feel that way all day, for free. You are not losing a pleasure \u2014 you are stopping paying for a discomfort.",source:"You are already free. The rest is your body catching up."},
-    {icon:"\uD83E\uDEC1",title:"Healing starts in minutes",body:"Your heart rate starts dropping within 20 minutes of your last puff. Within about 72 hours, nicotine is essentially cleared from your bloodstream.",source:"Based on nicotine-cessation research (NIDA, AHA)"},
-    {icon:"\u26A1",title:"Progress you can feel",body:"Clear Air weights your recovery score toward the rapid healing of your first weeks, not just calendar time. Long-term milestones are extrapolated from smoking-cessation research and labeled as such.",source:""},
+    {icon:"\uD83E\uDEC1",title:"The nicotine leaves quickly",body:"Nicotine's half-life is about two hours, and within roughly 72 hours it is essentially cleared from your bloodstream. Withdrawal peaks in the first week and the core of it runs two to four weeks.",source:"Nicotine pharmacology (NIDA); withdrawal course from Hughes 2007, 120 studies"},
+    {icon:"\u26A1",title:"What this app will not tell you",body:"The smoking-cessation timeline does not transfer to vaping. Without combustion there is no carbon monoxide, no tar, and no basis for the cilia or lung-cancer milestones other apps show vapers. Nobody has studied what recovers after someone stops vaping, so Clear Air tracks nicotine, withdrawal and ended exposure — and says plainly where the evidence stops.",source:""},
     {icon:"\u26A0\uFE0F",title:"One note if you take medication",body:"Tobacco smoke speeds up how your liver clears certain medicines. Stopping reverses that, so blood levels can rise within days. This matters most for clozapine, olanzapine and theophylline, and can also affect some antidepressants and caffeine. If you take any of them, tell your prescriber you have stopped so they can check your dose. This is about smoking, not nicotine \u2014 patches and gum do not do it.",source:"Nicotine withdrawal itself is not dangerous. This one interaction is worth a phone call."},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""}
   ];

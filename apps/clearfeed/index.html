@@ -209,7 +209,7 @@ const HEALTH_CATEGORIES = [
     {time:24*H,label:"Fewer mid-task interruptions",pct:10,tip:"Every check costs minutes of refocus time. Today your tasks got more of your full attention."},
     {time:72*H,label:"Attention residue clearing",pct:18,tip:"The mental tab the feed kept open is closing. Thoughts are completing instead of fragmenting."},
     {time:7*D,label:"Focus stretches lengthening",pct:32,tip:"One week. Reading, working, and conversations hold your attention noticeably longer."},
-    {time:14*D,label:"Reading without drifting",pct:46,tip:"Two weeks. Long articles and books feel doable again. Your attention span is stretching back out."},
+    {time:14*D,label:"Reading without drifting",pct:46,tip:"Widely reported, never measured. There is no evidence for attention-span recovery, and the study everyone cites for attention damage failed to replicate."},
     {time:21*D,label:"Sustained focus feels easier",pct:56,tip:"Three weeks. Entering focus takes less effort, and interruption urges arrive further apart."},
     {time:30*D,label:"Deep-work sessions returning",pct:68,tip:"One month. Ninety-minute blocks of real concentration are back within reach."},
     {time:60*D,label:"Task-switching urge much weaker",pct:80,tip:"Two months. The reflex to flick away from hard things has largely faded."},
@@ -242,7 +242,7 @@ const HEALTH_CATEGORIES = [
     {time:12*H,label:"FOMO spikes beginning",pct:3,tip:"Worrying you are missing something is the withdrawal talking. Almost nothing in the feed was for you."},
     {time:24*H,label:"Comparison inputs cut off",pct:8,tip:"One day without curated highlight reels to measure yourself against. The comparison engine is starved."},
     {time:72*H,label:"Restlessness peaking, then easing",pct:16,tip:"The anxious itch to check peaks in the first few days, then genuinely eases."},
-    {time:7*D,label:"Measurable wellbeing gains",pct:34,tip:"One week. A randomized trial (Lambert et al. 2022) found significant improvements in wellbeing, depression, and anxiety after just one week off."},
+    {time:7*D,label:"One week off",pct:34,tip:"Pooled across 10 abstinence trials (N=4,674) the effect on mood and life satisfaction is not significant. Individual trials disagree with each other. What you get reliably is the time back."},
     {time:14*D,label:"FOMO subsiding",pct:48,tip:"Two weeks. What felt like missing out now feels like being spared. The urgency was manufactured."},
     {time:30*D,label:"Baseline anxiety lower",pct:64,tip:"One month. No doomscroll cortisol drip. Your nervous system runs on your life, not the news cycle."},
     {time:60*D,label:"Mood steadier day to day",pct:80,tip:"Two months. Your mood no longer swings with strangers' opinions and engagement bait."},
@@ -284,7 +284,7 @@ const ACHIEVEMENTS = [
   {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"The hardest urge window is passing. Restlessness fades from here."},
   {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Idle moments feel less itchy. Your attention is knitting back together."},
   {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Boredom is turning back into daydreaming. That is your mind healing."},
-  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"One week. Trials show measurable mood and wellbeing gains right at this mark."},
+  {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"One week. Whatever you did with the hours is the part that is real."},
   {time:10*D,label:"Double Digits",icon:"\uD83D\uDE80",desc:"Phantom checking fading fast. Your hands are learning new defaults."},
   {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"FOMO subsiding. Focus stretches lengthening. Sleep deepening."},
   {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Three weeks. Slow, real pleasures feel good again \u2014 which is a thing people report, not a thing anyone has scanned."},
@@ -308,11 +308,11 @@ const MOTIVATIONAL = {
   peak:[
     "Days 1-3 are the hardest. The restlessness, the phantom reaches, the itch. They are withdrawal, and they pass.",
     "Riding out an urge does not reliably shrink the next one. What it changes is what you do when it arrives \u2014 which is the part that actually counts.",
-    "Your attention span is already lengthening. Every uninterrupted task is a repetition that rebuilds it.",
+    "Every uninterrupted task is practice at being uninterrupted. Whether that is an \"attention span\" rebuilding is not something anyone has shown.",
     "The boredom feels loud because your brain forgot what quiet is. Underneath it, your own thoughts are coming back online."
   ],
   recovery:[
-    "One week off social media measurably improves wellbeing and lowers anxiety in randomized trials. You are living the data.",
+    "A month off Facebook freed about an hour a day and moved wellbeing by 0.09 SD — small, real, and alongside knowing less news. A trade, honestly made.",
     "Reading is getting easier. Conversations are landing deeper. This is attention restoration, and it is real.",
     "Slower things start holding your attention again — a page, a conversation, a walk without a phone in it.",
     "Sleep deeper. Mornings yours. Hours back. These are not coincidences. This is what happens when you stop renting out your attention."
@@ -325,7 +325,7 @@ const MOTIVATIONAL = {
   ],
   healed:[
     "Your attention has fundamentally recovered. Focus, sleep, mood, presence. All restored.",
-    "A year free. Thousands of reclaimed hours. An attention span that reads books and finishes thoughts.",
+    "A year free. Thousands of hours that went somewhere else. That part is arithmetic, not a claim.",
     "You did not just delete an app. You opted out of a system designed to keep you anxious, comparing, and scrolling.",
     "Nothing was taken from you. Your attention is simply yours again."
   ]
@@ -367,11 +367,11 @@ function getContextualTip(elapsed) {
   if(elapsed<48*H)return"Restlessness and phantom checking are normal withdrawal. Boredom is your brain relearning quiet.";
   if(elapsed<72*H)return"Peak urge window. Days 1-3 are typically the hardest. You are almost through it.";
   if(elapsed<7*D)return"Urges spacing out. Sleep onset improving. Idle moments starting to feel like yours again.";
-  if(elapsed<14*D)return"Approaching the one-week mark where trials show measurable mood and wellbeing gains. Phantom checking fading.";
+  if(elapsed<14*D)return"Around a week in. Phantom checking usually fades before anything else does.";
   if(elapsed<30*D)return"FOMO subsiding. Focus stretches lengthening. Reclaimed hours looking for new homes. Give them one.";
   if(elapsed<90*D)return"Presence becoming your default rather than your effort. Attention recovery has never actually been demonstrated in a study \u2014 judge this one by your own days.";
   if(elapsed<180*D)return"Baseline anxiety lower. Deep-work capacity back. Urges rare and weak.";
-  if(elapsed<Y)return"Approaching the one-year mark. Your attention span, sleep, and mood run on your life, not a feed.";
+  if(elapsed<Y)return"Approaching a year. No trial has run this long, so from here it is your record rather than anyone's data.";
   return"Full recovery. Your attention, your time, and your mood answer to you, not to an algorithm.";
 }
 function getCategoryProgress(cat, elapsed) {
@@ -638,7 +638,7 @@ function Onboarding({onComplete}) {
   const[step,setStep]=useState(0);
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"The feed never satisfied you. It created the itch it then scratched, and sold your attention while you scrolled. Your curiosity worked fine before it was trained. You are not losing connection \u2014 you are getting your own attention back.",source:"You are already free. The rest is your brain catching up."},
-    {icon:"\uD83C\uDF31",title:"Your brain starts recovering immediately",body:"Within days of stepping away, urges to check start fading, sleep improves, and mood measurably lifts. A single week off social media improved wellbeing and reduced anxiety in a randomized trial.",source:"Lambert et al. 2022; Hunt et al. 2018"},
+    {icon:"\uD83C\uDF31",title:"Your brain starts recovering immediately",body:"Urges to check usually fade within days. Beyond that, be sceptical of anyone promising you happiness: pooled across 10 abstinence trials the effect on mood and life satisfaction was not significant. What you reliably get back is the time.",source:"Lambert et al. 2022; Hunt et al. 2018"},
     {icon:"\u26A1",title:"Six dimensions of recovery",body:"Track attention span, how ordinary things feel, sleep, mood and anxiety, self-image and comparison, and real-world connection. All grounded in published research on social media abstinence.",source:"Cyberpsychology; J. of Social & Clinical Psychology"},
     {icon:"\uD83D\uDD12",title:"An app that doesn't want your attention",body:"Everything stays on your device. No ads, no accounts, no tracking, no feed. Check it as rarely as you like \u2014 it will never ping you. Clear your browser data to erase everything.",source:""}
   ];

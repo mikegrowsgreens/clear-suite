@@ -207,23 +207,21 @@ const HEALTH_CATEGORIES = [
     {time:4*H,label:"Blood sugar stabilizing from last meal",pct:5,tip:"Your body is processing and clearing the last sugar spike. Stay hydrated."},
     {time:12*H,label:"Fasting glucose beginning to normalize",pct:12,tip:"Without new sugar input, insulin levels are dropping toward baseline."},
     {time:24*H,label:"Insulin sensitivity beginning to improve",pct:18,tip:"Your cells are already responding better to insulin without constant sugar bombardment."},
-    {time:72*H,label:"Blood sugar crashes stopping",pct:28,tip:"The rollercoaster of spikes and crashes is smoothing out. Energy becoming more stable."},
+    {time:72*H,label:"Steadier through the afternoon",pct:28,tip:"Carbohydrate raises fatigue and lowers alertness within the hour — that is measured. The afternoon slump is that, not low blood sugar."},
     {time:7*D,label:"Fasting insulin levels dropping",pct:40,tip:"One week in. Your pancreas is getting a real break. Hunger hormones recalibrating."},
-    {time:14*D,label:"Insulin resistance measurably improving",pct:55,tip:"Two weeks. Clinical studies show measurable insulin sensitivity improvement by now."},
-    {time:30*D,label:"HbA1c trending downward",pct:70,tip:"One month. Long-term blood sugar markers are shifting in a healthier direction."},
+    {time:14*D,label:"Lipids start moving",pct:55,tip:"Across 39 trials, triglycerides and LDL improve from about two weeks — and independently of weight change, which makes it a real effect of the sugar itself."},
+    {time:30*D,label:"Too early to read HbA1c",pct:70,tip:"HbA1c averages the last 8-12 weeks because red cells live about 100 days. Nothing you do this month shows up in it yet — guidelines do not even retest inside three months."},
     {time:60*D,label:"Metabolic markers significantly improved",pct:82,tip:"Fasting glucose, insulin, and triglycerides all trending toward optimal."},
     {time:90*D,label:"Insulin sensitivity approaching healthy baseline",pct:92,tip:"Three months. Your metabolic health has fundamentally shifted."},
     {time:Y,label:"Metabolic function largely restored",pct:98,tip:"Type 2 diabetes risk substantially reduced. Metabolic resilience rebuilt."}
   ]},
-  { id:"inflammation", label:"Inflammation", icon:"\uD83D\uDD25", color:"var(--orange)", weight:0.20, milestones:[
-    {time:24*H,label:"Inflammatory load from last meal clearing",pct:5,tip:"Ultra-processed foods trigger acute inflammation. That response is already fading."},
-    {time:72*H,label:"C-reactive protein beginning to drop",pct:15,tip:"Systemic inflammation markers are starting to decrease without daily processed food intake."},
-    {time:7*D,label:"Joint stiffness and bloating reducing",pct:28,tip:"Many people notice less puffiness and joint discomfort within the first week."},
-    {time:14*D,label:"Inflammatory markers measurably lower",pct:42,tip:"Two weeks without ultra-processed food. Your body is calming down at a cellular level."},
-    {time:30*D,label:"Chronic inflammation significantly reduced",pct:60,tip:"One month. Inflammatory cytokines dropping. Aches, swelling, and brain fog clearing."},
-    {time:60*D,label:"Vascular inflammation improving",pct:75,tip:"Blood vessel function improving. Blood pressure may be noticeably lower."},
-    {time:90*D,label:"Systemic inflammation approaching normal",pct:88,tip:"Three months. Cardiovascular and metabolic inflammation markers near healthy levels."},
-    {time:Y,label:"Chronic inflammation largely resolved",pct:97,tip:"Heart disease and cancer risk reduced. Your body is no longer in a constant fight response."}
+  { id:"inflammation", label:"Liver & BP", icon:"\uD83D\uDD25", color:"var(--orange)", weight:0.20, milestones:[
+    {time:24*H,label:"Nothing new going to the liver",pct:5,tip:"Liver fat builds from sugar over time. Today it stops being added to."},
+    {time:9*D,label:"Liver fat measurably down",pct:30,tip:"The best-dated finding in this whole domain: nine days of sugar restriction took liver fat from 7.2% to 3.8% \u2014 with weight deliberately held stable, so it was the sugar and not the weight loss."},
+    {time:14*D,label:"Lipids start moving",pct:45,tip:"Triglycerides and LDL improve from about two weeks across 39 trials, independently of weight change."},
+    {time:56*D,label:"Eight weeks: steatosis and blood pressure",pct:70,tip:"A randomised trial measured a 6.2-point fall in liver fat at eight weeks. Blood pressure needs about this long too \u2014 not the first week."},
+    {time:180*D,label:"Past what the trials measured",pct:88,tip:"These studies ran weeks to months. What holds over years has not been measured, so no figure is offered."},
+    {time:Y,label:"A year",pct:96,tip:"There used to be inflammation milestones here. They were removed: no clean evidence gives CRP or IL-6 a timescale for cutting sugar, at any point on the clock."}
   ]},
   { id:"gut", label:"Gut Health", icon:"\uD83E\uDDA0", color:"var(--purple)", weight:0.20, milestones:[
     {time:24*H,label:"Gut lining beginning to rest",pct:4,tip:"Without emulsifiers and processed additives, your gut lining can start healing."},
@@ -248,7 +246,7 @@ const HEALTH_CATEGORIES = [
     {time:90*D,label:"Sweet food is just food again",pct:95,tip:"Three months. Most people report very sweet things now taste too sweet and ordinary food is enough. That is a report, not a scan \u2014 nobody has measured this."}
   ]},
   { id:"energy", label:"Energy & Sleep", icon:"\u26A1", color:"var(--green)", weight:0.10, milestones:[
-    {time:24*H,label:"Energy dip as blood sugar stabilizes",pct:3,tip:"You may feel sluggish today. Your body is adjusting from sugar-fueled energy spikes."},
+    {time:24*H,label:"You may feel flat today",pct:3,tip:"Common in the first day. Worth knowing: carbohydrate itself raises fatigue within the hour, so the slump you used to get was not low blood sugar."},
     {time:72*H,label:"Energy crashes stopping",pct:15,tip:"Without sugar spikes, the afternoon crash cycle is breaking."},
     {time:7*D,label:"Sustained energy beginning to emerge",pct:30,tip:"Steady energy from stable blood sugar. Less need for caffeine and sugar to power through."},
     {time:14*D,label:"Sleep quality improving",pct:48,tip:"Stable blood sugar means fewer nighttime wake-ups. Deeper, more restorative sleep."},
@@ -258,13 +256,13 @@ const HEALTH_CATEGORIES = [
   ]},
   { id:"skin", label:"Skin & Appearance", icon:"\u2728", color:"var(--amber)", weight:0.10, milestones:[
     {time:72*H,label:"Facial puffiness beginning to decrease",pct:10,tip:"Less sodium and sugar means less water retention. Face and hands may already look less puffy."},
-    {time:7*D,label:"Skin hydration improving",pct:22,tip:"Better hydration status without processed food. Skin texture and tone starting to shift."},
-    {time:14*D,label:"Complexion starting to clear",pct:38,tip:"Reduced inflammation showing in your skin. Fewer breakouts and less redness."},
-    {time:21*D,label:"Skin cell turnover accelerating",pct:50,tip:"New skin cells are being built with better nutrients. The glow is real."},
-    {time:30*D,label:"Visible improvement in skin clarity",pct:62,tip:"One month. Many people get comments about their skin looking better at this stage."},
-    {time:60*D,label:"AGE (glycation) damage slowing",pct:78,tip:"Advanced glycation end-products from sugar accelerate aging. That process is slowing down."},
-    {time:90*D,label:"Collagen production improving",pct:90,tip:"With less sugar-driven glycation, collagen integrity is rebuilding. Firmer, healthier skin."},
-    {time:Y,label:"Skin health largely restored",pct:98,tip:"A year free. Your skin reflects the repair that happened inside."}
+    {time:7*D,label:"Nothing visible yet",pct:22,tip:"Skin changes get promised on a weekly schedule everywhere. No study supports one. The earliest real finding is at twelve weeks."},
+    {time:14*D,label:"Still too early",pct:38,tip:"There is no inflammation milestone in this app because no clean evidence gives one a timescale."},
+    {time:60*D,label:"Approaching the measured window",pct:50,tip:"The one trial here ran twelve weeks. You are getting close to the point it measured."},
+    {time:84*D,label:"Twelve weeks: acne, measured",pct:70,tip:"A randomised trial in young men found roughly twice the reduction in acne lesions on a low-glycaemic diet. Worth knowing: they also lost weight, so some of it is that."},
+    {time:120*D,label:"Glycation load lower",pct:80,tip:"Advanced glycation end-products form from sugar over years. Forming fewer of them is real chemistry — it has no measured date, so this is not one."},
+    {time:180*D,label:"Beyond what has been studied",pct:90,tip:"Glycation and collagen are real chemistry. Nobody has measured what cutting sugar does to your skin over months, so no figure is offered."},
+    {time:Y,label:"A year",pct:98,tip:"Dental risk is the one that genuinely belongs out here: caries is a lifelong dose-response, so a year of less sugar is a year of lower future risk."}
   ]}
 ];
 
@@ -277,7 +275,7 @@ const ACHIEVEMENTS = [
   {time:24*H,label:"Day One Complete",icon:"\u2B50",desc:"One full day without fast food or added sugar. Your gut microbiome noticed."},
   {time:36*H,label:"Past the First Night",icon:"\uD83C\uDF19",desc:"You made it through the evening routine without old habits."},
   {time:48*H,label:"Two Days Free",icon:"\uD83E\uDDE0",desc:"Two days. Ordinary food starts registering again as the very-sweet baseline fades."},
-  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"Peak craving window passing. Inflammation markers already dropping."},
+  {time:72*H,label:"Through the Peak",icon:"\uD83C\uDFD4\uFE0F",desc:"Three days. Whatever the hardest part was, it is behind you."},
   {time:4*D,label:"Four Days Free",icon:"\uD83D\uDC8E",desc:"Bloating reducing. Energy stabilizing. Your body is responding fast."},
   {time:5*D,label:"Five Days Free",icon:"\uD83C\uDF3F",desc:"Gut bacteria are shifting. Beneficial species are repopulating."},
   {time:7*D,label:"One Week",icon:"\uD83C\uDF08",desc:"Insulin sensitivity improving. Taste buds recalibrating. You look less puffy."},
@@ -287,7 +285,7 @@ const ACHIEVEMENTS = [
   {time:28*D,label:"Four Weeks",icon:"\uD83D\uDD04",desc:"A full cycle. Gut microbiome significantly shifted. Cravings much weaker."},
   {time:35*D,label:"Five Weeks",icon:"\uD83C\uDF32",desc:"Deep metabolic changes consolidating. New habits solidifying."},
   {time:40*D,label:"Forty Days",icon:"\uD83D\uDD4A\uFE0F",desc:"Forty days. Your taste, energy, and appetite have all reset themselves."},
-  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Inflammation markers near normal. Immune function stronger."},
+  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF1F",desc:"Six weeks. Lipids have had time to move; blood pressure needs about eight."},
   {time:60*D,label:"Two Months",icon:"\uD83E\uDD89",desc:"Energy consistent. Your relationship with food has changed. Cravings still visit; they no longer decide anything."},
   {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. Clinical milestone. Metabolic health fundamentally improved."},
   {time:180*D,label:"Six Months",icon:"\uD83D\uDC51",desc:"Heart disease risk dropping. Gut fully recolonized. You are a different person."},
@@ -309,7 +307,7 @@ const MOTIVATIONAL = {
   ],
   recovery:[
     "Your taste buds are recalibrating. Whole foods are starting to taste richer, sweeter, more complex. This is recovery.",
-    "Inflammation markers are dropping. Joint stiffness easing. Bloating gone. Your body is calming down at a cellular level.",
+    "Liver fat falls measurably in about nine days even with weight held stable. That one is real, and it is yours.",
     "Ordinary food starts tasting like enough again. Palates adjust to less sweetness over weeks — that part is measurable, and it happens whether or not you are thinking about it.",
     "Skin clearing. Energy stable. Sleep deeper. These are not coincidences. This is what happens when you stop poisoning yourself with processed food."
   ],
@@ -320,7 +318,7 @@ const MOTIVATIONAL = {
     "You did not give up a pleasure. You stopped paying for a craving that was engineered to sell you the cure."
   ],
   healed:[
-    "Your metabolic health has fundamentally transformed. Insulin sensitivity, inflammation, gut function. All restored.",
+    "Lipids, liver fat and blood pressure all have real evidence behind them. \"All restored\" is not a thing anyone has measured.",
     "A year free. Your risk of type 2 diabetes, heart disease, and metabolic syndrome has dropped significantly.",
     "You did not just change your diet. You broke free from a food system designed to keep you addicted and buying.",
     "Nothing was taken from you. Your appetite is simply yours again."
@@ -363,10 +361,10 @@ function getContextualTip(elapsed) {
   if(elapsed<48*H)return"Sugar withdrawal may be hitting. Headaches, irritability, fatigue are all normal. Stay hydrated and eat protein.";
   if(elapsed<72*H)return"Peak craving window. Days 2-3 are typically the hardest. You are almost through it.";
   if(elapsed<7*D)return"Cravings beginning to fade. Gut bacteria are shifting. Bloating and puffiness decreasing.";
-  if(elapsed<14*D)return"Taste buds recalibrating. Insulin sensitivity improving. Inflammation markers dropping.";
+  if(elapsed<14*D)return"Around two weeks, triglycerides and LDL start to move \u2014 and independently of weight, which makes it the sugar itself.";
   if(elapsed<30*D)return"Energy stabilizing. Skin clearing. Sleep improving. Gut microbiome actively recolonizing.";
   if(elapsed<90*D)return"Deep metabolic changes in progress. Sweet things taste sweeter than they used to. New food habits becoming automatic.";
-  if(elapsed<180*D)return"Inflammation near baseline. Metabolic markers significantly improved. Cravings come and go without running the day.";
+  if(elapsed<180*D)return"Months in. Lipids, liver fat and blood pressure are the markers with real evidence behind them. Cravings come and go without running the day.";
   if(elapsed<Y)return"Approaching the one-year mark. Diabetes risk dropping. Gut health fully restored.";
   return"Full metabolic transformation. Every system in your body has benefited from this decision.";
 }

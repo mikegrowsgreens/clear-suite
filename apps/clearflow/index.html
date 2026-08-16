@@ -239,9 +239,9 @@ const HEALTH_CATEGORIES = [
   { id:"cardio", label:"Cardiovascular", icon:"\u2764\uFE0F", color:"var(--rose)", weight:0.15, milestones:[
     {time:20*60000,label:"Heart rate beginning to drop",pct:5,tip:"Within 20 minutes, heart rate starts returning to normal."},
     {time:2*H,label:"Heart rate normalizing",pct:12,tip:"Blood pressure dropping. Circulation improving."},
-    {time:24*H,label:"Blood pressure trending down",pct:22,tip:"Cardiovascular normalization continuing steadily."},
+    {time:24*H,label:"Past the rebound window",pct:22,tip:"Alcohol has a biphasic effect: blood pressure falls at first and then rises from roughly 13 hours on. A day out, you are past that swing — this is not a blood-pressure benefit yet."},
     {time:7*D,label:"Blood pressure and pulse stabilizing",pct:38,tip:"Physical withdrawal usually easing. Blood pressure improving."},
-    {time:30*D,label:"Measurable blood pressure improvement",pct:55,tip:"Heart getting a real break from alcohol-induced strain."},
+    {time:30*D,label:"Blood pressure, if you drank heavily",pct:55,tip:"Across 36 trials, stopping cut systolic pressure by about 5.5 mmHg in people drinking six or more a day. At two or fewer, the reduction was not significant. This one depends on where you started."},
     {time:90*D,label:"Heart rhythm and function improved",pct:72,tip:"Blood pressure and cholesterol moving in a healthier direction."},
     {time:180*D,label:"Stroke and heart disease risk decreasing",pct:85,tip:"Better energy, stamina, and cardiovascular endurance."},
     {time:Y,label:"Cardiovascular risk significantly reduced",pct:95,tip:"Lower long-term risk of heart disease, stroke, and diabetes."}
@@ -267,13 +267,13 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Digestive system largely healed",pct:92,tip:"Full gut health returning for most people."},
     {time:Y,label:"Full digestive recovery",pct:100,tip:"Digestive system operating at healthy baseline."}
   ]},
-  { id:"immune", label:"Immune System", icon:"\uD83D\uDEE1\uFE0F", color:"var(--orange)", weight:0.10, milestones:[
-    {time:7*D,label:"White blood cell production increasing",pct:15,tip:"Your immune system is waking up after alcohol suppressed it."},
-    {time:14*D,label:"Inflammation markers decreasing",pct:30,tip:"Immune system rebounding. Fewer infections likely."},
-    {time:30*D,label:"Immune response improving",pct:48,tip:"Body fighting off illness more effectively."},
-    {time:90*D,label:"Infection resistance stronger",pct:70,tip:"Immune function significantly improved."},
-    {time:180*D,label:"Immune function significantly restored",pct:88,tip:"Better energy, stamina, and fewer infections."},
-    {time:Y,label:"Immune system at healthy baseline",pct:100,tip:"Full immune recovery. Lower long-term cancer risk."}
+  { id:"immune", label:"Inflammation & Risk", icon:"\uD83D\uDEE1\uFE0F", color:"var(--orange)", weight:0.10, milestones:[
+    {time:7*D,label:"Liver inflammation settling",pct:15,tip:"This is inflammation resolving, which is real and quick — not scarring reversing, which is neither."},
+    {time:14*D,label:"Two weeks of no new load",pct:30,tip:"What your immune system does after you stop has never been given a date by any human study. Two weeks is your count, not a measured recovery."},
+    {time:30*D,label:"A month of no new load",pct:48,tip:"People commonly report fewer minor illnesses. No study has put a date on immune recovery after drinking, so this is a report rather than a milestone."},
+    {time:90*D,label:"Three months",pct:70,tip:"Still no measured immune timeline. What is measured by now is grey-matter volume, which recovers over months."},
+    {time:180*D,label:"Six months",pct:88,tip:"Cognitive recovery runs to about a year across 62 studies. Immune function has no such curve, and this app will not draw one."},
+    {time:Y,label:"A year of no new load",pct:92,tip:"Cancer risk does fall with sustained abstinence. There is no measured date at which immune function is \"restored\", so none is given."}
   ]}
 ];
 
@@ -295,7 +295,7 @@ const ACHIEVEMENTS = [
   {time:14*D,label:"Two Weeks",icon:"\uD83C\uDFC6",desc:"Fatty liver starting to reverse. Acid reflux fading."},
   {time:21*D,label:"Three Weeks",icon:"\uD83E\uDDEC",desc:"Your body has recalibrated. This is its normal setting, not a deprived one."},
   {time:28*D,label:"The Reset",icon:"\uD83D\uDD04",desc:"28 days. Liver enzymes approaching normal. New habits forming."},
-  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF32",desc:"Fatty liver often fully reversed. Immune system stronger."},
+  {time:45*D,label:"Six Weeks",icon:"\uD83C\uDF32",desc:"Fatty liver often substantially improved by now."},
   {time:60*D,label:"Two Months",icon:"\uD83C\uDF1F",desc:"Brain structure beginning to rebuild. Weight stabilizing."},
   {time:90*D,label:"Quarter Year",icon:"\uD83C\uDFD4\uFE0F",desc:"90 days. A clinical milestone. Gray matter restoring."},
   {time:180*D,label:"Six Months",icon:"\uD83E\uDD89",desc:"Stroke and heart disease risk notably reduced."},
@@ -323,14 +323,14 @@ const MOTIVATIONAL = {
     "Mood is stabilizing. Sleep is improving. Energy returning. These are not coincidences. This is recovery."
   ],
   healing:[
-    "Your immune system is rebuilding. Fewer colds. Faster recovery. Your body is defending itself properly again.",
+    "Grey-matter volume starts recovering within days and keeps going for months. That one has been imaged, in people, more than once.",
     "There is nothing left to get through. This is simply what being free feels like now.",
     "Blood pressure and cholesterol are trending healthier. Heart disease risk dropping. Time is doing its work.",
     "You did not give up a pleasure. You stopped paying for a discomfort you were sold as one."
   ],
   healed:[
     "Your cardiovascular risk has dropped significantly. Liver function largely restored. Time has done its work.",
-    "A year free. Your liver, your heart, your brain, your immune system. All fundamentally transformed.",
+    "A year free. Cognitive recovery runs roughly this long across 62 studies \u2014 so this is the year the research actually points at.",
     "You did not just quit drinking. You reclaimed your autonomy from a substance that had a grip on your life.",
     "Nothing was taken from you. What is left is what was always underneath."
   ]
@@ -374,10 +374,10 @@ function getContextualTip(elapsed) {
   if(elapsed<48*H)return"Withdrawal symptoms may be intensifying. Sweating, anxiety, and tremors are common. Seek medical help if severe.";
   if(elapsed<72*H)return"Peak withdrawal zone. Days 2-3 are the hardest for most people. You are almost through it.";
   if(elapsed<7*D)return"Physical withdrawal is fading. Blood pressure and pulse beginning to stabilize.";
-  if(elapsed<14*D)return"Liver inflammation settling. Digestion and bloating improving. Immune system rebounding.";
-  if(elapsed<30*D)return"Sleep quality improving. Skin looking healthier. Liver actively regenerating.";
+  if(elapsed<14*D)return"Liver inflammation settling. Digestion and bloating improving.";
+  if(elapsed<30*D)return"A month in. Grey-matter volume recovery is measurable by now; sleep is still rebuilding and will take much longer.";
   if(elapsed<90*D)return"Liver enzymes normalizing. Brain fog lifting. Mood and stress tolerance improving.";
-  if(elapsed<180*D)return"Deep healing in progress. Cardiovascular benefits building. Immune function stronger.";
+  if(elapsed<180*D)return"Months in. Grey-matter recovery continues; cognition keeps improving through the first year.";
   if(elapsed<Y)return"Approaching the one-year mark. Heart disease and stroke risk dropping significantly.";
   return"Full recovery underway. Every system in your body has been transformed by this decision.";
 }
@@ -675,7 +675,7 @@ function Onboarding({onComplete}) {
   const slides=[
     {icon:"\u2728",title:"You are not giving anything up",body:"Alcohol never relaxed you. It relieved the tension its own wearing-off created, and that relief got mistaken for pleasure. People who do not drink feel calm all evening, for free. You are not losing something \u2014 you are stopping paying for a discomfort.",source:"You are already free. The rest is your body catching up."},
     {icon:"\u2728",title:"Your body is healing",body:"Within hours of your last drink, your liver, brain, and heart begin to recover. Every minute counts.",source:"Cleveland Clinic, American Liver Foundation, AHA"},
-    {icon:"\u26A1",title:"Recovery is measurable",body:"Track six dimensions of recovery: liver regeneration, cognitive repair, cardiovascular healing, sleep, digestion, and immune function. All backed by clinical research.",source:"Journal of Hepatology, PMC"},
+    {icon:"\u26A1",title:"Recovery is measurable",body:"Six dimensions: liver, cognition, cardiovascular, sleep, digestion, and inflammation. Each milestone says how good the evidence behind it is \u2014 including where there is none.",source:"Journal of Hepatology, PMC"},
     {icon:"\uD83D\uDD12",title:"Private by design",body:"Everything stays on your device. No accounts. No servers. No tracking. Clear your browser data to erase everything.",source:""},
     {icon:"\u26A0\uFE0F",title:"One safety note first",body:"If, while sobering up, you get shaking hands, sweating, anxiety, trouble sleeping, or see things that are not there, you may be physically dependent on alcohol \u2014 and stopping abruptly on your own can be dangerous. Seizures are most likely in the first two days, and confusion or hallucinations can begin as late as day eight, so feeling fine at 72 hours does not mean you are past it. Talk to a doctor or a local alcohol service first. They can help you stop safely.",source:"Stopping is still possible. Doing it safely comes first."}
   ];
