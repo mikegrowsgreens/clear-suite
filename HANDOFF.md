@@ -1,6 +1,6 @@
 # Clear Suite — handoff
 
-Last updated 2026-08-15. Keep this current; it is the first thing a fresh session reads.
+Last updated 2026-08-15 (S5). Keep this current; it is the first thing a fresh session reads.
 
 ## State
 
@@ -249,10 +249,61 @@ the eight apps are now explicit property lists that exclude colour, and the them
 additionally made instant via a `theme-switching` class. This was latent before S4 and
 invisible only because both old themes were grey.
 
-**S5 · Identity assets** — suite mark (none exists; the hub still borrows Clear Flow's icon),
-hub favicon and manifest, and nine real 1200×630 OG cards — every share still renders as a
-small square app icon. The eight app marks are now correctly *coloured* but are still the
-old shapes.
+**S5 · Identity assets — SHIPPED 2026-08-15.** Not deployed yet; see below.
+
+The eight marks were **varied, not replaced**, and that was Mike's call after two rounds of
+replacement were rejected. Worth recording so nobody re-runs it: round one was ten *systems*
+(`design/marks/sheet-1.png`, `-2`) and every one was a parameter sweep — a rect or circle
+moved around a brown tile by formula, no type, no warmth. Round two was ten originals
+(`sheet2-*.png`), better, but replacing marks people already recognise bought nothing.
+Round three (`sheet3-*.png`) varied the treatment and kept every glyph; Mike picked
+**Two-tone** — a filled accent disc with a cream glyph.
+
+- **The eight glyphs are unchanged.** They had no vector source, only PNGs, so they were
+  redrawn as paths in `scripts/build_icons.py` — which is also the first time they were
+  optically balanced against each other. Ink coverage ran 2.24% (bolt) to 3.63% (eye), a
+  1.6× spread; each is nudged toward the median by a damped `(median/ink)^0.3`.
+- **Disc colours are not the Hearth accents.** Cream on Hearth measures 2.09–2.54:1, under
+  the 3:1 floor — fine at 84px, failed at 16px. Each disc is mixed ~70% toward its Field
+  Guide accent, giving cream 4.5:1 on all eight. Table in DESIGN.md §10.
+- **The hub has its own mark** — a Fraunces C. It borrowed Clear Flow's icon, which made
+  the parent read as a ninth sibling.
+- **Nine real 1200×630 OG cards.** Apps moved from `summary` (crops square) to
+  `summary_large_image`.
+- **New per surface:** `icon-32` (the 192 downscaled to 16 was mush), full-bleed `icon-180`
+  for apple-touch (iOS masks it itself; a pre-rounded tile comes back double-rounded),
+  `icon-maskable-512`, `og.png`. The hub got its **first** favicon, apple-touch and
+  `manifest.json` — it had none.
+
+**Two latent bugs fixed on the way**, both pre-S4 leftovers nothing else would have caught:
+
+- Every manifest still carried a near-black `theme_color`/`background_color`, and eight
+  *different* ones (`#060a0a`, `#06080f`, `#0c0806` …). The HTML `theme-color` was correct,
+  so the PWA splash and the Android task switcher were the last un-rebranded surfaces.
+- The `sw.js` offline page was still `#060a0a` on `#94a3b8` slate — the one screen a user
+  sees when everything else has failed was the only surface that looked like a different
+  product. Now Hearth. No `SW_REV` bump; the string is not part of any cache key.
+
+**Rebuild with `scripts/build-icons.sh`** (needs `librsvg`; no network — it reads the
+already-vendored woff2). `deploy.sh` now asserts all six icon files plus `og.png` return
+200 **and** `image/png` on every surface, because `try_files` turns a miss into the HTML
+document with a 200, and a missing OG card is invisible until somebody shares a link.
+
+**Not deployed.** Everything above is committed and verified locally — JSX compiles clean
+in all eight, hub and Clear Flow browser-verified in both themes, all nine surfaces' assets
+200 with the right content-type over a local server. Deploy with
+`CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (unset `SKIP_LANDING`), then re-run with
+`--verify-only`.
+
+Two things to know before deploying:
+
+- Icons are **stale-while-revalidate** in the service worker, not cache-first, so returning
+  users get the old icon once and the new one after. This is *not* the font trap (L7) and
+  needs no rename.
+- The repo `Caddyfile`s are **excluded from rsync** (`--exclude Caddyfile`) — they are the
+  record of intent, not live config. Their `@icons` matcher now lists the new files, but the
+  droplet's own Caddy needs the same edit by hand if the new assets should be cached rather
+  than falling through to the `no-cache` catch-all. Nothing breaks either way.
 
 **S6 · Optional one-person share** — needs a decision. Harkin's largest moderator:
 monitoring shared with one other person **d+ = 0.47** vs private and unshared **0.19**.

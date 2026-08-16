@@ -3,7 +3,7 @@
 The design system for eight quit trackers and their hub. One direction, named and
 locked. If a change cannot be justified against this file, it does not ship.
 
-Last updated 2026-08-15 (S4).
+Last updated 2026-08-15 (S5).
 
 ---
 
@@ -254,6 +254,66 @@ Not stylistic preferences. Each of these has a reason attached.
 | L8 | Fraunces axes clipped, italic's optical size pinned | These are render-blocking bytes on a first visit. Clipping `opsz`/`wght` to what the design uses roughly halves each file. The italic appears at one size on one element, so it does not need a live axis. |
 | L10 | Deploy probes are cache-busted, and the stylesheet carries `?v=` | `/vendor/*` is served `immutable`, so Cloudflare cached the 404 from a `--verify-only` run made *before* the file was uploaded, and pinned it for a year against the real URL. Clear Air's stylesheet 404'd at the edge while being perfectly fine on the box. `deploy.sh` now probes `?probe=$$` so a pre-deploy miss can never poison a live URL, and the page's `?v=` gave the fix without another rename. |
 | L9 | "Days free" kept, "Drinks Avoided" kept | S3 call, restated here so it is not reopened: "free" names a state you hold, not a behaviour you abstain from. And there is no honest approach-framed version of a drink you did not drink — better to leave it than to invent one. |
+| L11 | The eight marks were **varied, not replaced** | Two full rounds of replacement were rejected. Round one was ten parameter sweeps — a rect or circle moved around a brown tile by formula, no type and no warmth, which is how you get a systems exercise instead of an identity. Round two was ten originals and better, but replacing eight marks people already recognise buys nothing the treatment could not. The glyphs are unchanged; only what surrounds them moved. |
+| L12 | Disc colours are **not** the Hearth accents | Cream on the Hearth accents measures 2.09–2.54:1, under the 3:1 floor for meaningful graphics — it looked fine at 84px and failed at favicon size. Each disc is mixed ~70% from its Hearth accent toward its Field Guide accent, which puts cream at 4.5:1 on all eight while keeping the hue and leaving the disc 3.4:1 against the ground. |
+| L13 | The hub has its own mark: a Fraunces **C** | It borrowed Clear Flow's icon, which made the parent read as a ninth sibling and meant Clear Flow's mark meant two different things. A letterform is the one shape that can parent eight pictorial glyphs without competing with them. |
+| L14 | Glyph scales carry a measured optical-weight correction | Rendered ink coverage ran 2.24% (bolt) to 3.63% (eye) — a 1.6× spread, visible as some marks looking bolder than others in the same row. Each is nudged toward the 3.06% median by `(median/ink)^0.3`. Damped deliberately: fully equalising ink makes the compact glyphs look bloated. |
+| L15 | `apple-touch-icon` is full-bleed, and a maskable variant exists | iOS applies its own mask, so a pre-rounded tile comes back double-rounded with dark wedges in the corners. Android launchers mask too, hence the separate `purpose:maskable` icon with the figure inside the 80% safe area. |
+| L16 | Manifest `theme_color` corrected to `#17120E` | All eight still carried pre-S4 near-blacks — and eight *different* ones (`#060a0a`, `#06080f`, `#0c0806` …). The HTML `theme-color` was right, so the PWA splash and the Android task switcher were the last surfaces never rebranded. The offline page in `sw.js` was the same leftover and is now Hearth. |
+
+---
+
+## 10. Identity assets
+
+Every mark, icon and share card is generated from `scripts/build_icons.py` and
+rebuilt with `scripts/build-icons.sh`. Before S5 the marks were PNG-only with no
+vector source, so recolouring meant remapping pixels and reshaping was impossible.
+
+### The treatment: two-tone
+
+A filled accent disc carrying a cream glyph. It replaced a hairline ring that
+vanished completely at favicon size. The eight glyphs themselves are unchanged
+from what shipped — compass, wind, sprout, four-point star, feed bars, diamond,
+eye, bolt — redrawn as paths and optically balanced against each other.
+
+| | Disc | Derived from (Hearth) | cream on disc | disc on ground |
+|---|---|---|---|---|
+| Clear Flow | `#A3523E` | `#D17C67` | 4.50 | 3.39 |
+| Clear Air | `#4D7066` | `#6C9C8E` | 4.51 | 3.39 |
+| Clear Mind | `#587132` | `#7B9E46` | 4.51 | 3.39 |
+| Clear Body | `#A54D55` | `#CE7D83` | 4.55 | 3.36 |
+| Clear Feed | `#71628B` | `#9A8DB4` | 4.51 | 3.38 |
+| Clear Odds | `#83642B` | `#C89B4A` | 4.51 | 3.39 |
+| Clear Sight | `#5A6A82` | `#8394AE` | 4.52 | 3.38 |
+| Clear Energy | `#8F5F1F` | `#D08A2C` | 4.51 | 3.39 |
+| **Clear Suite** (hub) | `#80633F` | — (brass, its own) | 4.57 | 3.34 |
+
+Glyph is always `--text-primary` cream `#F3E7DA`. Re-measure before moving any
+disc value; these were solved to the bound, so there is no headroom.
+
+### Marks must not disclose
+
+A stranger glancing at the owner's homescreen should not learn what they are
+quitting. This is a privacy requirement, not a style one — the product promises
+that nothing leaves the device, and an icon is data leaving the device by other
+means. It rules out anything literal: a bottle, a vape, a slot machine. The
+existing glyphs are abstract enough to pass, which is a further reason they were
+kept. **Any future mark has to clear this bar before it is judged on looks.**
+
+### What gets built
+
+Per app and for the hub: `icon-32` (favicon — browsers were downscaling the 192
+to 16 and it turned to mush), `icon-180` (apple-touch, full-bleed),
+`icon-192` / `icon-512` (`purpose:any`), `icon-maskable-512`, and `og.png`.
+The hub additionally gets the eight `<app>-icon.png` used by its cards.
+
+### Open Graph
+
+Nine real 1200×630 cards. Every share used to render as a small square app icon.
+Layout is the mark, the wordmark in Fraunces 68, one Sora line, a hairline rule
+and the promise — `FREE FOREVER · NO ACCOUNT · NOTHING LEAVES YOUR DEVICE`. The
+hub leads with all eight marks in a row instead of a single mark. Apps carry
+`summary_large_image`; they were on `summary`, which crops to a square.
 
 ---
 

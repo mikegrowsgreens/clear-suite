@@ -138,7 +138,7 @@ async function handleDocument() {
     return new Response(
       '<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">' +
       '<title>Offline</title><body style="margin:0;display:grid;place-items:center;height:100vh;' +
-      'font:400 15px/1.5 system-ui;background:#060a0a;color:#94a3b8">' +
+      'font:400 15px/1.5 system-ui;background:#17120E;color:#C8B29A">' +
       '<p>You are offline. Reopen when you have a connection.</p>',
       { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
     );

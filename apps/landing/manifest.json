@@ -1,0 +1,30 @@
+{
+  "name": "Clear Suite \u2014 Eight Free, Private Recovery Trackers",
+  "short_name": "Clear Suite",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#17120E",
+  "theme_color": "#17120E",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "description": "Eight free, private recovery trackers. No account, no ads, no tracking \u2014 your data never leaves your device.",
+  "orientation": "portrait"
+}

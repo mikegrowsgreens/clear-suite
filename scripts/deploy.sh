@@ -21,6 +21,31 @@ APPS=("${@:-}"); [ -z "${APPS[0]:-}" ] && APPS=(clearair clearflow clearmind cle
 hdr()    { curl -fsSI "$1" | tr -d '\r' | awk 'tolower($1)=="cache-control:"{sub(/^[^ ]+ /,"");print}'; }
 served() { curl -fsS "$1" 2>/dev/null | shasum -a 256 | cut -c1-12; }
 
+# Identity assets (S5). These fail silently in a way nothing else does: a missing
+# og.png shows up only when somebody shares a link, and a missing icon just falls
+# back to the letter favicon. try_files also turns any miss into the HTML
+# document with a 200, so the content-type check is the one that actually bites.
+assets() {
+  local url="$1"; shift
+  for a in "$@"; do
+    local code ct bust
+    # Cache-busted for the same reason the vendor probes are (see L10): a
+    # --verify-only run made before the files land must not leave a 404 pinned
+    # at the edge against the real URL.
+    bust="$url/$a?probe=$$"
+    code="$(curl -fsS -o /dev/null -w '%{http_code}' "$bust" || echo 000)"
+    ct="$(curl -fsSI "$bust" | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2}')"
+    printf '   %-34s %s %s\n' "/$a" "$code" "$ct"
+    [ "$code" = "200" ] || { echo "   FAIL $a missing"; fail=1; }
+    case "$ct" in
+      image/png*) ;;
+      *) echo "   FAIL $a is not image/png - try_files is serving the document"; fail=1;;
+    esac
+  done
+}
+
+ICONS="icon-32.png icon-180.png icon-192.png icon-512.png icon-maskable-512.png og.png"
+
 fail=0
 for app in "${APPS[@]}"; do
   src="$ROOT/apps/$app"; url="https://$app.$DOMAIN_SUFFIX"
@@ -78,6 +103,9 @@ for app in "${APPS[@]}"; do
     echo "   FAIL live HTML still references Google Fonts - third-party request restored"; fail=1
   fi
 
+  # shellcheck disable=SC2086
+  assets "$url" $ICONS
+
   # The poison case: a missing vendor file must 404, never return the document.
   # No -f here: we WANT the status code of an error response, and -f makes
   # curl exit nonzero on 404 so the || fallback used to append a second "404".
@@ -109,6 +137,11 @@ if [ -z "${SKIP_LANDING:-}" ]; then
   if curl -fsS "$url/index.html" 2>/dev/null | grep -q 'fonts\.googleapis\.com'; then
     echo "   FAIL live HTML still references Google Fonts"; fail=1
   fi
+  # The hub carries the eight app marks as well as its own.
+  # shellcheck disable=SC2086
+  assets "$url" $ICONS \
+    clearflow-icon.png clearair-icon.png clearmind-icon.png clearbody-icon.png \
+    clearfeed-icon.png clearodds-icon.png clearsight-icon.png clearenergy-icon.png
 fi
 
 exit $fail
