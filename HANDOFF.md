@@ -70,9 +70,15 @@ teal in all eight, title/OG/manifest normalisation.
 - **Verify in a browser, not just by grep.** Each app is a separate preview server
   (`clear-flow` … `clear-sight` in the parent `.claude/launch.json`); seed
   `<app>_onboarded='true'` and `<app>_data` in localStorage to land on the dashboard.
-  Only five preview servers may run at once — stop one before starting the next.
+  Only five preview servers may run at once — stop one before starting the next. If the
+  limit is reported while nothing is actually listening, the registry is stale from another
+  session; `python3 -m http.server <port> --directory apps/<app>` serves them just as well.
 - **Validate JSX before every commit** with the vendored Babel in Node — there is no build step:
   `node -e '...Babel.transform(...)'` over each `<script type="text/babel">` block.
+- **`DESIGN.md` is the design contract.** Read it before changing any surface. It carries the
+  token table with measured contrast, the ban list, and the decision ledger.
+- **Never transition `color`.** See S4 below — a var()-backed colour on an element with a
+  colour transition does not re-resolve when the theme changes.
 - Never bump `CACHE_NAME`; never rename `sw.js`. The document is network-first.
 - Deploy: `CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (add `--verify-only` for a
   read-only check). Apps → `/var/www/<app>/`, hub → `/var/www/clearsuite/`. The script now
@@ -172,7 +178,7 @@ Also added: per-app entries (`clear-flow`, `clear-air`, …) in the parent
 to be served at its own root — serving `apps/` and browsing to `/clearodds/` 404s every
 script. S4 will want these.
 
-**S4 · Visual direction — DECIDED 2026-08-15. Named direction: "Long Evening".**
+**S4 · Visual direction — SHIPPED 2026-08-15. Named direction: "Long Evening".**
 
 Round one (nine directions, `design/directions/index.html`) was **rejected**: "very very
 sanitized, clinical, sterile — it feels like I'm in a hospital being in our apps." That was
@@ -198,20 +204,46 @@ hearth best colors". Resolved in `design/directions/synthesis.html`:
 **Per-app accents, custom-mixed, no Tailwind:** Flow `#C4563C`, Air `#5E8B7E`, Mind
 `#6B8A3D`, Body `#C4636B`, Feed `#8B7BA8`, Odds `#C89B4A`, Sight `#6B7F9E`, Energy `#D08A2C`.
 
-**Desktop is new work, not a restyle.** At 1440 every app is a 400px column in a void; the
-synthesis puts the look-back and the identity gap in a second column.
+**S4 — SHIPPED 2026-08-15.** `DESIGN.md` is now the contract; read it before touching any
+surface. Rolled across all eight apps and the hub, verified in a browser app by app in both
+themes at 375 / 768 / 1440.
 
-**Known fix before building:** light-mode secondary `#66765A` is 3.56:1 on the sage ground —
-passes for large text, fails for the 10px category descriptions. Darken it. Everything else
-checks out (dark 15.3:1 body / 5.5:1 secondary / 6.1–7.3:1 accents; light 11:1 body).
+- **Type.** DM Sans / DM Serif Display → **Sora + Fraunces**, self-hosted, still zero
+  third-party requests. `scripts/vendor-fonts.sh` is the provenance record; it clips the
+  variable axes to what the design uses (Fraunces ships opsz 9–144 / wght 100–900, which
+  roughly halves per file once clipped). Fraunces italic exists for one element: the user's
+  own reason. **The stylesheet had to be renamed** `fonts.css` → `long-evening.css`:
+  `/vendor/*` is cache-first in the SW and never revalidated, so reusing the name would have
+  left every returning user on DM Sans forever. Any future face change needs a new filename.
+- **Colour.** Hearth / Field Guide as designed themes, per-app accents with a **separate
+  value per theme** — a colour that clears 4.5:1 on umber does not clear it on sage.
+  Everything measured against the true worst case (a card over the *lightest* point of the
+  dark gradient; the *bare* ochre-washed ground in light), not the flattering one. The
+  handoff's old "6.1–7.3:1 accents" figure was against the deep end of the gradient; against
+  the light end the synthesis values were 3.66–4.24 and had to be retuned. Table in DESIGN.md §4.
+- **Structure.** Category rings → a typographic row list; the milestone trophy grid → a text
+  ladder; all emoji iconography gone (0 emoji render anywhere, verified); cards are
+  translucent and unbordered; gradients flattened to flat accent fills; no weight above 600.
+- **Desktop** (≥1024) is the two-column layout, with a sticky left column. Below 1024 the
+  wrappers are `display:contents`, so mobile is byte-for-byte the layout it was.
+- **Marks recoloured, not redesigned.** All 24 icon PNGs were remapped from their old
+  Tailwind ramp onto the Long Evening one, because a Long Evening hub with eight neon marks
+  looked broken. Designing an actual suite mark is still S5.
 
-Next step is `DESIGN.md` — named aesthetic, reference lock, tokens with roles, ban list (no
-emoji as iconography, no stock Tailwind swatches, no fill-to-100 progress, no unlock/reward
-vocabulary, no clinical sterility), decision ledger — then roll across the eight apps and hub.
+**A real bug found and fixed on the way: never transition `color` in these apps.** An
+element carrying `transition: all` (or `transition: color`) does **not** re-resolve a
+`var()`-backed colour when `data-theme` changes — verified in a minimal in-page probe, while
+`background-color` / `border-color` / `opacity` / `transform` all update fine. The tab labels
+kept the previous theme's colour indefinitely after a toggle, which was unreadable once the
+two themes stopped being two shades of slate. All 87 `transition:'all …'` declarations across
+the eight apps are now explicit property lists that exclude colour, and the theme swap is
+additionally made instant via a `theme-switching` class. This was latent before S4 and
+invisible only because both old themes were grey.
 
-**S5 · Identity assets** — unblocked now that S4 is decided. Suite mark (none exists; the hub currently
-borrows Clear Flow's icon), hub favicon and manifest, and nine real 1200×630 OG cards —
-every share currently renders as a small square app icon.
+**S5 · Identity assets** — suite mark (none exists; the hub still borrows Clear Flow's icon),
+hub favicon and manifest, and nine real 1200×630 OG cards — every share still renders as a
+small square app icon. The eight app marks are now correctly *coloured* but are still the
+old shapes.
 
 **S6 · Optional one-person share** — needs a decision. Harkin's largest moderator:
 monitoring shared with one other person **d+ = 0.47** vs private and unshared **0.19**.

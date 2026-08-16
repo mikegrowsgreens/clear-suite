@@ -60,7 +60,8 @@ for app in "${APPS[@]}"; do
   done
 
   for v in react-18.2.0.production.min.js react-dom-18.2.0.production.min.js babel-7.23.9.min.js \
-           fonts/fonts.css fonts/dmsans-latin.woff2 fonts/dmserif-latin.woff2; do
+           fonts/long-evening.css fonts/sora-latin.woff2 fonts/fraunces-latin.woff2 \
+           fonts/fraunces-italic-latin.woff2; do
     code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v" || echo 000)"
     ct="$(curl -fsSI "$url/vendor/$v" | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2}')"
     printf '   %-34s %s %s\n' "/vendor/$v" "$code" "$ct"
@@ -97,7 +98,7 @@ if [ -z "${SKIP_LANDING:-}" ]; then
   echo "-- landing (clearsuite)"
   printf '   index.html  local %s  live %s  (was %s)\n' "$local_html" "$after_html" "$before_html"
   [ "$after_html" = "$local_html" ] || { echo "   FAIL index.html live != local"; fail=1; }
-  for v in fonts/fonts.css fonts/dmsans-latin.woff2; do
+  for v in fonts/long-evening.css fonts/sora-latin.woff2 fonts/fraunces-latin.woff2; do
     code="$(curl -fsS -o /dev/null -w '%{http_code}' "$url/vendor/$v" || echo 000)"
     printf '   %-34s %s\n' "/vendor/$v" "$code"
     [ "$code" = "200" ] || { echo "   FAIL vendor missing"; fail=1; }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#060a0a">
+<meta name="theme-color" content="#17120E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Clear Flow">
@@ -20,51 +20,89 @@
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="stylesheet" href="/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="/vendor/fonts/long-evening.css">
 <title>Clear Flow — Alcohol Recovery Tracker</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text}
 [data-theme="dark"] {
-  --bg-deep:#060a0a;--bg-surface:#0c1214;--bg-card:#111819;--bg-card-hover:#162120;
-  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#7c8ba1;
-  --border-subtle:rgba(255,255,255,0.06);--border-medium:rgba(255,255,255,0.12);
-  --input-bg:#101414;--modal-bg:#0a0e0e;
-  --surface-faint:rgba(255,255,255,0.04);--surface-soft:rgba(255,255,255,0.08);
-  --ring-track:rgba(255,255,255,0.04);--text-disabled:rgba(255,255,255,0.18);
+  /* Hearth. The dark theme of Long Evening — see DESIGN.md §4.
+     Panels are translucent warm light over the ground, never a lighter grey. */
+  --bg-deep:#17120E;
+  --bg-ground:radial-gradient(120% 85% at 50% 0%,#2A1E15 0%,#17120E 60%);
+  --bg-surface:#1F1710;--bg-card:rgba(255,235,215,0.05);--bg-card-hover:rgba(255,235,215,0.09);
+  --text-hi:#FFF3E6;--text-primary:#F3E7DA;--text-secondary:#C8B29A;--text-muted:#A79383;
+  --border-subtle:rgba(255,235,215,0.08);--border-medium:rgba(255,235,215,0.14);
+  --input-bg:rgba(255,235,215,0.05);--modal-bg:#1C1510;
+  --surface-faint:rgba(255,235,215,0.04);--surface-soft:rgba(255,235,215,0.09);
+  --ring-track:rgba(255,235,215,0.07);--text-disabled:rgba(255,235,215,0.22);
+  --accent-primary:#D17C67;--accent-strong:#DC9A8A;--accent-on:#1B1410;
+  --accent-glow:rgba(209,124,103,0.10);--border-accent:rgba(209,124,103,0.28);
+  --rose:#E28C79;--amber:#D9A54E;--green:#9DB05C;--purple:#A797B8;--blue:#8FA0B6;--orange:#D89660;--teal:#7CA79A;
 }
 [data-theme="light"] {
-  --bg-deep:#f8fafc;--bg-surface:#ffffff;--bg-card:#f1f5f9;--bg-card-hover:#e2e8f0;
-  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#5b6a7d;
-  --border-subtle:rgba(0,0,0,0.06);--border-medium:rgba(0,0,0,0.12);
-  --input-bg:#f1f5f9;--modal-bg:#ffffff;
-  --surface-faint:rgba(0,0,0,0.045);--surface-soft:rgba(0,0,0,0.07);
-  --ring-track:rgba(0,0,0,0.08);--text-disabled:rgba(0,0,0,0.3);
+  /* Field Guide. A designed light theme, not an inversion — sage ground with a
+     warm ochre wash in one corner, and paper-translucent panels over it. */
+  --bg-deep:#D8DFCB;
+  --bg-ground:radial-gradient(60% 38% at 6% 97%,rgba(184,138,66,0.20) 0%,rgba(184,138,66,0) 72%);
+  --bg-surface:#E7E9D9;--bg-card:rgba(252,250,242,0.58);--bg-card-hover:rgba(252,250,242,0.85);
+  --text-hi:#141F0E;--text-primary:#1E2A19;--text-secondary:#3A4633;--text-muted:#4A5640;
+  --border-subtle:rgba(30,42,25,0.10);--border-medium:rgba(30,42,25,0.18);
+  --input-bg:rgba(252,250,242,0.62);--modal-bg:#EDEFE0;
+  --surface-faint:rgba(252,250,242,0.45);--surface-soft:rgba(30,42,25,0.07);
+  --ring-track:rgba(30,42,25,0.10);--text-disabled:rgba(30,42,25,0.32);
+  --accent-primary:#8C3D2A;--accent-strong:#713122;--accent-on:#F6F3E7;
+  --accent-glow:rgba(140,61,42,0.10);--border-accent:rgba(140,61,42,0.30);
+  --rose:#8E2E1B;--amber:#6E5119;--green:#4B5C2B;--purple:#5D4F75;--blue:#48576E;--orange:#754D21;--teal:#395D52;
 }
 :root{
-  --border-accent:rgba(245,158,11,0.25);
-  --amber-primary:#f59e0b;--amber-bright:#fbbf24;--amber-muted:#d97706;--amber-dark:#78350f;
-  --purple:#a78bfa;--blue:#60a5fa;--amber:#fbbf24;--green:#a3e635;--rose:#fb7185;--orange:#fb923c;
-  --font-body:'DM Sans',sans-serif;--font-display:'DM Serif Display',serif;
-  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --font-body:'Sora',system-ui,sans-serif;--font-display:'Fraunces',Georgia,serif;
+  --radius-sm:12px;--radius-md:18px;--radius-lg:24px;--radius-xl:32px;
   --ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
-  --accent-primary:var(--amber-primary);--accent-glow:rgba(245,158,11,0.12);
 }
-html[data-theme="light"]{--amber-primary:#b45309;--amber-bright:#92400e;}
-body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;font-weight:300;letter-spacing:-0.005em;-webkit-font-smoothing:antialiased}
+/* The ground is a place, not a page. Fixed to the viewport so the light stays
+   where it is while the content moves past it; a pseudo-element rather than
+   background-attachment:fixed, which iOS Safari has never handled reliably. */
+body::before{content:'';position:fixed;inset:0;background:var(--bg-ground);pointer-events:none;z-index:-1}
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type="number"]{-moz-appearance:textfield}
 ::-webkit-scrollbar{width:0}
 button{font-family:var(--font-body)}
+
+/* Panels are translucent light over the ground, so they do not also need a
+   rule around them. Borders survive only as hairlines between rows. */
+
+/* Desktop is new work, not a restyle. At 1440 this used to be a 440px column
+   stranded in a void. The two things worth reading side by side are the count
+   (and what it bought) and the look-back (and the identity gap). Below 1024
+   the wrappers are display:contents, so mobile is exactly the layout it was. */
+.dash{max-width:440px;margin:0 auto}
+.dash-l,.dash-r{display:contents}
+@media (min-width:1024px){
+  .dash{max-width:1080px;display:grid;grid-template-columns:1.05fr .95fr;align-items:start;padding-bottom:48px}
+  .dash-l,.dash-r{display:block;min-width:0}
+  /* the count stays put while the record scrolls past it */
+  .dash-l{position:sticky;top:0;padding:4px 40px 24px 20px}
+  .dash-r{padding:6px 0 8px 30px;border-left:1px solid var(--border-subtle)}
+  .dash-head{grid-column:1/-1;padding:26px 20px 0!important}
+  /* left column reads as one left-aligned block under the wordmark */
+  .hero{align-items:flex-start!important;padding:14px 0 12px!important}
+  .hero>*{text-align:left!important}
+  .stat-row{justify-content:flex-start!important;padding-left:0!important;padding-right:0!important}
+  .hero-fig{font-size:132px!important;letter-spacing:-0.05em!important}
+  .dash-r>*{margin-left:0!important;margin-right:0!important}
+}
+.theme-switching *,.theme-switching *::before,.theme-switching *::after{transition:none!important;animation:none!important}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes pulseGlow{0%,100%{box-shadow:0 0 16px rgba(245,158,11,0.2)}50%{box-shadow:0 0 32px rgba(245,158,11,0.5),0 0 48px rgba(245,158,11,0.15)}}
+@keyframes settleRing{0%{box-shadow:0 0 0 0 var(--accent-glow)}70%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 0 0 0 transparent}}
 @keyframes breatheRing{0%{r:42;opacity:0.3}50%{r:56;opacity:0.8}100%{r:42;opacity:0.3}}
 @keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes ringDraw{from{stroke-dashoffset:var(--circ)}to{stroke-dashoffset:var(--offset)}}
-.milestone-new{animation:pulseGlow 2s ease-in-out 3}
+.milestone-new{animation:settleRing 2.4s var(--ease-out) 2}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
   .milestone-new{animation:none}
@@ -170,7 +208,7 @@ const CRAVING_ACHIEVEMENTS = [
  */
 
 const HEALTH_CATEGORIES = [
-  { id:"liver", label:"Liver Recovery", icon:"\uD83E\uDEC1", color:"#f59e0b", weight:0.25, milestones:[
+  { id:"liver", label:"Liver Recovery", icon:"\uD83E\uDEC1", color:"var(--accent-primary)", weight:0.25, milestones:[
     {time:12*H,label:"Liver beginning to clear alcohol",pct:5,tip:"Your liver is actively processing and clearing toxins. Stay hydrated."},
     {time:24*H,label:"Detoxification underway",pct:12,tip:"Liver is working hard. Blood alcohol cleared."},
     {time:72*H,label:"Liver inflammation starting to decrease",pct:22,tip:"Sweating and nausea easing. The liver is already responding."},
@@ -182,7 +220,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Substantial liver regeneration",pct:92,tip:"Ongoing cardiovascular benefits. Better stamina and fewer infections."},
     {time:Y,label:"Liver function largely restored",pct:98,tip:"Significant liver recovery for most moderate drinkers."}
   ]},
-  { id:"cognitive", label:"Cognitive", icon:"\uD83E\uDDE0", color:"#c084fc", weight:0.20, milestones:[
+  { id:"cognitive", label:"Cognitive", icon:"\uD83E\uDDE0", color:"var(--purple)", weight:0.20, milestones:[
     {time:24*H,label:"Brain recalibrating GABA and glutamate",pct:5,tip:"Anxiety and restlessness can appear as alcohol leaves your system."},
     {time:72*H,label:"Acute withdrawal symptoms peaking",pct:15,tip:"Peak withdrawal at 48-72 hours. Medical support is important for heavy drinkers."},
     {time:7*D,label:"Mental clarity beginning to emerge",pct:28,tip:"Clearer head in short windows. Less foggy and slightly more energy."},
@@ -193,7 +231,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Significant cognitive recovery",pct:90,tip:"More consistent sleep and mood. Alcohol feeling less central to identity."},
     {time:Y,label:"Cognitive function largely restored",pct:96,tip:"Stronger sense of wellbeing, confidence, and self-trust."}
   ]},
-  { id:"cardio", label:"Cardiovascular", icon:"\u2764\uFE0F", color:"#fb7185", weight:0.15, milestones:[
+  { id:"cardio", label:"Cardiovascular", icon:"\u2764\uFE0F", color:"var(--rose)", weight:0.15, milestones:[
     {time:20*60000,label:"Heart rate beginning to drop",pct:5,tip:"Within 20 minutes, heart rate starts returning to normal."},
     {time:2*H,label:"Heart rate normalizing",pct:12,tip:"Blood pressure dropping. Circulation improving."},
     {time:24*H,label:"Blood pressure trending down",pct:22,tip:"Cardiovascular normalization continuing steadily."},
@@ -203,7 +241,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Stroke and heart disease risk decreasing",pct:85,tip:"Better energy, stamina, and cardiovascular endurance."},
     {time:Y,label:"Cardiovascular risk significantly reduced",pct:95,tip:"Lower long-term risk of heart disease, stroke, and diabetes."}
   ]},
-  { id:"sleep", label:"Sleep Quality", icon:"\uD83C\uDF19", color:"#818cf8", weight:0.15, milestones:[
+  { id:"sleep", label:"Sleep Quality", icon:"\uD83C\uDF19", color:"var(--blue)", weight:0.15, milestones:[
     {time:24*H,label:"Sleep disruption beginning",pct:3,tip:"Expect a bad night. Sleep gets worse before it gets better, and that order is normal."},
     {time:72*H,label:"Heading into the worst of it",pct:8,tip:"Insomnia peaks around days 4-5 of withdrawal, when roughly seven in ten people are not sleeping. You are not doing this wrong."},
     {time:7*D,label:"Falling asleep may be getting easier",pct:18,tip:"The acute insomnia usually eases after the first week. Staying asleep takes far longer than getting to sleep."},
@@ -214,7 +252,7 @@ const HEALTH_CATEGORIES = [
     {time:Y,label:"Fragmentation still easing",pct:70,tip:"A year. Sleep keeps becoming less fragmented somewhere between years one and three. Nothing about that is unusual."},
     {time:2*Y,label:"Deep sleep reaching its baseline",pct:88,tip:"Slow-wave sleep normalises around 21-27 months of abstinence. This is the slowest thing in this app, and the one most worth waiting for."}
   ]},
-  { id:"digestive", label:"Digestive", icon:"\uD83E\uDDC3", color:"#34d399", weight:0.15, milestones:[
+  { id:"digestive", label:"Digestive", icon:"\uD83E\uDDC3", color:"var(--teal)", weight:0.15, milestones:[
     {time:48*H,label:"Stomach lining beginning to heal",pct:10,tip:"Nausea and stomach issues are easing as your gut starts to recover."},
     {time:72*H,label:"Acid reflux reducing",pct:18,tip:"Stomach acid production starting to stabilize."},
     {time:7*D,label:"Digestion and bloating improving",pct:32,tip:"Bloating decreasing. Gut function normalizing."},
@@ -224,7 +262,7 @@ const HEALTH_CATEGORIES = [
     {time:180*D,label:"Digestive system largely healed",pct:92,tip:"Full gut health returning for most people."},
     {time:Y,label:"Full digestive recovery",pct:100,tip:"Digestive system operating at healthy baseline."}
   ]},
-  { id:"immune", label:"Immune System", icon:"\uD83D\uDEE1\uFE0F", color:"#f97316", weight:0.10, milestones:[
+  { id:"immune", label:"Immune System", icon:"\uD83D\uDEE1\uFE0F", color:"var(--orange)", weight:0.10, milestones:[
     {time:7*D,label:"White blood cell production increasing",pct:15,tip:"Your immune system is waking up after alcohol suppressed it."},
     {time:14*D,label:"Inflammation markers decreasing",pct:30,tip:"Immune system rebounding. Fewer infections likely."},
     {time:30*D,label:"Immune response improving",pct:48,tip:"Body fighting off illness more effectively."},
@@ -392,7 +430,7 @@ function BreathingExercise({onClose, onLogCraving}) {
     return()=>clearInterval(timerRef.current);
   },[phase,cycle]);
   const ringP=phase==='idle'?0:phase==='done'?100:((phases[phase]-seconds)/phases[phase])*100;
-  const pc=phase==='inhale'?'#f59e0b':phase==='hold'?'#fbbf24':phase==='exhale'?'#a78bfa':'#f59e0b';
+  const pc=phase==='inhale'?'var(--accent-primary)':phase==='hold'?'var(--accent-strong)':phase==='exhale'?'var(--purple)':'var(--accent-primary)';
   const pl=phase==='idle'?'Ready':phase==='done'?'Complete':phase==='inhale'?'Breathe In':phase==='hold'?'Hold':'Breathe Out';
   return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.92)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',backdropFilter:'blur(20px)',animation:'fadeIn 0.3s ease-out'}}>
     <div onClick={e=>e.stopPropagation()} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:32,padding:40,animation:'scaleIn 0.4s var(--ease-spring)'}}>
@@ -407,19 +445,19 @@ function BreathingExercise({onClose, onLogCraving}) {
         </ProgressRing>
         {phase!=='idle'&&phase!=='done'&&<svg width={180} height={180} style={{position:'absolute',top:0,left:0,transform:'rotate(-90deg)'}}><circle cx={90} cy={90} r={87} fill="none" stroke={pc} strokeWidth={1} opacity={0.15} style={{animation:'breatheRing 4s ease-in-out infinite'}}/></svg>}
       </div>
-      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'#f59e0b':i===cycle&&phase!=='idle'?pc:'var(--surface-soft)',transition:'all 0.3s'}}/>)}</div>}
+      {phase!=='done'&&<div style={{display:'flex',gap:8}}>{Array.from({length:totalCycles},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:i<cycle?'var(--accent-primary)':i===cycle&&phase!=='idle'?pc:'var(--surface-soft)',transition:'background-color 0.3s,border-color 0.3s,opacity 0.3s,transform 0.3s'}}/>)}</div>}
         {phase === 'idle' ? (
           <button onClick={() => setPhase('inhale')} style={{
             padding:'14px 48px', borderRadius:40, border:'none', cursor:'pointer',
-            fontSize:15, fontWeight:700, fontFamily:'var(--font-body)',
-            background:'linear-gradient(135deg, #f59e0b, #d97706)', color:'#451a03'
+            fontSize:15, fontWeight:600, fontFamily:'var(--font-body)',
+            background:'var(--accent-primary)', color:'var(--accent-on)'
           }}>Start Breathing</button>
         ) : phase === 'done' ? (
           <div style={{ display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
             <button onClick={() => { onLogCraving && onLogCraving(true); onClose(); }} style={{
               padding:'14px 48px', borderRadius:40, border:'none', cursor:'pointer',
-              fontSize:15, fontWeight:700, fontFamily:'var(--font-body)',
-              background:'linear-gradient(135deg, #f59e0b, #d97706)', color:'#451a03'
+              fontSize:15, fontWeight:600, fontFamily:'var(--font-body)',
+              background:'var(--accent-primary)', color:'var(--accent-on)'
             }}>Log This Craving</button>
             <button onClick={onClose} style={{
               padding:'10px 32px', borderRadius:40, border:'1px solid var(--border-medium)',
@@ -451,8 +489,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
   if (saved) return (
     <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.92)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(20px)', animation:'fadeIn 0.2s ease-out' }}>
       <div style={{ textAlign:'center', animation:'scaleIn 0.4s var(--ease-spring)' }}>
-        <div style={{ fontSize:64, marginBottom:16 }}>🌊</div>
-        <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'#f59e0b' }}>
+        <h2 style={{ fontFamily:'var(--font-display)', fontSize:22, color:'var(--accent-primary)' }}>
           {outcome === 'surfed' ? 'That was it leaving.' : 'Logged.'}
         </h2>
         <p style={{ fontSize:13, color:'var(--text-secondary)', marginTop:8 }}>
@@ -463,7 +500,7 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
   );
   return (
     <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:100, display:'flex', alignItems:'flex-end', justifyContent:'center', backdropFilter:'blur(12px)', animation:'fadeIn 0.2s ease-out' }}>
-      <div onClick={e => e.stopPropagation()} style={{ background:'var(--bg-card)', borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background:'var(--modal-bg)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0', padding:'24px 20px 36px', width:'100%', maxWidth:440, maxHeight:'88vh', overflowY:'auto', animation:'slideUp 0.3s var(--ease-out)' }}>
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
           <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, color:'var(--text-primary)' }}>Log Craving</h3>
           <button onClick={onClose} style={{ background:'var(--surface-soft)', border:'none', color:'var(--text-secondary)', width:36, height:36, borderRadius:'50%', cursor:'pointer', fontSize:18 }}>×</button>
@@ -471,15 +508,15 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
         <div style={{ marginBottom:20 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:10 }}>
             <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase' }}>Intensity</label>
-            <span style={{ fontSize:28, fontWeight:300, color: intensity <= 3 ? '#a3e635' : intensity <= 6 ? '#fbbf24' : '#fb7185', fontFamily:'var(--font-display)' }}>{intensity}</span>
+            <span style={{ fontSize:28, fontWeight:300, color: intensity <= 3 ? 'var(--green)' : intensity <= 6 ? 'var(--accent-strong)' : 'var(--rose)', fontFamily:'var(--font-display)' }}>{intensity}</span>
           </div>
           <div style={{ display:'flex', gap:4 }}>
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
               <button key={n} onClick={() => setIntensity(n)} style={{
                 flex:1, height:36, borderRadius:'var(--radius-sm)', border:'none', cursor:'pointer',
-                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'rgba(251,191,36,0.25)' : 'rgba(251,113,133,0.25)') : 'var(--surface-faint)',
+                background: n <= intensity ? (n <= 3 ? 'rgba(163,230,53,0.25)' : n <= 6 ? 'var(--border-accent)' : 'var(--rose)') : 'var(--surface-faint)',
                 color: n <= intensity ? 'var(--text-primary)' : 'var(--text-muted)',
-                fontSize:11, fontWeight:700, fontFamily:'var(--font-body)', transition:'all 0.15s'
+                fontSize:11, fontWeight:600, fontFamily:'var(--font-body)', transition:'background-color 0.15s,border-color 0.15s,opacity 0.15s,transform 0.15s'
               }}>{n}</button>
             ))}
           </div>
@@ -496,14 +533,13 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
               return (
                 <button key={t.id} onClick={() => toggleTrigger(t.id)} style={{
                   padding:'8px 14px', borderRadius:20,
-                  border: active ? '1px solid #f59e0b' : '1px solid var(--border-subtle)',
-                  background: active ? 'rgba(245,158,11,0.1)' : 'transparent',
-                  color: active ? '#f59e0b' : 'var(--text-muted)',
+                  border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                  background: active ? 'var(--accent-glow)' : 'transparent',
+                  color: active ? 'var(--accent-primary)' : 'var(--text-muted)',
                   fontSize:12, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)',
-                  transition:'all 0.15s', display:'flex', alignItems:'center', gap:5
+                  transition:'background-color 0.15s,border-color 0.15s,opacity 0.15s,transform 0.15s', display:'flex', alignItems:'center', gap:5
                 }}>
-                  <span style={{ fontSize:14 }}>{t.icon}</span> {t.label}
-                </button>
+                  {t.label}</button>
               );
             })}
           </div>
@@ -514,10 +550,10 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
             {[{ val: true, label: 'Yes' }, { val: false, label: 'No' }].map(opt => (
               <button key={String(opt.val)} onClick={() => setUsedBreathing(opt.val)} style={{
                 flex:1, padding:'12px', borderRadius:'var(--radius-md)',
-                border: usedBreathing === opt.val ? '1px solid #f59e0b' : '1px solid var(--border-subtle)',
-                background: usedBreathing === opt.val ? 'rgba(245,158,11,0.08)' : 'transparent',
-                color: usedBreathing === opt.val ? '#f59e0b' : 'var(--text-muted)',
-                fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s'
+                border: usedBreathing === opt.val ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                background: usedBreathing === opt.val ? 'var(--accent-glow)' : 'transparent',
+                color: usedBreathing === opt.val ? 'var(--accent-primary)' : 'var(--text-muted)',
+                fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'background-color 0.2s,border-color 0.2s,opacity 0.2s,transform 0.2s'
               }}>{opt.label}</button>
             ))}
           </div>
@@ -525,20 +561,20 @@ function CravingLogModal({ onClose, onSave, prefillBreathing }) {
         <div style={{ marginBottom:20 }}>
           <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:10 }}>Outcome</label>
           <div style={{ display:'flex', gap:8 }}>
-            <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid #f59e0b' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'rgba(245,158,11,0.08)' : 'transparent', color: outcome === 'surfed' ? '#f59e0b' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
-              <div style={{ fontSize:20, marginBottom:4 }}>🌊</div>It passed
+            <button onClick={() => setOutcome('surfed')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'surfed' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)', background: outcome === 'surfed' ? 'var(--accent-glow)' : 'transparent', color: outcome === 'surfed' ? 'var(--accent-primary)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'background-color 0.2s,border-color 0.2s,opacity 0.2s,transform 0.2s', textAlign:'center' }}>
+It passed
             </button>
-            <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'rgba(251,113,133,0.08)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'all 0.2s', textAlign:'center' }}>
-              <div style={{ fontSize:20, marginBottom:4 }}>📝</div>I used
+            <button onClick={() => setOutcome('slipped')} style={{ flex:1, padding:'14px 12px', borderRadius:'var(--radius-md)', border: outcome === 'slipped' ? '1px solid var(--rose)' : '1px solid var(--border-subtle)', background: outcome === 'slipped' ? 'var(--rose)' : 'transparent', color: outcome === 'slipped' ? 'var(--rose)' : 'var(--text-muted)', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'var(--font-body)', transition:'background-color 0.2s,border-color 0.2s,opacity 0.2s,transform 0.2s', textAlign:'center' }}>
+I used
             </button>
           </div>
         </div>
         <div style={{ marginBottom:24 }}>
           <label style={{ fontSize:12, color:'var(--text-secondary)', fontWeight:600, letterSpacing:0.3, textTransform:'uppercase', display:'block', marginBottom:8 }}>Note (optional)</label>
           <textarea value={note} onChange={e => setNote(e.target.value)} placeholder="What was happening? How did you feel?" rows={2}
-            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-faint)', border:'1px solid var(--border-medium)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
+            style={{ width:'100%', padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--surface-faint)', color:'var(--text-primary)', fontSize:14, outline:'none', fontFamily:'var(--font-body)', resize:'none', lineHeight:1.5, boxSizing:'border-box' }} />
         </div>
-        <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #f59e0b, #d97706)', color:'#451a03' }}>Save</button>
+        <button onClick={handleSave} style={{ width:'100%', padding:'16px', borderRadius:40, border:'none', cursor:'pointer', fontSize:16, fontWeight:600, fontFamily:'var(--font-body)', background:'var(--accent-primary)', color:'var(--accent-on)' }}>Save</button>
       </div>
     </div>
   );
@@ -552,12 +588,11 @@ function CravingsTab({ onOpenLog }) {
 
   if (!stats || stats.total === 0) return (
     <div style={{ textAlign:'center', padding:'40px 20px', animation:'fadeIn 0.4s ease-out' }}>
-      <div style={{ fontSize:48, marginBottom:16 }}>{"\uD83C\uDF0A"}</div>
       <h3 style={{ fontFamily:'var(--font-display)', fontSize:18, color:'var(--text-primary)', marginBottom:8 }}>Track Your Cravings</h3>
       <p style={{ fontSize:13, color:'var(--text-secondary)', lineHeight:1.6, maxWidth:280, margin:'0 auto 24px' }}>
         Log when a craving hits, what set it off, and what you did. Over time you will see your own patterns clearly.
       </p>
-      <button onClick={onOpenLog} style={{ padding:'14px 32px', borderRadius:40, border:'none', cursor:'pointer', fontSize:14, fontWeight:700, fontFamily:'var(--font-body)', background:'linear-gradient(135deg, #f59e0b, #d97706)', color:'#451a03' }}>Log First Craving</button>
+      <button onClick={onOpenLog} style={{ padding:'14px 32px', borderRadius:40, border:'none', cursor:'pointer', fontSize:14, fontWeight:600, fontFamily:'var(--font-body)', background:'var(--accent-primary)', color:'var(--accent-on)' }}>Log First Craving</button>
     </div>
   );
 
@@ -566,26 +601,26 @@ function CravingsTab({ onOpenLog }) {
     <div style={{ animation:'fadeIn 0.3s ease-out' }}>
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:16 }}>
         {[
-          { label:'Logged', value:stats.total, color:'#f59e0b' },
+          { label:'Logged', value:stats.total, color:'var(--accent-primary)' },
           { label:'Avg This Week', value:stats.weekAvgIntensity || '-', color:'var(--amber)' },
-          { label:'This Week', value:stats.thisWeek, color:'var(--amber-primary)' }
+          { label:'This Week', value:stats.thisWeek, color:'var(--accent-primary)' }
         ].map((s, i) => (
-          <div key={i} style={{ textAlign:'center', padding:'14px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize:22, fontWeight:700, color:s.color, letterSpacing:-0.5 }}>{s.value}</div>
-            <div style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, marginTop:3, textTransform:'uppercase', letterSpacing:0.5 }}>{s.label}</div>
+          <div key={i} style={{ textAlign:'center', padding:'14px 8px', borderRadius:'var(--radius-md)', background:'var(--bg-card)' }}>
+            <div style={{ fontSize:22, fontWeight:600, color:s.color, letterSpacing:-0.5 }}>{s.value}</div>
+            <div style={{ fontSize:8.5,color:'var(--text-muted)',fontWeight:400,marginTop:4,textTransform:'uppercase',letterSpacing:'0.06em' }}>{s.label}</div>
           </div>
         ))}
       </div>
       {stats.topTriggers.length > 0 && (
-        <div style={{ padding:'14px 16px', borderRadius:'var(--radius-md)', marginBottom:16, background:'var(--bg-card)', border:'1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:700, letterSpacing:0.5, textTransform:'uppercase', marginBottom:10 }}>Top Triggers</div>
+        <div style={{ padding:'14px 16px', borderRadius:'var(--radius-md)', marginBottom:16, background:'var(--bg-card)' }}>
+          <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, letterSpacing:0.5, textTransform:'uppercase', marginBottom:10 }}>Top Triggers</div>
           <div style={{ display:'flex', gap:8 }}>
             {stats.topTriggers.map(([tid, count]) => {
               const t = CRAVING_TRIGGERS.find(tr => tr.id === tid);
               if (!t) return null;
               return (
                 <div key={tid} style={{ flex:1, textAlign:'center', padding:'10px 6px', borderRadius:'var(--radius-sm)', background:'var(--surface-faint)' }}>
-                  <div style={{ fontSize:18, marginBottom:4 }}>{t.icon}</div>
+                  
                   <div style={{ fontSize:11, fontWeight:600, color:'var(--text-primary)' }}>{t.label}</div>
                   <div style={{ fontSize:10, color:'var(--text-muted)' }}>{count}x</div>
                 </div>
@@ -595,27 +630,26 @@ function CravingsTab({ onOpenLog }) {
         </div>
       )}
       {nextAch && (
-        <div style={{ padding:'12px 16px', borderRadius:'var(--radius-md)', marginBottom:16, background:'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(245,158,11,0.02))', border:'1px solid var(--border-medium)', display:'flex', alignItems:'center', gap:12 }}>
-          <div style={{ fontSize:24 }}>{"\u2728"}</div>
-          <div style={{ flex:1 }}>
-            <div style={{ fontSize:10, color:'#f59e0b', fontWeight:700, letterSpacing:0.5, textTransform:'uppercase' }}>Next: {nextAch.label}</div>
+        <div style={{ padding:'12px 16px', borderRadius:'var(--radius-md)', marginBottom:16, background:'var(--accent-glow)', border:'1px solid var(--border-medium)', display:'flex', alignItems:'center', gap:12 }}>
+                    <div style={{ flex:1 }}>
+            <div style={{ fontSize:10, color:'var(--accent-primary)', fontWeight:600, letterSpacing:0.5, textTransform:'uppercase' }}>Next: {nextAch.label}</div>
             <div style={{ fontSize:12, color:'var(--text-secondary)' }}>{nextAch.count - stats.total} more to go</div>
           </div>
-          <div style={{ fontSize:11, fontWeight:800, color:'#f59e0b', background:'rgba(245,158,11,0.08)', padding:'4px 10px', borderRadius:12 }}>{stats.total}/{nextAch.count}</div>
+          <div style={{ fontSize:11, fontWeight:600, color:'var(--accent-strong)', background:'var(--accent-glow)', padding:'4px 10px', borderRadius:12 }}>{stats.total}/{nextAch.count}</div>
         </div>
       )}
-      <button onClick={onOpenLog} style={{ width:'100%', padding:'14px', borderRadius:'var(--radius-md)', border:'1px solid var(--border-medium)', cursor:'pointer', fontSize:14, fontWeight:700, fontFamily:'var(--font-body)', background:'rgba(245,158,11,0.06)', color:'#f59e0b', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginBottom:16, transition:'all 0.2s' }}>+ Log Craving</button>
-      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:700, letterSpacing:0.5, textTransform:'uppercase', marginBottom:10 }}>Recent ({stats.total} total)</div>
+      <button onClick={onOpenLog} style={{ width:'100%', padding:'14px', borderRadius:'var(--radius-md)', border:'1px solid var(--border-medium)', cursor:'pointer', fontSize:14, fontWeight:600, fontFamily:'var(--font-body)', background:'var(--accent-glow)', color:'var(--accent-strong)', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginBottom:16, transition:'background-color 0.2s,border-color 0.2s,opacity 0.2s,transform 0.2s' }}>+ Log Craving</button>
+      <div style={{ fontSize:10, color:'var(--text-muted)', fontWeight:600, letterSpacing:0.5, textTransform:'uppercase', marginBottom:10 }}>Recent ({stats.total} total)</div>
       <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
         {cravings.slice(0, 15).map(c => {
-          const trigIcons = (c.triggers || []).map(tid => { const t = CRAVING_TRIGGERS.find(tr => tr.id === tid); return t ? t.icon : ''; }).join(' ');
+          const trigIcons = (c.triggers || []).map(tid => { const t = CRAVING_TRIGGERS.find(tr => tr.id === tid); return t ? t.label : ''; }).join(' \u00b7 ');
           return (
-            <div key={c.id} style={{ padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', border:'1px solid var(--border-subtle)', display:'flex', alignItems:'center', gap:12 }}>
-              <div style={{ width:36, height:36, borderRadius:'50%', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:800, fontFamily:'var(--font-display)', color: c.intensity <= 3 ? '#a3e635' : c.intensity <= 6 ? '#fbbf24' : '#fb7185', background: c.intensity <= 3 ? 'rgba(163,230,53,0.1)' : c.intensity <= 6 ? 'rgba(251,191,36,0.1)' : 'rgba(251,113,133,0.1)' }}>{c.intensity}</div>
+            <div key={c.id} style={{ padding:'12px 14px', borderRadius:'var(--radius-md)', background:'var(--bg-card)', display:'flex', alignItems:'center', gap:12 }}>
+              <div style={{ width:36, height:36, borderRadius:'50%', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:600, fontFamily:'var(--font-display)', color: c.intensity <= 3 ? 'var(--green)' : c.intensity <= 6 ? 'var(--accent-strong)' : 'var(--rose)', background: c.intensity <= 3 ? 'rgba(163,230,53,0.1)' : c.intensity <= 6 ? 'var(--accent-glow)' : 'var(--rose)' }}>{c.intensity}</div>
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                  <span style={{ fontSize:12, fontWeight:600, color:'var(--text-primary)' }}>{c.outcome === 'surfed' ? '\uD83C\uDF0A Passed' : '\uD83D\uDCDD Used'}</span>
-                  {c.usedBreathing && <span style={{ fontSize:9, color:'var(--amber-primary)', fontWeight:700, background:'rgba(245,158,11,0.1)', padding:'2px 6px', borderRadius:8 }}>4-4-6</span>}
+                  <span style={{ fontSize:12, fontWeight:600, color:'var(--text-primary)' }}>{c.outcome === 'surfed' ? 'Passed' : 'Used'}</span>
+                  {c.usedBreathing && <span style={{ fontSize:9, color:'var(--accent-strong)', fontWeight:600, background:'var(--accent-glow)', padding:'2px 6px', borderRadius:8 }}>4-4-6</span>}
                 </div>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
                   {trigIcons && <span style={{ marginRight:6 }}>{trigIcons}</span>}
@@ -643,15 +677,15 @@ function Onboarding({onComplete}) {
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24}}>
     <div style={{maxWidth:360,width:'100%',textAlign:'center',animation:'fadeIn 0.6s ease-out'}}>
       <div key={step} style={{animation:'scaleIn 0.4s var(--ease-spring)'}}>
-        <div style={{fontSize:56,marginBottom:24}}>{slides[step].icon}</div>
+        
         <h2 style={{fontFamily:'var(--font-display)',fontSize:26,color:'var(--text-primary)',marginBottom:12,lineHeight:1.2}}>{slides[step].title}</h2>
         <p style={{fontSize:15,color:'var(--text-secondary)',lineHeight:1.6,marginBottom:8}}>{slides[step].body}</p>
         {slides[step].source&&<p style={{fontSize:11,color:'var(--text-muted)',fontStyle:'italic'}}>{slides[step].source}</p>}
       </div>
       <div style={{display:'flex',gap:6,justifyContent:'center',margin:'32px 0'}}>
-        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--amber-primary)':'var(--surface-soft)',transition:'all 0.3s var(--ease-out)'}}/>)}
+        {slides.map((_,i)=><div key={i} style={{width:i===step?24:8,height:8,borderRadius:4,background:i===step?'var(--accent-primary)':'var(--surface-soft)',transition:'background-color 0.3s var(--ease-out),border-color 0.3s var(--ease-out),opacity 0.3s var(--ease-out),transform 0.3s var(--ease-out)'}}/>)}
       </div>
-      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:step===slides.length-1?'linear-gradient(135deg,#f59e0b,#d97706)':'var(--surface-soft)',color:step===slides.length-1?'#451a03':'var(--text-primary)',transition:'all 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
+      <button onClick={()=>{if(step<slides.length-1)setStep(step+1);else{Store.setOnboarded();onComplete();}}} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:600,fontFamily:'var(--font-body)',background:step===slides.length-1?'var(--accent-primary)':'var(--surface-soft)',color:step===slides.length-1?'var(--accent-on)':'var(--text-primary)',transition:'background-color 0.3s,border-color 0.3s,opacity 0.3s,transform 0.3s'}}>{step===slides.length-1?"Let's Begin":'Next'}</button>
       {step<slides.length-1&&<button onClick={()=>{Store.setOnboarded();onComplete();}} style={{background:'none',border:'none',color:'var(--text-muted)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)',marginTop:16,padding:8}}>Skip</button>}
     </div>
   </div>;
@@ -663,27 +697,26 @@ function SetupScreen({onSave}) {
   const ready=quitDate&&quitTime;
   const[err,setErr]=useState('');
   const handleSave=()=>{if(!ready)return;if(new Date(quitDate+'T'+quitTime).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}const c={quitDate:quitDate+'T'+quitTime,dailySpend:parseFloat(dailySpend)||0,drinksPerDay:parseInt(drinksPerDay)||0,motivation:motivation||''};Store.save(c);onSave(c);};
-  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
-  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  const is={width:'100%',padding:'13px 15px',borderRadius:'var(--radius-sm)',background:'var(--input-bg)',border:'1px solid var(--border-subtle)',color:'var(--text-primary)',fontSize:15,fontWeight:300,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:9.5,color:'var(--text-muted)',fontWeight:400,marginBottom:8,display:'block',letterSpacing:'0.16em',textTransform:'uppercase'};
   return <div style={{minHeight:'100vh',minHeight:'100dvh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:24,animation:'fadeIn 0.5s ease-out'}}>
     <div style={{maxWidth:380,width:'100%'}}>
       <div style={{textAlign:'center',marginBottom:40}}>
-        <div style={{fontSize:48,marginBottom:16}}>{"\u2728"}</div>
         <h1 style={{fontFamily:'var(--font-display)',fontSize:32,letterSpacing:-0.5,color:'var(--text-primary)',marginBottom:8}}>Clear Flow</h1>
         <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.5}}>Track your body's recovery from alcohol</p>
       </div>
       <div style={{display:'flex',flexDirection:'column',gap:20}}>
-        <div><div style={{ padding:'14px 16px', borderRadius:'var(--radius-md)', background:'rgba(251,113,133,0.08)', border:'1px solid rgba(251,113,133,0.28)', marginBottom:16 }}>
-              <p style={{ fontSize:12, color:'#fb7185', lineHeight:1.6, margin:0, fontWeight:600 }}>
+        <div><div style={{ padding:'14px 16px', borderRadius:'var(--radius-md)', background:'var(--rose)', border:'1px solid var(--rose)', marginBottom:16 }}>
+              <p style={{ fontSize:12, color:'var(--rose)', lineHeight:1.6, margin:0, fontWeight:600 }}>
                 Read this before you start.
               </p>
-              <p style={{ fontSize:11.5, color:'#fb7185', lineHeight:1.6, margin:'8px 0 0' }}>
+              <p style={{ fontSize:11.5, color:'var(--rose)', lineHeight:1.6, margin:'8px 0 0' }}>
                 People who are physically dependent on alcohol can become seriously ill &mdash; or die &mdash; if they suddenly stop drinking completely. If, while sobering up after a period of drinking, you get shaking hands, sweating, anxiety, trouble sleeping, or you see things that are not there, you may be physically dependent and should <strong>not</strong> stop abruptly on your own. Seizures and delirium tremens need medical care. Seizures are most likely 6&ndash;48 hours after your last drink; delirium tremens can start any time up to about day eight.
               </p>
-              <p style={{ fontSize:11.5, color:'#fb7185', lineHeight:1.6, margin:'8px 0 0' }}>
+              <p style={{ fontSize:11.5, color:'var(--rose)', lineHeight:1.6, margin:'8px 0 0' }}>
                 This also gets riskier with repetition. Each unsupervised withdrawal can make the next one more severe, so if you have stopped and restarted before, that is a reason to involve a doctor now rather than a reason to try harder alone.
               </p>
-              <p style={{ fontSize:11.5, color:'#fb7185', lineHeight:1.6, margin:'8px 0 0' }}>
+              <p style={{ fontSize:11.5, color:'var(--rose)', lineHeight:1.6, margin:'8px 0 0' }}>
                 You can still take control of your drinking. Talk to a doctor or a local alcohol service first &mdash; they can help you stop safely.
               </p>
             </div>
@@ -696,11 +729,11 @@ function SetupScreen({onSave}) {
         <div><label style={ls}>Daily spend on drinking ($)</label><input type="number" placeholder="e.g. 8" value={dailySpend} onChange={e=>setDailySpend(e.target.value)} style={is}/></div>
         <div><label style={ls}>Drinks per day (approx)</label><input type="number" placeholder="e.g. 4" value={drinksPerDay} onChange={e=>setDrinksPerDay(e.target.value)} style={is}/></div>
         <div><label style={ls}>What do you want more of? (optional)</label><input type="text" placeholder="e.g. clear mornings, being present, my own money" value={motivation} onChange={e=>setMotivation(e.target.value)} style={is}/><p style={{fontSize:10,color:'var(--text-muted)',marginTop:6,lineHeight:1.5}}>Name what you are moving toward, not what you are quitting.</p></div>
-        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
-          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>Privacy first. All data stays on your device. No accounts, no servers, no tracking.</p>
         </div>
         {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
-        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'var(--surface-faint)':'linear-gradient(135deg,#f59e0b,#d97706)',color:!ready?'var(--text-disabled)':'#451a03',transition:'all 0.3s'}}>Begin Tracking</button>
+        <button onClick={handleSave} disabled={!ready} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:ready?'pointer':'default',fontSize:16,fontWeight:600,fontFamily:'var(--font-body)',marginTop:4,background:!ready?'var(--surface-faint)':'var(--accent-primary)',color:!ready?'var(--text-disabled)':'var(--accent-on)',transition:'background-color 0.3s,border-color 0.3s,opacity 0.3s,transform 0.3s'}}>Begin Tracking</button>
       </div>
     </div>
   </div>;
@@ -710,27 +743,23 @@ function DetailModal({category,elapsed,onClose}) {
   if(!category)return null;
   const{progress}=getCategoryProgress(category,elapsed);
   return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)',animation:'fadeIn 0.2s ease-out'}}>
-    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--modal-bg)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'80vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
-        <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:category.color}}>{category.icon} {category.label}</h3>
+        <h3 style={{fontFamily:'var(--font-display)',fontWeight:600,fontSize:20,color:'var(--text-hi)'}}>{category.label}</h3>
         <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
       </div>
-      <div style={{display:'flex',justifyContent:'center',marginBottom:24}}>
-        <ProgressRing progress={progress>0?100:0} color={category.color} size={120} strokeWidth={8}>
-          <span style={{fontSize:34}}>{category.icon}</span>
-        </ProgressRing>
-      </div>
+      
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
         {category.milestones.map((m,i)=>{
           const unlocked=elapsed>=m.time;const isCurrent=unlocked&&(i===category.milestones.length-1||elapsed<category.milestones[i+1]?.time);
-          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'var(--surface-faint)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?`1px solid ${category.color}22`:'1px solid transparent'}}>
-            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?category.color:'var(--surface-soft)',boxShadow:isCurrent?`0 0 10px ${category.color}55`:'none'}}/>
+          return <div key={i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'12px 14px',background:isCurrent?'var(--surface-faint)':'transparent',borderRadius:'var(--radius-md)',border:isCurrent?'1px solid var(--border-accent)':'1px solid transparent'}}>
+            <div style={{width:10,height:10,borderRadius:'50%',flexShrink:0,marginTop:4,background:unlocked?'var(--accent-primary)':'var(--surface-soft)',boxShadow:isCurrent?'none':'none'}}/>
             <div style={{flex:1}}>
               <div style={{fontSize:13,fontWeight:600,color:unlocked?'var(--text-primary)':'var(--text-disabled)'}}>{m.label}</div>
               <div style={{fontSize:11,color:'var(--text-muted)'}}>{formatTime(m.time)}</div>
-              {isCurrent&&m.tip&&<div style={{fontSize:12,color:`${category.color}bb`,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
+              {isCurrent&&m.tip&&<div style={{fontSize:12,color:'var(--text-secondary)',marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{m.tip}</div>}
             </div>
-            <span style={{fontSize:11,fontWeight:700,color:unlocked?category.color:'var(--surface-soft)',flexShrink:0}}>{unlocked?'\u2713':formatTime(m.time)}</span>
+            <span style={{fontSize:11,fontWeight:600,color:unlocked?'var(--accent-strong)':'var(--text-muted)',flexShrink:0}}>{unlocked?'\u2713':formatTime(m.time)}</span>
           </div>;
         })}
       </div>
@@ -763,11 +792,11 @@ function SettingsModal({config,onSave,onReset,onClose}) {
     onSave({...config,quitDate:toLocalDateStr(n)+'T'+n.toTimeString().slice(0,5)});
     onClose();
   };
-  const is={width:'100%',padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-medium)',color:'var(--text-primary)',fontSize:16,outline:'none',fontFamily:'var(--font-body)'};
-  const ls={fontSize:12,color:'var(--text-secondary)',fontWeight:600,marginBottom:6,display:'block',letterSpacing:0.3,textTransform:'uppercase'};
+  const is={width:'100%',padding:'13px 15px',borderRadius:'var(--radius-sm)',background:'var(--input-bg)',border:'1px solid var(--border-subtle)',color:'var(--text-primary)',fontSize:15,fontWeight:300,outline:'none',fontFamily:'var(--font-body)'};
+  const ls={fontSize:9.5,color:'var(--text-muted)',fontWeight:400,marginBottom:8,display:'block',letterSpacing:'0.16em',textTransform:'uppercase'};
   const handleSave=()=>{if(!qd||!qt)return;if(new Date(qd+'T'+qt).getTime()>Date.now()){setErr("That time is in the future. Enter the moment you actually quit.");return;}onSave({quitDate:qd+'T'+qt,dailySpend:parseFloat(ds)||0,drinksPerDay:parseInt(pp)||0,motivation:mot});onClose();};
   return <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:100,display:'flex',alignItems:'flex-end',justifyContent:'center',backdropFilter:'blur(12px)'}}>
-    <div onClick={e=>e.stopPropagation()} style={{background:'var(--bg-card)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:'var(--modal-bg)',borderRadius:'var(--radius-xl) var(--radius-xl) 0 0',padding:'28px 24px 40px',width:'100%',maxWidth:440,maxHeight:'85vh',overflowY:'auto',animation:'slideUp 0.3s var(--ease-out)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
         <h3 style={{fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-primary)'}}>Settings</h3>
         <button onClick={onClose} style={{background:'var(--surface-soft)',border:'none',color:'var(--text-secondary)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:18}}>×</button>
@@ -778,8 +807,8 @@ function SettingsModal({config,onSave,onReset,onClose}) {
         <div><label style={ls}>Drinks Per Day</label><input type="number" value={pp} onChange={e=>setPp(e.target.value)} style={is}/></div>
         <div><label style={ls}>What you want more of</label><input type="text" value={mot} onChange={e=>setMot(e.target.value)} style={is}/></div>
         {(()=>{const[b,setB]=React.useState(()=>window.__CS_VERSION);React.useEffect(()=>{const h=e=>setB(e.detail.version);window.addEventListener('cs-version',h);return()=>window.removeEventListener('cs-version',h)},[]);return <div style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:4,letterSpacing:0.5}}>Build {b||'\u2014'}</div>})()}
-        <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
-          <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
+        <div style={{padding:'14px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)'}}>
+          <div style={{fontSize:10,color:'var(--text-muted)',fontWeight:600,letterSpacing:0.5,textTransform:'uppercase',marginBottom:10}}>If you need someone</div>
           <a href="tel:988" style={{display:'block',fontSize:13,color:'var(--text-primary)',textDecoration:'none',marginBottom:8}}>
             <strong>988</strong> &mdash; Suicide &amp; Crisis Lifeline (call or text, 24/7)
           </a>
@@ -790,11 +819,11 @@ function SettingsModal({config,onSave,onReset,onClose}) {
             Clear Flow gives you information, not medical advice. It is not a medical device and does not diagnose or treat anything. For anything about your health, talk to a doctor or another qualified professional.
           </p>
         </div>
-        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
-          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{"\uD83D\uDD12"} Your data stays on this device only.</p>
+        <div style={{padding:'12px 16px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)'}}>
+          <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>Your data stays on this device only.</p>
         </div>
         {err&&<p style={{fontSize:12,color:'var(--rose)',textAlign:'center'}}>{err}</p>}
-        <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:700,fontFamily:'var(--font-body)',background:'linear-gradient(135deg,#f59e0b,#d97706)',color:'#451a03'}}>Save Changes</button>
+        <button onClick={handleSave} style={{width:'100%',padding:'16px',borderRadius:40,border:'none',cursor:'pointer',fontSize:16,fontWeight:600,fontFamily:'var(--font-body)',background:'var(--accent-primary)',color:'var(--accent-on)'}}>Save Changes</button>
         {(()=>{const K='clearflow_hidecount';const hidden=localStorage.getItem(K)==='1';
           return <button onClick={()=>{localStorage.setItem(K,hidden?'0':'1');window.location.reload()}} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',marginBottom:10,fontFamily:'var(--font-body)',textAlign:'left'}}>
             {hidden?'Show the day count':'Hide the day count'}
@@ -805,20 +834,20 @@ function SettingsModal({config,onSave,onReset,onClose}) {
           {!confirmSlip?<button onClick={()=>setConfirmSlip(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-medium)',background:'var(--surface-faint)',color:'var(--text-primary)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'var(--font-body)'}}>I slipped &mdash; restart my clock</button>:
           <div style={{textAlign:'center'}}>
             <p style={{color:'var(--text-secondary)',fontSize:13,marginBottom:10,lineHeight:1.5}}>A slip is part of recovery, not the end of it. Your craving log and history stay. Restart the clock from now?</p>
-            <p style={{color:'#fb7185',fontSize:11.5,marginBottom:10,lineHeight:1.5}}>If you have been drinking heavily again, stopping abruptly carries the same risks as the first time, and repeat withdrawals can be worse. Check in with a doctor or an alcohol service before you stop.</p>
+            <p style={{color:'var(--rose)',fontSize:11.5,marginBottom:10,lineHeight:1.5}}>If you have been drinking heavily again, stopping abruptly carries the same risks as the first time, and repeat withdrawals can be worse. Check in with a doctor or an alcohol service before you stop.</p>
             <div style={{display:'flex',gap:8}}>
               <button onClick={()=>setConfirmSlip(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Keep going</button>
-              <button onClick={handleSlip} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'linear-gradient(135deg,#f59e0b,#d97706)',color:'#451a03',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Restart clock</button>
+              <button onClick={handleSlip} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'var(--accent-primary)',color:'var(--accent-on)',fontSize:13,cursor:'pointer',fontWeight:600,fontFamily:'var(--font-body)'}}>Restart clock</button>
             </div>
           </div>}
         </div>
         <div style={{borderTop:'1px solid var(--border-subtle)',marginTop:8,paddingTop:20}}>
-          {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid rgba(244,63,94,0.2)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
+          {!confirmReset?<button onClick={()=>setConfirmReset(true)} style={{width:'100%',padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--rose)',background:'transparent',color:'var(--rose)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Reset All Data</button>:
           <div style={{textAlign:'center'}}>
             <p style={{color:'var(--rose)',fontSize:13,marginBottom:10}}>This will erase everything. Are you sure?</p>
             <div style={{display:'flex',gap:8}}>
               <button onClick={()=>setConfirmReset(false)} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'1px solid var(--border-subtle)',background:'transparent',color:'var(--text-secondary)',fontSize:13,cursor:'pointer',fontFamily:'var(--font-body)'}}>Cancel</button>
-              <button onClick={onReset} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'var(--rose)',color:'#fff',fontSize:13,cursor:'pointer',fontWeight:700,fontFamily:'var(--font-body)'}}>Erase Everything</button>
+              <button onClick={onReset} style={{flex:1,padding:'12px',borderRadius:'var(--radius-md)',border:'none',background:'var(--rose)',color:'var(--accent-on)',fontSize:13,cursor:'pointer',fontWeight:600,fontFamily:'var(--font-body)'}}>Erase Everything</button>
             </div>
           </div>}
         </div>
@@ -828,21 +857,21 @@ function SettingsModal({config,onSave,onReset,onClose}) {
 }
 
 function HealthRingCard({category,elapsed,onClick,delay=0}) {
+  /* A row, not a ring. The ring was a fill-to-100 meter with an emoji in the
+     middle; the honest content is the category and where it currently stands. */
   const{progress,currentLabel}=getCategoryProgress(category,elapsed);
-  return <div onClick={onClick} style={{background:'var(--bg-card)',borderRadius:'var(--radius-lg)',padding:'18px 12px',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer',border:'1px solid var(--border-subtle)',transition:'all 0.25s var(--ease-out)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
-    <div style={{width:80,height:80,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--surface-faint)',border:`1px solid ${progress>0?category.color+'55':'var(--border-subtle)'}`}}>
-      <span style={{fontSize:26,opacity:progress>0?1:0.45}}>{category.icon}</span>
-    </div>
-    <span style={{fontSize:12,fontWeight:600,marginTop:10,color:'var(--text-primary)',textAlign:'center'}}>{category.label}</span>
-    <span style={{fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:3,lineHeight:1.3,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{currentLabel}</span>
+  return <div onClick={onClick} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',gap:14,padding:'13px 2px',cursor:'pointer',borderBottom:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${delay}ms both`}}>
+    <span style={{fontSize:12.5,fontWeight:400,color:progress>0?'var(--text-primary)':'var(--text-muted)',flexShrink:0}}>{category.label}</span>
+    <span style={{fontSize:10.5,fontWeight:300,color:'var(--text-muted)',textAlign:'right',maxWidth:'58%',lineHeight:1.4}}>{currentLabel}</span>
   </div>;
 }
 
 function AchievementBadge({ach,unlocked,isNew}) {
-  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:unlocked?1:0.55,transition:'opacity 0.5s',position:'relative'}}>
-    <div style={{width:48,height:48,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,background:'var(--bg-card)',border:unlocked?'2px solid var(--border-medium)':'2px solid var(--border-subtle)',boxShadow:unlocked&&isNew?'0 0 16px rgba(245,158,11,0.25)':'none'}}>{ach.icon}</div>
-    <span style={{fontSize:9,color:unlocked?'var(--text-primary)':'var(--text-secondary)',textAlign:'center',maxWidth:60,lineHeight:1.2}}>{ach.label}</span>
-    <span style={{fontSize:8,color:'var(--text-muted)'}}>{unlocked?'\u2713':formatTime(ach.time)}</span>
+  /* Milestones are reached, not unlocked — so this is a line in a ladder, not a
+     token in a trophy case. Nothing is withheld and nothing is greyed out. */
+  return <div className={isNew&&unlocked?'milestone-new':''} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',gap:12,padding:'11px 13px',borderRadius:'var(--radius-sm)',background:unlocked?'var(--accent-glow)':'transparent'}}>
+    <span style={{fontSize:12.5,fontWeight:400,color:unlocked?'var(--text-primary)':'var(--text-muted)'}}>{ach.label}</span>
+    <span style={{fontSize:10,fontWeight:300,color:unlocked?'var(--accent-strong)':'var(--text-muted)',flexShrink:0,letterSpacing:'0.04em'}}>{unlocked?'reached':formatTime(ach.time)}</span>
   </div>;
 }
 
@@ -854,8 +883,25 @@ function ThemeToggle({ prefix }) {
       if (theme === 'auto') {
         resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
-      document.documentElement.setAttribute('data-theme', resolved);
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#060a0a' : '#f8fafc');
+      /* Swap the theme instantly rather than cross-fading every card, border
+         and surface over 200-300ms, which reads as lag rather than polish.
+
+         The related trap, fixed at the source in the transitions themselves:
+         an element that transitions `color` never re-resolves a var()-backed
+         colour when the theme attribute changes — verified in a minimal probe,
+         and true for `transition: all` and `transition: color` alike, while
+         background-color/border-color/opacity/transform all update fine. The
+         tab labels kept the old theme's colour indefinitely, which was
+         unreadable once the two themes stopped being two shades of slate. So
+         nothing in this app transitions `color`. Keep it that way.
+
+         A timer, not rAF: rAF never fires in a background tab, which would
+         strand the page with transitions permanently off. */
+      const root = document.documentElement;
+      root.classList.add('theme-switching');
+      root.setAttribute('data-theme', resolved);
+      setTimeout(() => root.classList.remove('theme-switching'), 60);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#17120E' : '#D8DFCB');
     };
     applyTheme();
     localStorage.setItem(prefix + '_theme', theme);
@@ -870,7 +916,7 @@ function ThemeToggle({ prefix }) {
   const labels = { auto: 'Auto', light: 'Light', dark: 'Dark' };
   return (
     <button onClick={cycle} title={`Theme: ${labels[theme]}`} style={{
-      background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',
+      background:'var(--surface-faint)',
       color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',
       fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'
     }}>{icons[theme]}</button>
@@ -900,8 +946,8 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
     setLog(next); setOpen(false);
   };
   const box = { margin: '8px 20px', padding: '14px 18px', borderRadius: 'var(--radius-md)',
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' };
-  const eyebrow = { fontSize: 9, color: accent, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' };
+                background:'var(--bg-card)' };
+  const eyebrow = { fontSize: 8.5, color: accent, fontWeight:400, letterSpacing: '0.15em', textTransform: 'uppercase' };
 
   if (open || (due && !last)) {
     return <div style={box}>
@@ -909,13 +955,13 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
       {[[usingLabel, u, setU], [freeLabel, r, setR]].map(([lab, val, set], i) =>
         <div key={i} style={{ marginTop: 12 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-secondary)' }}>
-            <span>Right now, how much do you feel like {lab}?</span><span style={{ color: accent, fontWeight: 700 }}>{val}</span>
+            <span style={{ fontWeight:300 }}>Right now, how much do you feel like {lab}?</span><span style={{ color: accent, fontWeight:600 }}>{val}</span>
           </div>
           <input type="range" min="0" max="10" value={val} onChange={e => set(Number(e.target.value))}
             style={{ width: '100%', marginTop: 6, accentColor: accent }} />
         </div>)}
       <button onClick={save} style={{ width: '100%', marginTop: 14, padding: 11, borderRadius: 40, border: 'none',
-        background: accent, color: 'var(--bg-deep)', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+        background: accent, color: 'var(--accent-on)', fontSize: 13, fontWeight:600, cursor: 'pointer',
         fontFamily: 'var(--font-body)' }}>Save how it feels today</button>
       <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
         Only you see this. It is the one number here that comes from you rather than the clock.</p>
@@ -928,7 +974,7 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
   return <div style={box}>
     <div style={eyebrow}>How you see yourself</div>
     <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 6 }}>
-      <span style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--text-primary)' }}>
+      <span style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 27, color: 'var(--text-hi)' }}>
         {gap > 0 ? '+' : ''}{gap}</span>
       <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
         {gap > 0 ? `closer to ${freeLabel} than to ${usingLabel}` :
@@ -975,69 +1021,73 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     prevRef.current=unlockedCount;
   },[unlockedCount]);
 
-  const ts=(a)=>({flex:1,padding:'12px 0',textAlign:'center',fontSize:11,fontWeight:700,color:a?'var(--amber-primary)':'var(--text-muted)',cursor:'pointer',transition:'all 0.2s',letterSpacing:0.8,textTransform:'uppercase',background:'none',border:'none',borderBottom:a?'2px solid var(--amber-primary)':'2px solid transparent',fontFamily:'var(--font-body)'});
+  const ts=(a)=>({flex:1,padding:'12px 0',textAlign:'center',fontSize:11,fontWeight:600,color:a?'var(--accent-primary)':'var(--text-muted)',cursor:'pointer',transition:'background-color 0.2s,border-color 0.2s,opacity 0.2s,transform 0.2s',letterSpacing:0.8,textTransform:'uppercase',background:'none',border:'none',borderBottom:a?'2px solid var(--accent-primary)':'2px solid transparent',fontFamily:'var(--font-body)'});
 
-  return <div style={{minHeight:'100vh',minHeight:'100dvh',maxWidth:440,margin:'0 auto',position:'relative'}}>
-    {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'linear-gradient(135deg,rgba(245,158,11,0.12),rgba(13,148,136,0.08))',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
-      <span style={{fontSize:36}}>{newAchievement.icon}</span>
+  return <div className="dash" style={{minHeight:'100vh',minHeight:'100dvh',position:'relative'}}>
+    {newAchievement&&<div style={{position:'fixed',top:20,left:'50%',transform:'translateX(-50%)',zIndex:150,padding:'16px 24px',borderRadius:'var(--radius-lg)',background:'var(--accent-glow)',border:'1px solid var(--border-accent)',backdropFilter:'blur(16px)',display:'flex',alignItems:'center',gap:14,animation:'slideDown 0.5s var(--ease-spring)',maxWidth:380,boxShadow:'0 8px 32px rgba(0,0,0,0.4)'}}>
+      
       <div>
-        <div style={{fontSize:10,color:'var(--amber-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>Milestone Reached</div>
-        <div style={{fontSize:15,fontWeight:700,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
+        <div style={{fontSize:10,color:'var(--accent-primary)',fontWeight:600,letterSpacing:1,textTransform:'uppercase'}}>Milestone Reached</div>
+        <div style={{fontSize:15,fontWeight:600,color:'var(--text-primary)',marginTop:2}}>{newAchievement.label}</div>
       </div>
     </div>}
 
-    <div style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+    <div className="dash-head" style={{padding:'20px 20px 0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
       <h1 style={{fontFamily:'var(--font-display)',fontSize:22,letterSpacing:-0.3,color:'var(--text-primary)'}}>Clear Flow</h1>
       <div style={{display:'flex',gap:8}}>
         <ThemeToggle prefix="clearflow" />
-        <button onClick={()=>setShowBreathing(true)} style={{background:'rgba(244,63,94,0.08)',border:'1px solid rgba(244,63,94,0.15)',color:'var(--rose)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16,display:'flex',alignItems:'center',justifyContent:'center'}} title="Craving? Breathe.">{"\uD83C\uDF2C\uFE0F"}</button>
-        <button onClick={()=>setShowSettings(true)} style={{background:'var(--surface-faint)',border:'1px solid var(--border-subtle)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
+        <button onClick={()=>setShowBreathing(true)} style={{background:'var(--accent-glow)',border:'1px solid var(--border-accent)',color:'var(--accent-strong)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:15,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-body)'}} title="Craving? Breathe.">{"\u25CB"}</button>
+        <button onClick={()=>setShowSettings(true)} style={{background:'var(--surface-faint)',color:'var(--text-muted)',width:36,height:36,borderRadius:'50%',cursor:'pointer',fontSize:16}}>{"\u2699"}</button>
       </div>
     </div>
 
-    <div style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
+    <div className="dash-l">
+    <div className="hero" style={{display:'flex',flexDirection:'column',alignItems:'center',padding:'28px 0 12px'}}>
       {(()=>{const prior=(()=>{try{return JSON.parse(localStorage.getItem('clearflow_streaks')||'[]').reduce((t,x)=>t+(x.days||0),0)}catch{return 0}})();
         const total=prior+daysClean;
         if(localStorage.getItem('clearflow_hidecount')==='1') return <div style={{textAlign:'center',fontFamily:'var(--font-display)',fontSize:22,color:'var(--text-secondary)'}}>You are free, and it is counting.</div>;
         return <div style={{textAlign:'center'}}>
-          <div style={{fontFamily:'var(--font-display)',fontSize:64,lineHeight:1,letterSpacing:-1,color:'var(--text-primary)'}}>{total.toLocaleString()}</div>
-          <div style={{fontSize:11,color:'var(--amber-primary)',fontWeight:700,letterSpacing:1.6,textTransform:'uppercase',marginTop:6}}>{total===1?'day free':'days free'}</div>
+          <div className="hero-fig" style={{fontFamily:'var(--font-body)',fontWeight:200,fontSize:86,lineHeight:0.95,letterSpacing:'-0.045em',color:'var(--text-hi)'}}>{total.toLocaleString()}</div>
+          <div style={{fontSize:10,color:'var(--accent-primary)',fontWeight:400,letterSpacing:'0.2em',textTransform:'uppercase',marginTop:10}}>{total===1?'day free':'days free'}</div>
           {prior>0&&<div style={{fontSize:10,color:'var(--text-muted)',marginTop:4}}>across every run, including this one</div>}
         </div>;})()}
-      <div style={{marginTop:12,fontSize:16,fontWeight:400,color:'var(--text-secondary)',fontFamily:'var(--font-display)',letterSpacing:-0.3}}>{formatDuration(elapsed)} this run</div>
+      <div style={{marginTop:14,fontSize:11.5,fontWeight:300,color:'var(--text-secondary)'}}>{formatDuration(elapsed)} this run</div>
       <div style={{fontSize:11,color:'var(--text-muted)',marginTop:2}}>free since {new Date(config.quitDate).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</div>
-      {config.motivation && <div style={{fontSize:11,color:'var(--amber-primary)',marginTop:6,fontStyle:'italic',opacity:0.8}}>{config.motivation}</div>}
+      {config.motivation && <div style={{fontSize:12.5,fontFamily:'var(--font-display)',color:'var(--accent-primary)',marginTop:8,fontStyle:'italic'}}>{config.motivation}</div>}
     </div>
 
-    <div style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
+    <div className="stat-row" style={{display:'flex',gap:8,padding:'8px 20px',justifyContent:'center'}}>
       {[
-        {label:'Saved',value:`$${moneySaved}`,color:'var(--amber-primary)'},
-        {label:'Cravings Met',value:(()=>{const st=getCravingStats();return st?String(st.surfedCount):'\u2014'})(),color:'var(--amber-bright)'},
+        {label:'Saved',value:`$${moneySaved}`,color:'var(--accent-primary)'},
+        {label:'Cravings Met',value:(()=>{const st=getCravingStats();return st?String(st.surfedCount):'\u2014'})(),color:'var(--accent-strong)'},
         {label:drinksAvoided>0?'Drinks Avoided':'Milestones',value:drinksAvoided>0?drinksAvoided.toLocaleString():`${unlockedCount}/${ACHIEVEMENTS.length}`,color:'var(--amber)'}
-      ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
-        <div style={{fontSize:18,fontWeight:700,color:s.color,letterSpacing:-0.5}}>{s.value}</div>
-        <div style={{fontSize:9,color:'var(--text-muted)',fontWeight:600,marginTop:3,textTransform:'uppercase',letterSpacing:0.5}}>{s.label}</div>
+      ].map((s,i)=><div key={i} style={{flex:1,textAlign:'center',padding:'14px 8px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',animation:`slideUp 0.5s var(--ease-out) ${i*80}ms both`}}>
+        <div style={{fontSize:21,fontWeight:300,color:'var(--text-hi)',letterSpacing:'-0.02em'}}>{s.value}</div>
+        <div style={{fontSize:8.5,color:'var(--text-muted)',fontWeight:400,marginTop:4,textTransform:'uppercase',letterSpacing:'0.06em'}}>{s.label}</div>
       </div>)}
     </div>
 
-    <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'linear-gradient(135deg,rgba(245,158,11,0.04),rgba(13,148,136,0.02))',borderLeft:'3px solid var(--amber-primary)'}}>
-      <p style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6,fontStyle:'italic',fontFamily:'var(--font-display)'}}>&ldquo;{motivation}&rdquo;</p>
     </div>
 
-    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)',border:'1px solid var(--border-subtle)'}}>
+    <div className="dash-r">
+    <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'transparent'}}>
+      <p style={{fontSize:15.5,fontWeight:300,color:'var(--text-hi)',lineHeight:1.5,fontFamily:'var(--font-display)',opacity:0.88}}>&ldquo;{motivation}&rdquo;</p>
+    </div>
+
+    <div style={{margin:'4px 20px 8px',padding:'10px 14px',borderRadius:'var(--radius-md)',background:'var(--surface-faint)'}}>
       <p style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.5}}>{tip}</p>
     </div>
 
-    {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-medium)',display:'flex',alignItems:'center',gap:14}}>
-      <span style={{fontSize:28}}>{nextAch.icon}</span>
+    {nextAch&&<div style={{margin:'4px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',display:'flex',alignItems:'center',gap:14}}>
+      
       <div style={{flex:1}}>
-        <div style={{fontSize:10,color:'var(--amber-primary)',fontWeight:700,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
+        <div style={{fontSize:10,color:'var(--accent-primary)',fontWeight:600,letterSpacing:0.5,textTransform:'uppercase'}}>Next</div>
         <div style={{fontSize:14,fontWeight:600,color:'var(--text-primary)'}}>{nextAch.label}</div>
         <div style={{fontSize:11,color:'var(--text-muted)'}}>{nextAch.time-elapsed>0?`in ${formatDuration(nextAch.time-elapsed)}`:'Almost there...'}</div>
       </div>
     </div>}
 
-    <IdentityCheck prefix="clearflow" accent="var(--amber-primary)" usingLabel="someone who drinks" freeLabel="someone who wakes up clear" />
+    <IdentityCheck prefix="clearflow" accent="var(--accent-primary)" usingLabel="someone who drinks" freeLabel="someone who wakes up clear" />
 
     {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
       if(!all.length)return null;
@@ -1045,8 +1095,8 @@ function Dashboard({config,onUpdateConfig,onReset}) {
       const pool=survived.length?survived:all;
       const pick=pool[Math.floor(Date.now()/86400000)%pool.length];
       const days=Math.max(0,Math.floor((Date.now()-pick.timestamp)/86400000));
-      return <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)',border:'1px solid var(--border-subtle)'}}>
-        <div style={{fontSize:9,color:'var(--amber-primary)',fontWeight:700,letterSpacing:1,textTransform:'uppercase'}}>You wrote this</div>
+      return <div style={{margin:'8px 20px',padding:'14px 18px',borderRadius:'var(--radius-md)',background:'var(--bg-card)'}}>
+        <div style={{fontSize:9,color:'var(--accent-primary)',fontWeight:600,letterSpacing:1,textTransform:'uppercase'}}>You wrote this</div>
         <p style={{fontSize:13,color:'var(--text-primary)',lineHeight:1.55,marginTop:6}}>{pick.note}</p>
         <div style={{fontSize:10,color:'var(--text-muted)',marginTop:8}}>{new Date(pick.timestamp).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}{' \u00b7 '}{days===0?'today':days===1?'yesterday':days+' days ago'}{pick.outcome==='surfed'?' \u00b7 you got through it':''}</div>
       </div>;})()}
@@ -1058,22 +1108,24 @@ function Dashboard({config,onUpdateConfig,onReset}) {
     </div>
 
     <div style={{padding:'16px 20px 120px'}}>
-      {activeTab==='health'&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+      {activeTab==='health'&&<div style={{display:'flex',flexDirection:'column'}}>
         {HEALTH_CATEGORIES.map((cat,i)=><HealthRingCard key={cat.id} category={cat} elapsed={elapsed} onClick={()=>setDetailCat(cat)} delay={i*60}/>)}
       </div>}
       {activeTab==='badges'&&<>
-        {latestUnlocked&&<div style={{padding:24,borderRadius:'var(--radius-lg)',marginBottom:16,textAlign:'center',background:'linear-gradient(135deg,rgba(245,158,11,0.06),rgba(245,158,11,0.02))',border:'1px solid var(--border-medium)',animation:'scaleIn 0.4s var(--ease-spring)'}}>
-          <span style={{fontSize:44}}>{latestUnlocked.icon}</span>
-          <div style={{fontFamily:'var(--font-display)',fontSize:18,color:'var(--amber-primary)',marginTop:10}}>{latestUnlocked.label}</div>
+        {latestUnlocked&&<div style={{padding:24,borderRadius:'var(--radius-lg)',marginBottom:16,textAlign:'center',background:'var(--accent-glow)',border:'1px solid var(--border-medium)',animation:'scaleIn 0.4s var(--ease-spring)'}}>
+          
+          <div style={{fontFamily:'var(--font-display)',fontSize:18,color:'var(--accent-primary)',marginTop:10}}>{latestUnlocked.label}</div>
           <div style={{fontSize:13,color:'var(--text-secondary)',marginTop:6,lineHeight:1.5}}>{latestUnlocked.desc}</div>
         </div>}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(4, 1fr)',gap:14}}>
+        <div style={{display:'flex',flexDirection:'column',gap:2}}>
           {ACHIEVEMENTS.map((ach,i)=>{const unlocked=elapsed>=ach.time;const isNew=unlocked&&!seenAchs.includes(ach.label);return <AchievementBadge key={i} ach={ach} unlocked={unlocked} isNew={isNew}/>;
           })}
         </div>
       </>}
       {activeTab === 'cravings' && <CravingsTab onOpenLog={() => { setPrefillBreathing(false); setShowCravingLog(true); }} />}
     </div>
+    </div>
+
 
     <DetailModal category={detailCat} elapsed={elapsed} onClose={()=>setDetailCat(null)}/>
     {showSettings&&<SettingsModal config={config} onSave={c=>{Store.save(c);onUpdateConfig(c);}} onReset={onReset} onClose={()=>setShowSettings(false)}/>}
@@ -1134,7 +1186,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
       'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:90;' +
       'width:calc(100% - 32px);max-width:380px;box-sizing:border-box;' +
       'padding:14px 16px;border-radius:var(--radius-lg);' +
-      'background:linear-gradient(135deg,var(--accent-glow),var(--surface-faint)),var(--bg-card);' +
+      'background:var(--accent-primary),var(--bg-card);' +
       'border:1px solid var(--border-medium);backdrop-filter:blur(16px);' +
       '-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,0.4);' +
       'display:flex;align-items:center;gap:12px;animation:slideDown 0.5s var(--ease-spring);' +

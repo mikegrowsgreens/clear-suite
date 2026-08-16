@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#17120E">
 <title>Clear Suite — Eight Free, Private Recovery Trackers</title>
 <meta name="description" content="Free, private recovery trackers for alcohol, cannabis, nicotine, diet, social media, gambling, porn, and caffeine. Research-based milestones. No account, no ads, no tracking — your data never leaves your device.">
 <meta property="og:title" content="Clear Suite — Eight Free, Private Recovery Trackers">
@@ -17,28 +17,40 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Clear Suite">
-<link rel="stylesheet" href="/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="/vendor/fonts/long-evening.css">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
+  /* Long Evening — the hub carries the same two themes as the eight apps, and
+     the same per-app accents, so the suite reads as one thing with eight
+     members instead of eight unrelated products. See DESIGN.md. */
   [data-theme="dark"] {
-    --bg:#0a0a0a;--bg-card:rgba(255,255,255,0.03);--bg-card-hover:rgba(255,255,255,0.06);
-    --text:#e5e5e5;--text-secondary:#a3a3a3;--text-muted:#737373;--text-dim:#525252;
-    --border:rgba(255,255,255,0.08);--border-hover:rgba(255,255,255,0.15);
+    --bg:#17120E;
+    --ground:radial-gradient(120% 85% at 50% 0%,#2A1E15 0%,#17120E 60%);
+    --bg-card:rgba(255,235,215,0.05);--bg-card-hover:rgba(255,235,215,0.09);
+    --text-hi:#FFF3E6;--text:#F3E7DA;--text-secondary:#C8B29A;--text-muted:#A79383;--text-dim:#A79383;
+    --border:rgba(255,235,215,0.08);--border-hover:rgba(255,235,215,0.18);
+    --flow:#D17C67;--air:#6C9C8E;--mind:#7B9E46;--body:#CE7D83;
+    --feed:#9A8DB4;--odds:#C89B4A;--sight:#8394AE;--energy:#D08A2C;
   }
   [data-theme="light"] {
-    --bg:#f8fafc;--bg-card:rgba(0,0,0,0.03);--bg-card-hover:rgba(0,0,0,0.06);
-    --text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--text-dim:#cbd5e1;
-    --border:rgba(0,0,0,0.08);--border-hover:rgba(0,0,0,0.15);
+    --bg:#D8DFCB;
+    --ground:radial-gradient(60% 38% at 6% 97%,rgba(184,138,66,0.20) 0%,rgba(184,138,66,0) 72%);
+    --bg-card:rgba(252,250,242,0.58);--bg-card-hover:rgba(252,250,242,0.85);
+    --text-hi:#141F0E;--text:#1E2A19;--text-secondary:#3A4633;--text-muted:#4A5640;--text-dim:#4A5640;
+    --border:rgba(30,42,25,0.10);--border-hover:rgba(30,42,25,0.22);
+    --flow:#8C3D2A;--air:#3E5C53;--mind:#475B28;--body:#92373F;
+    --feed:#5E4F78;--odds:#6C5121;--sight:#48576E;--energy:#754E19;
   }
-  body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+  body { font-family:'Sora',system-ui,sans-serif; font-weight:300; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+  body::before { content:''; position:fixed; inset:0; background:var(--ground); pointer-events:none; z-index:-1; }
 
-  .theme-toggle { position:fixed; top:20px; right:20px; z-index:50; width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); color:var(--text-muted); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+  .theme-toggle { position:fixed; top:20px; right:20px; z-index:50; width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); color:var(--text-muted); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:background-color 0.2s,border-color 0.2s,transform 0.2s; }
   .theme-toggle:hover { border-color:var(--border-hover); }
 
   .hero { text-align:center; padding:80px 24px 32px; max-width:680px; margin:0 auto; }
-  .hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; letter-spacing:-1px; margin-bottom:16px; background:linear-gradient(135deg,#f59e0b,#2dd4bf,#a3e635,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  .hero p { font-size:18px; color:var(--text-secondary); line-height:1.6; max-width:520px; margin:0 auto; }
-  .hero .subtitle { font-size:14px; color:var(--text-muted); margin-top:12px; }
+  .hero h1 { font-family:'Fraunces',Georgia,serif; font-size:clamp(2.1rem,5vw,3.2rem); font-weight:600; letter-spacing:-0.02em; margin-bottom:16px; color:var(--text-hi); }
+  .hero p { font-size:16px; font-weight:300; color:var(--text-secondary); line-height:1.6; max-width:520px; margin:0 auto; }
+  .hero .subtitle { font-size:13px; color:var(--text-muted); margin-top:12px; }
 
   /* Four plain facts, inline. Deliberately not a card: there is no price to
      put in a price box, and a bordered frame around the word "Free" reads
@@ -47,10 +59,8 @@
            gap:10px 22px; max-width:880px; margin:0 auto; padding:0 24px 44px; }
   .fact { display:inline-flex; align-items:center; gap:7px; font-size:13.5px;
           color:var(--text-secondary); white-space:nowrap; }
-  .fact svg { flex:none; width:14px; height:14px; stroke:#2dd4bf; stroke-width:2.5;
+  .fact svg { flex:none; width:14px; height:14px; stroke:currentColor; stroke-width:2.5;
               fill:none; stroke-linecap:round; stroke-linejoin:round; }
-  /* Darker tick on light backgrounds, matching the apps' light-mode accents. */
-  html[data-theme="light"] .fact svg { stroke:#0d9488; }
 
   /* Narrow screens: a centred wrap goes ragged (2/1/1), so stack into a
      single left-aligned column where the ticks line up. */
@@ -64,36 +74,36 @@
 
   /* Flex column so every card's category footer pins to the bottom edge —
      rows stay lined up even when descriptions run 4 lines vs 5. */
-  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:32px 24px; text-align:center; transition:all 0.3s ease; cursor:pointer; text-decoration:none; color:inherit; display:flex; flex-direction:column; }
+  .card { background:var(--bg-card); border:1px solid transparent; border-radius:18px; padding:32px 24px; text-align:center; transition:background-color 0.3s ease,border-color 0.3s ease,transform 0.3s ease; cursor:pointer; text-decoration:none; color:inherit; display:flex; flex-direction:column; }
   .card:hover { background:var(--bg-card-hover); border-color:var(--border-hover); transform:translateY(-2px); }
 
   .card-icon { width:80px; height:80px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; }
   .card-icon img { width:64px; height:64px; border-radius:50%; }
 
-  .card h2 { font-size:22px; font-weight:600; margin-bottom:8px; }
-  .card .substance { font-size:13px; text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:12px; }
-  .card p { font-size:14px; color:var(--text-secondary); line-height:1.5; }
+  .card h2 { font-family:'Fraunces',Georgia,serif; font-size:21px; font-weight:600; margin-bottom:8px; color:var(--text-hi); }
+  .card .substance { font-size:10px; text-transform:uppercase; letter-spacing:0.2em; font-weight:400; margin-bottom:14px; }
+  .card p { font-size:13px; font-weight:300; color:var(--text-secondary); line-height:1.5; }
   .card .categories { font-size:12px; color:var(--text-muted); margin-top:auto; padding-top:16px; line-height:1.6; }
 
-  .card.flow h2 { color:#f59e0b; }
-  .card.flow .substance { color:#d97706; }
-  .card.mind h2 { color:#a3e635; }
-  .card.mind .substance { color:#65a30d; }
-  .card.air h2 { color:#2dd4bf; }
-  .card.air .substance { color:#14b8a6; }
-  .card.body h2 { color:#ec4899; }
-  .card.body .substance { color:#db2777; }
-  .card.feed h2 { color:#8b5cf6; }
-  .card.feed .substance { color:#7c3aed; }
-  .card.odds h2 { color:#38bdf8; }
-  .card.odds .substance { color:#0ea5e9; }
-  .card.sight h2 { color:#60a5fa; }
-  .card.sight .substance { color:#3b82f6; }
-  .card.energy h2 { color:#f97316; }
-  .card.energy .substance { color:#ea580c; }
+  .card.flow h2 { color:var(--flow); }
+  .card.flow .substance { color:var(--flow); }
+  .card.mind h2 { color:var(--mind); }
+  .card.mind .substance { color:var(--mind); }
+  .card.air h2 { color:var(--air); }
+  .card.air .substance { color:var(--air); }
+  .card.body h2 { color:var(--body); }
+  .card.body .substance { color:var(--body); }
+  .card.feed h2 { color:var(--feed); }
+  .card.feed .substance { color:var(--feed); }
+  .card.odds h2 { color:var(--odds); }
+  .card.odds .substance { color:var(--odds); }
+  .card.sight h2 { color:var(--sight); }
+  .card.sight .substance { color:var(--sight); }
+  .card.energy h2 { color:var(--energy); }
+  .card.energy .substance { color:var(--energy); }
 
   .features { max-width:680px; margin:48px auto; padding:48px 24px; text-align:center; border-top:1px solid var(--border); }
-  .features h3 { font-size:18px; font-weight:600; margin-bottom:24px; color:var(--text); }
+  .features h3 { font-family:'Fraunces',Georgia,serif; font-size:19px; font-weight:600; margin-bottom:24px; color:var(--text); }
   .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; text-align:left; }
   .feature { padding:16px; }
   .feature .label { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
@@ -115,6 +125,7 @@
   [data-theme="light"] .mgg-frame:hover { border-color:#4E7532; }
   [data-theme="light"] .mgg-frame .g { color:#4E7532; }
 
+  .theme-switching *, .theme-switching *::before, .theme-switching *::after { transition:none !important; animation:none !important; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
   .hero { animation: fadeIn 0.6s ease-out; }
   .card:nth-child(1) { animation: fadeIn 0.6s ease-out 0.1s both; }
@@ -257,8 +268,14 @@
 
   function apply(theme) {
     var resolved = theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
-    document.documentElement.setAttribute('data-theme', resolved);
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#0a0a0a' : '#f8fafc');
+    /* Instant swap rather than cross-fading the whole page. See the longer
+       note in the apps' ThemeToggle: nothing here may transition `color`, or
+       it will keep the previous theme's value after a toggle. */
+    var root = document.documentElement;
+    root.classList.add('theme-switching');
+    root.setAttribute('data-theme', resolved);
+    setTimeout(function(){ root.classList.remove('theme-switching'); }, 60);
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', resolved === 'dark' ? '#17120E' : '#D8DFCB');
     btn.textContent = icons[theme];
     btn.title = 'Theme: ' + theme.charAt(0).toUpperCase() + theme.slice(1);
   }
