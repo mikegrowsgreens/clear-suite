@@ -211,7 +211,7 @@ hearth best colors". Resolved in `design/directions/synthesis.html`:
 **Per-app accents, custom-mixed, no Tailwind:** Flow `#C4563C`, Air `#5E8B7E`, Mind
 `#6B8A3D`, Body `#C4636B`, Feed `#8B7BA8`, Odds `#C89B4A`, Sight `#6B7F9E`, Energy `#D08A2C`.
 
-**S4 — SHIPPED AND DEPLOYED 2026-08-15** (`bee7f91`, `1bd0f4a`). All nine surfaces
+**S4 — SHIPPED AND DEPLOYED 2026-08-15** (`bee7f91`, `197f163`). All nine surfaces
 verified live: `long-evening.css?v=2` 200 everywhere, Sora + Fraunces loading, zero
 third-party requests, zero rendered emoji. `DESIGN.md` is now the contract; read it before touching any
 surface. Rolled across all eight apps and the hub, verified in a browser app by app in both
