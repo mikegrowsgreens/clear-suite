@@ -1067,6 +1067,23 @@ function Recommit({ prefix, accent, elapsed, goal, onSaveGoal }) {
     </div>;
   }
 
+  /* Snoozed before ever answering. `last` is null, so the summary below has
+     nothing to read from — and this is the LIKELIEST first-run path, because
+     "Not now" reads as a dismiss button. Without this guard it threw
+     `Cannot read properties of null` and took the whole app down with it:
+     one component's render error blanked a screen the user keeps their record
+     on, which looks exactly like data loss. It is not; nothing is ever written
+     on this path. Keep a way back in rather than returning null. */
+  if (!last) {
+    return <div style={box}>
+      <div style={eyebrow}>Commitment</div>
+      <button onClick={() => setOpen(true)} style={{ marginTop: 6, background: 'none',
+        border: 'none', padding: 0, color: accent, fontSize: 11, fontWeight: 600,
+        cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+        Say what this is for</button>
+    </div>;
+  }
+
   const when = new Date(last.t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   return <div style={box}>
     <div style={eyebrow}>Commitment</div>
