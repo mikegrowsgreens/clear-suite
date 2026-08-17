@@ -67,6 +67,17 @@ teal in all eight, title/OG/manifest normalisation.
 
 ## Conventions
 
+- **Guard every render from a nullable store entry, and test the states in the order a
+  real person hits them.** The 2026-08-15 `Recommit` crash was a null `last` on the path
+  where someone snoozes before ever answering — the likeliest first run, because the prompt
+  appears on load and "Not now" reads as dismiss. It was missed because the snooze path was
+  only exercised *after* saving, so the log was never empty. Happy-path ordering hides
+  exactly the orderings that matter.
+- **Every app has an error `Boundary`** — one at the root, one around each card that renders
+  from a user-written store (`IdentityCheck`, `Recommit`). A crash now degrades to a card
+  reading "Your record is safe" instead of a white screen. To test one, inject a `throw`
+  into a **scratch copy** of the app and serve that; never into `apps/`.
+
 - Eight apps are one template. A fix propagates eight times; script it, then verify all eight.
 - **Verify in a browser, not just by grep.** Each app is a separate preview server
   (`clear-flow` … `clear-sight` in the parent `.claude/launch.json`); seed

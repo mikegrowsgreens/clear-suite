@@ -965,6 +965,56 @@ function IdentityCheck({ prefix, accent, usingLabel, freeLabel }) {
   </div>;
 }
 
+class Boundary extends React.Component {
+  /* A render error used to unmount the entire tree and leave a white screen.
+     That happened for real on 2026-08-15: Recommit read `last.t` with `last`
+     null, and the app someone keeps their record in went blank. The exception
+     was a one-line bug; the white screen was the actual harm, because it looks
+     exactly like losing everything.
+
+     So: nothing here touches storage, nothing is reported anywhere (this app
+     makes zero network requests and that is not negotiable), and the copy leads
+     with the only question the user actually has. `label` scopes the blast
+     radius — a card names itself and the rest of the page survives. */
+  constructor(p) { super(p); this.state = { err: null }; }
+  static getDerivedStateFromError(err) { return { err }; }
+  componentDidCatch(err, info) {
+    try { console.error('[' + (this.props.label || 'app') + ']', err, info.componentStack); } catch {}
+  }
+  render() {
+    if (!this.state.err) return this.props.children;
+    const card = this.props.label !== undefined;
+    const box = { margin: card ? '8px 20px' : 24, padding: card ? '14px 18px' : '22px 20px',
+                  borderRadius: 'var(--radius-md)', background: 'var(--bg-card)',
+                  maxWidth: card ? 'none' : 520 };
+    return <div style={box} role="alert">
+      <div style={{ fontSize: 8.5, color: 'var(--text-muted)', fontWeight: 400,
+                    letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+        {card ? this.props.label + ' — not loading' : 'This screen did not load'}</div>
+      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: card ? 15 : 19,
+                    color: 'var(--text-hi)', marginTop: 7, lineHeight: 1.4 }}>
+        Your record is safe.</div>
+      <p style={{ fontSize: 12, fontWeight: 300, color: 'var(--text-secondary)', marginTop: 7,
+                  lineHeight: 1.55 }}>
+        {card ? 'This one card failed to draw. Everything else on the page still works, and nothing was changed.'
+              : 'Something failed to draw. Your days, your reason and your notes are stored on this device and were not touched.'}</p>
+      <div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
+        <button onClick={() => location.reload()} style={{ padding: '9px 16px', borderRadius: 40,
+          border: 'none', background: 'var(--accent-primary)', color: 'var(--accent-on)',
+          fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+          Reload</button>
+        <button onClick={() => { try { navigator.clipboard.writeText(String(this.state.err && this.state.err.stack || this.state.err)); } catch {} }}
+          style={{ padding: '9px 16px', borderRadius: 40, border: '1px solid var(--border-subtle)',
+          background: 'none', color: 'var(--text-secondary)', fontSize: 12, fontWeight: 400,
+          cursor: 'pointer', fontFamily: 'var(--font-body)' }}>
+          Copy details</button>
+      </div>
+      <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 10, lineHeight: 1.5 }}>
+        Nothing was sent anywhere. Copying is for you to paste if you want to report it.</p>
+    </div>;
+  }
+}
+
 function Recommit({ prefix, accent, elapsed, goal, onSaveGoal }) {
   /* BCT 1.9 "Commitment" — the only technique to survive in BOTH Black 2020
      (113 trials, N=43,992, OR 1.30) and Leppin 2024, which is digital-specific
@@ -1173,9 +1223,9 @@ function Dashboard({config,onUpdateConfig,onReset}) {
       </div>
     </div>}
 
-    <IdentityCheck prefix="clearsight" accent="var(--accent-primary)" usingLabel="someone who uses porn" freeLabel="someone at ease with themselves" />
-    <Recommit prefix="clearsight" accent="var(--accent-primary)" elapsed={elapsed}
-      goal={config.motivation} onSaveGoal={t=>onUpdateConfig({...config,motivation:t})} />
+    <Boundary label="How you see yourself"><IdentityCheck prefix="clearsight" accent="var(--accent-primary)" usingLabel="someone who uses porn" freeLabel="someone at ease with themselves" /></Boundary>
+    <Boundary label="Commitment"><Recommit prefix="clearsight" accent="var(--accent-primary)" elapsed={elapsed}
+      goal={config.motivation} onSaveGoal={t=>onUpdateConfig({...config,motivation:t})} /></Boundary>
 
     {(()=>{const all=CravingStore.getAll().filter(c=>c.note&&c.note.trim());
       if(!all.length)return null;
@@ -1243,7 +1293,7 @@ function App() {
   return <Dashboard config={config} onUpdateConfig={handleUpdate} onReset={handleReset}/>;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+ReactDOM.createRoot(document.getElementById('root')).render(<Boundary><App/></Boundary>);
 </script>
 <script>
 /* Clear Suite update channel.
