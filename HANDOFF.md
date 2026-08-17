@@ -1,6 +1,6 @@
 # Clear Suite — handoff
 
-Last updated 2026-08-15 (S7). Keep this current; it is the first thing a fresh session reads.
+Last updated 2026-08-15 (S7 + closeout). Keep this current; it is the first thing a fresh session reads.
 
 ## State
 
@@ -14,8 +14,8 @@ on `main`, deployed to all nine surfaces and verified live.
 Research briefings live at `~/.claude/plans/please-do-a-full-ethereal-lake*.md` —
 the main plan file plus four agent briefings (behaviour-change mechanisms and identity,
 harms of tracking apps, per-substance claims audit, digital therapeutics and attrition).
-The per-substance claims audit gated S2b and is now spent. **The only slice left is S6,
-and it is a decision rather than a build — see below.**
+The per-substance claims audit gated S2b and is now spent. **Every slice is shipped and
+deployed; S6 was declined. The backlog is empty.**
 
 ### What shipped
 
@@ -96,9 +96,9 @@ teal in all eight, title/OG/manifest normalisation.
   A `--verify-only` run made *before* an upload got a 404 that Cloudflare then pinned for
   a year against the real URL (clearair's `long-evening.css`, 2026-08-15). `deploy.sh` now
   probes `?probe=$$`, and the page references `long-evening.css?v=N` — bump `v` rather than
-  renaming the file when the faces change. `clearair.../long-evening.css` (no query) is
-  **The poisoned URL was purged from Cloudflare on 2026-08-15** (Custom Purge, single URL)
-  and now returns 200 with the correct bytes. The `?v=` versioning stays as the cheap lever.
+  renaming the file when the faces change. The `clearair.../long-evening.css` 404 that was
+  poisoned at one PoP **was purged from Cloudflare on 2026-08-15** (Custom Purge, single
+  URL) and now returns 200 with the correct bytes. `?v=` versioning stays as the cheap lever.
 - `SKIP_LANDING` is tested with `-z`, so **`SKIP_LANDING=0` skips the hub**. Unset it to deploy the hub.
 - Deploy: `CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (add `--verify-only` for a
   read-only check). Apps → `/var/www/<app>/`, hub → `/var/www/clearsuite/`. The script now
