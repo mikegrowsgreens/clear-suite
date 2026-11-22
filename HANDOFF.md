@@ -100,7 +100,7 @@ teal in all eight, title/OG/manifest normalisation.
   poisoned at one PoP **was purged from Cloudflare on 2026-08-15** (Custom Purge, single
   URL) and now returns 200 with the correct bytes. `?v=` versioning stays as the cheap lever.
 - `SKIP_LANDING` is tested with `-z`, so **`SKIP_LANDING=0` skips the hub**. Unset it to deploy the hub.
-- Deploy: `CLEAR_HOST=root@167.172.119.28 scripts/deploy.sh` (add `--verify-only` for a
+- Deploy: `CLEAR_HOST=user@your-host scripts/deploy.sh` (add `--verify-only` for a
   read-only check). Apps → `/var/www/<app>/`, hub → `/var/www/clearsuite/`. The script now
   covers the hub and asserts `/vendor/fonts/*` returns 200 and the live HTML contains no
   `fonts.googleapis.com`.
